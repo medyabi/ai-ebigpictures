@@ -23,7 +23,7 @@
 <main id="content" class="article">
 <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">AI Labs</a></li><li><a href="index.html">Copilot Studio track</a></li></ol></nav>
 <article class="prose">
-<h1 id="lab-06-workflows-and-human-approval">Lab 06 - Workflows and human approval</h1><p class="meta"><span>Lab</span><span>15 min read</span><span>Lab time: 75 min</span></p>
+<h1 id="lab-06-workflows-and-human-approval">Lab 06 - Workflows and human approval</h1><p class="meta"><span>Lab</span><span>16 min read</span><span>Lab time: 75 min</span></p>
 <h2 id="lab-introduction">Lab introduction</h2>
 <p>In Lab 05 the agent created a ticket in one step. Real processes aren't one step.</p>
 <p>Take a software request. You create the record, find the requester's manager, ask the manager to approve, update the record and tell the requester. That's five steps, always the same five, in the same order.</p>
@@ -36,11 +36,12 @@
 <p>And the approval? That's our first real <strong>human in the loop</strong>. A person decides, not the model.</p>
 <h2 id="lab-scenario">Lab scenario</h2>
 <p>Category B software (Visio, Project, Power BI Pro, Acrobat Pro) needs <strong>manager approval</strong>. The Service Desk wants the agent to collect the request and hand it to a workflow. The workflow logs the request, asks the manager to approve it in Outlook or Teams, and updates the request when the manager decides.</p>
+<div class="alert note"><p class="alert-title">Note</p><p>👥 <strong>Working as a team?</strong> Add your <strong>initials</strong> to everything you create in this lab (for example <code>Request software approval - MD</code>), and always pick <strong>your own</strong> list, <code>IT Requests - XX</code>, from Lab 00 Task 6. Working alone? Skip the suffix and use <code>IT Requests</code>.</p></div>
 <h2 id="before-you-begin">Before you begin</h2>
 <div class="alert important"><p class="alert-title">Important</p><p>⚠️ <strong>Your account needs a manager, and that manager needs a mailbox.</strong></p>
 <p>The workflow looks up your manager in Microsoft Entra ID and sends them the approval. Check two things in the <a href="https://admin.microsoft.com" rel="noopener">Microsoft 365 admin center</a> &gt; <strong>Users</strong> &gt; <strong>Active users</strong>:</p>
 <ol>
-<li>Your lab account &gt; <strong>Account</strong> tab &gt; <strong>Manager</strong> is set (in this lab: <em>Julian Duncan</em>).</li>
+<li>Your lab account &gt; <strong>Account</strong> tab &gt; <strong>Manager</strong> is set (in this lab: <em>Julian Duncan</em>). <strong>In a team session, the trainer is everyone's manager</strong>, so every approval lands in the trainer's inbox and is approved live in class.</li>
 <li>The manager's account has a <strong>license with Exchange Online</strong> (<strong>Mail</strong> tab shows mailbox storage).</li>
 </ol>
 <p>No manager? The <strong>Get manager</strong> step fails. Manager without a mailbox? The approval is created, but nobody can open it. See <a href="#troubleshooting">Troubleshooting</a> at the end.</p></div>
@@ -203,7 +204,7 @@
 </ol>
 <p><img alt="SharePoint Create item" src="../assets/stu/Instructions-Labs-media-lab06-09-sharepoint-create-item.png" /></p>
 <ol>
-<li>Site address = <strong>Contoso IT Hub</strong>, List name = <strong>IT Requests</strong>. Fill the item:</li>
+<li>Site address = <strong>Contoso IT Hub</strong>, List name = <strong>IT Requests</strong> (team: <strong>IT Requests - XX</strong>). Fill the item:</li>
 </ol>
 <div class="table-wrap"><table>
 <thead>
@@ -341,7 +342,7 @@ This <strong>respond early, continue later</strong> pattern is the #1 trick for 
 <p>Notice the line at the bottom: <em>An "Else" branch is automatically created.</em> You don't add the "no" branch, it's already there.</p>
 <h3 id="update-the-request">Update the request</h3>
 <ol>
-<li>In the <strong>If</strong> branch, add <strong>SharePoint</strong> &gt; <strong>Update item</strong>: same site and list, <strong>Id</strong> = <strong>[⚡ Create item › ID]</strong> (one chip), <strong>Status</strong> = <strong>Approved</strong>.</li>
+<li>In the <strong>If</strong> branch, add <strong>SharePoint</strong> &gt; <strong>Update item</strong>: same site and list (team: <strong>your</strong> list), <strong>Id</strong> = <strong>[⚡ Create item › ID]</strong> (one chip), <strong>Status</strong> = <strong>Approved</strong>.</li>
 </ol>
 <p><img alt="Update item - Approved" src="../assets/stu/Instructions-Labs-media-lab06-18-update-approved.png" /></p>
 <ol>
@@ -418,7 +419,7 @@ This <strong>respond early, continue later</strong> pattern is the #1 trick for 
 <h2 id="task-4-publish-the-workflow-and-add-it-to-the-agent">Task 4: Publish the workflow and add it to the agent</h2>
 <ol>
 <li>
-<p>Rename the workflow: select <strong>Untitled workflow</strong> at the top and type <code>Request software approval</code>.</p>
+<p>Rename the workflow: select <strong>Untitled workflow</strong> at the top and type <code>Request software approval</code> (team: <code>Request software approval - XX</code>).</p>
 </li>
 <li>
 <p>Select <strong>Publish</strong>. Wait for the badge to change from <strong>Draft</strong> to <strong>Published</strong>.</p>
@@ -488,7 +489,7 @@ business justification and cost center. Returns the request ID.</code></pre></di
 </ol>
 <p><img alt="Request submitted" src="../assets/stu/Instructions-Labs-media-lab06-32-request-submitted.png" /></p>
 <ol>
-<li>Open the <strong>IT Requests</strong> list. Your item shows <strong>Status = Waiting for approval</strong>.</li>
+<li>Open the <strong>IT Requests</strong> list (team: yours). Your item shows <strong>Status = Waiting for approval</strong>.</li>
 </ol>
 <p><img alt="Item waiting for approval" src="../assets/stu/Instructions-Labs-media-lab06-33-item-waiting.png" /></p>
 <h3 id="as-the-approver">As the approver</h3>

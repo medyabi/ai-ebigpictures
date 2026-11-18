@@ -23,7 +23,7 @@
 <main id="content" class="article">
 <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">AI Labs</a></li><li><a href="index.html">Copilot Studio track</a></li></ol></nav>
 <article class="prose">
-<h1 id="lab-05-give-your-agent-hands-connectors-and-mcp-tools">Lab 05 - Give your agent hands: connectors and MCP tools</h1><p class="meta"><span>Lab</span><span>11 min read</span><span>Lab time: 60 min</span></p>
+<h1 id="lab-05-give-your-agent-hands-connectors-and-mcp-tools">Lab 05 - Give your agent hands: connectors and MCP tools</h1><p class="meta"><span>Lab</span><span>12 min read</span><span>Lab time: 60 min</span></p>
 <h2 id="lab-introduction">Lab introduction</h2>
 <p>Until now our agents <strong>talk</strong>. From this lab they <strong>do</strong>.</p>
 <p>A <strong>tool</strong> is something the agent can call to perform an action or fetch live data. In Copilot Studio you have three families:</p>
@@ -56,6 +56,7 @@
 <p>Here's the key idea: <strong>you don't wire the tools together</strong>. You give each tool a clear <strong>name</strong> and <strong>description</strong>, and the runtime decides <em>when</em> to call it, <em>with which inputs</em>, and <em>in what order</em>. Good descriptions = good decisions.</p>
 <h2 id="lab-scenario">Lab scenario</h2>
 <p>Employees keep asking the Service Desk agent to "just open the ticket for me". The manager agrees, with rules: the agent creates the item in the <strong>IT Requests</strong> list only after the user confirms, sends the user a confirmation email, and can look up the status of existing requests. Engineers also want technical "how do I..." answers from <strong>official Microsoft documentation</strong>.</p>
+<div class="alert note"><p class="alert-title">Note</p><p>👥 <strong>Working as a team?</strong> Add your <strong>initials</strong> to everything you create in this lab (for example <code>Contoso Service Desk - MD</code>), and always pick <strong>your own</strong> list, <code>IT Requests - XX</code>, from Lab 00 Task 6. Working alone? Skip the suffix and use <code>IT Requests</code>.</p></div>
 <h2 id="job-skills">Job skills</h2>
 <ul>
 <li>Task 1: Add the SharePoint "Create item" tool</li>
@@ -149,7 +150,7 @@
 <tr>
 <td><strong>List Name</strong></td>
 <td><strong>Custom</strong></td>
-<td><code>IT Requests</code> (pick it from the list)</td>
+<td><code>IT Requests</code> (team: <strong>your</strong> <code>IT Requests - XX</code>), picked from the list</td>
 </tr>
 </tbody>
 </table></div>
@@ -193,7 +194,7 @@
 </tr>
 <tr>
 <td>List Name</td>
-<td><strong>Custom</strong> - <strong>IT Requests</strong></td>
+<td><strong>Custom</strong> - <strong>IT Requests</strong> (team: <strong>IT Requests - XX</strong>)</td>
 </tr>
 <tr>
 <td>Top Count (Advanced parameters)</td>
@@ -346,7 +347,7 @@
 </ol>
 <p><img alt="Request created and email sent" src="../assets/stu/Instructions-Labs-media-lab05-28-created-and-emailed.png" /></p>
 <ol>
-<li>Check SharePoint: the item is in <strong>IT Requests</strong> with Category <strong>Hardware</strong>, Priority <strong>Normal</strong>, Status <strong>New</strong> - and a clean description that includes your answers.</li>
+<li>Check SharePoint: the item is in <strong>IT Requests</strong> (team: <strong>IT Requests - XX</strong>) with Category <strong>Hardware</strong>, Priority <strong>Normal</strong>, Status <strong>New</strong> - and a clean description that includes your answers.</li>
 </ol>
 <p><img alt="The new item in the IT Requests list" src="../assets/stu/Instructions-Labs-media-lab05-29-sharepoint-item.png" /></p>
 <ol>
@@ -364,7 +365,7 @@
 </ol>
 <p><img alt="The agent explains the misconfiguration" src="../assets/stu/Instructions-Labs-media-lab05-32-agent-explains-error.png" /></p>
 <ol>
-<li><strong>The fix:</strong> <strong>Build</strong> &gt; select <strong>Find my IT requests</strong> &gt; <strong>List Name</strong> &gt; <strong>Custom</strong> &gt; pick <strong>IT Requests</strong> from the list &gt; <strong>Done</strong> &gt; <strong>Save</strong>.</li>
+<li><strong>The fix:</strong> <strong>Build</strong> &gt; select <strong>Find my IT requests</strong> &gt; <strong>List Name</strong> &gt; <strong>Custom</strong> &gt; pick <strong>IT Requests</strong> (team: <strong>IT Requests - XX</strong>) from the list &gt; <strong>Done</strong> &gt; <strong>Save</strong>.</li>
 </ol>
 <div class="alert tip"><p class="alert-title">Spot it</p><p><strong>🔍 Lesson:</strong> a red line in the trace + "404" almost always means a wrong <strong>fixed value</strong> (site, list, ID). Expand the failed step, read the error, fix the input. That's why we keep <strong>Debug mode</strong> on while building.</p></div>
 <h3 id="one-more-behavior-worth-noticing">One more behavior worth noticing</h3>

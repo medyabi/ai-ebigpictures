@@ -23,7 +23,7 @@
 <main id="content" class="article">
 <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">AI Labs</a></li><li><a href="index.html">Copilot Studio track</a></li></ol></nav>
 <article class="prose">
-<h1 id="lab-08-build-an-autonomous-agent-with-triggers">Lab 08 - Build an autonomous agent with triggers</h1><p class="meta"><span>Lab</span><span>9 min read</span><span>Lab time: 75 min</span></p>
+<h1 id="lab-08-build-an-autonomous-agent-with-triggers">Lab 08 - Build an autonomous agent with triggers</h1><p class="meta"><span>Lab</span><span>10 min read</span><span>Lab time: 75 min</span></p>
 <h2 id="lab-introduction">Lab introduction</h2>
 <p>Every agent so far waits for someone to type. Close the chat, and nothing happens.</p>
 <p>An <strong>autonomous agent</strong> doesn't wait. It wakes up when <strong>something happens</strong> - a new item in a list, an email that arrives, a time on the clock - and it works on its own, with the instructions, tools and limits you gave it.</p>
@@ -38,6 +38,8 @@
 <h2 id="lab-scenario">Lab scenario</h2>
 <p>New requests land in the <strong>IT Requests</strong> list all day - from the agent, from the SharePoint form, from Power Apps. A human currently reads each one and fills in Category, Priority and AssignedTeam.</p>
 <p>You build the <strong>Contoso Triage Agent</strong>: whenever a new request is created, it triages it with the official rules, writes the result back to the list, and alerts the on-call engineer in Teams for anything Critical. Every morning it also posts a short digest of the open queue.</p>
+<div class="alert note"><p class="alert-title">Note</p><p>👥 <strong>Working as a team?</strong> Add your <strong>initials</strong> to everything you create in this lab (for example <code>Contoso Triage Agent - MD</code>), and always pick <strong>your own</strong> list, <code>IT Requests - XX</code>, from Lab 00 Task 6. Working alone? Skip the suffix and use <code>IT Requests</code>.</p>
+<p>⚠️ <strong>In a team, this lab is where a shared list really breaks.</strong> A trigger on the shared <strong>IT Requests</strong> list fires for <strong>every learner's agent</strong> on <strong>every</strong> new item: several agents triage the same request, overwrite each other and send several Teams alerts. Point your trigger and your tools at <strong>your own</strong> list only.</p></div>
 <h2 id="job-skills">Job skills</h2>
 <ul>
 <li>Task 1: Design the guardrails first</li>
@@ -86,7 +88,7 @@
 <h2 id="task-2-create-the-agent-skill-knowledge-and-tools">Task 2: Create the agent, skill, knowledge and tools</h2>
 <ol>
 <li>
-<p><strong>Agents</strong> &gt; <strong>New agent</strong>. Name: <code>Contoso Triage Agent</code>.</p>
+<p><strong>Agents</strong> &gt; <strong>New agent</strong>. Name: <code>Contoso Triage Agent</code> (team: <code>Contoso Triage Agent - XX</code>).</p>
 </li>
 <li>
 <p><strong>Instructions</strong>:</p>
@@ -146,7 +148,7 @@ number of open requests per Priority, and the 3 oldest Critical or High ones.
 </tr>
 <tr>
 <td>Site Address / List Name</td>
-<td><strong>Fixed</strong>: Contoso IT Hub / IT Requests</td>
+<td><strong>Fixed</strong>: Contoso IT Hub / IT Requests (team: <strong>IT Requests - XX</strong>)</td>
 </tr>
 <tr>
 <td>Title, Description</td>
@@ -227,7 +229,7 @@ number of open requests per Priority, and the 3 oldest Critical or High ones.
 <p>Check the <strong>connection</strong> shows a green check mark.</p>
 </li>
 <li>
-<p>Configure <strong>Trigger options</strong>: Site Address = Contoso IT Hub, List Name = IT Requests.</p>
+<p>Configure <strong>Trigger options</strong>: Site Address = Contoso IT Hub, List Name = IT Requests (team: <strong>IT Requests - XX</strong>).</p>
 </li>
 <li>
 <p>In the extra <strong>instructions</strong> for this trigger, type:</p>
@@ -268,7 +270,7 @@ The item ID, Title, Description and Status are in the event details.</code></pre
 <p>Select <strong>Start listening</strong>.</p>
 </li>
 <li>
-<p>In another tab, add an item to <strong>IT Requests</strong>:</p>
+<p>In another tab, add an item to <strong>IT Requests</strong> (team: <strong>your</strong> list):</p>
 </li>
 </ol>
 <div class="table-wrap"><table>

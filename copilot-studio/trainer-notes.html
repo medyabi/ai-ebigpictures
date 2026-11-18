@@ -23,7 +23,7 @@
 <main id="content" class="article">
 <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">AI Labs</a></li><li><a href="index.html">Copilot Studio track</a></li></ol></nav>
 <article class="prose">
-<h1 id="trainer-notes">Trainer notes</h1><p class="meta"><span>Trainer guide</span><span>5 min read</span></p>
+<h1 id="trainer-notes">Trainer notes</h1><p class="meta"><span>Trainer guide</span><span>6 min read</span></p>
 <h2 id="suggested-agendas">Suggested agendas</h2>
 <div class="table-wrap"><table>
 <thead>
@@ -60,12 +60,23 @@
 <ul>
 <li class="task"><input type="checkbox"> Assign <strong>Microsoft 365 Copilot</strong> licenses to every learner account (Labs 01-03).</li>
 <li class="task"><input type="checkbox"> Give every learner Copilot Studio access and a <strong>Dataverse environment</strong> (one shared "Agents-Lab" environment or one developer environment each). Check <strong>Copilot Credits</strong> capacity - building, testing, evaluating and autonomous runs all consume credits.</li>
-<li class="task"><input type="checkbox"> Set a <strong>manager</strong> in Entra ID for each learner account (Lab 06 approval). Simplest: make the trainer account everyone's manager.</li>
+<li class="task"><input type="checkbox"> Set a <strong>manager</strong> in Entra ID for each learner account (Lab 06 approval). Make the <strong>trainer account everyone's manager</strong>: every approval lands in your inbox and you approve them live in class (a good demo moment).</li>
 <li class="task"><input type="checkbox"> Make sure that manager has a <strong>license with Exchange Online</strong> (a mailbox). An unlicensed manager receives the approval but Outlook fails with <code>OwaUserHasNoMailboxAndNoLicenseAssignedException</code>. A new mailbox takes 5-30 minutes to appear.</li>
 <li class="task"><input type="checkbox"> Check the Power Platform <strong>data policy</strong> of the lab environment allows: SharePoint, Office 365 Outlook, Office 365 Users, Approvals, Microsoft Teams, and custom MCP servers (Lab 05).</li>
 <li class="task"><input type="checkbox"> Check <strong>Knowledge sources for agents</strong> allows SharePoint and file upload.</li>
 <li class="task"><input type="checkbox"> Make sure Restricted SharePoint Search is <strong>off</strong> in the lab tenant (it blocks SharePoint knowledge in Agent Builder).</li>
 <li class="task"><input type="checkbox"> Optional: pre-create the Contoso IT Hub site and list for the half-day track.</li>
+</ul>
+<h2 id="running-the-labs-with-a-team-shared-tenant-and-environment">Running the labs with a team (shared tenant and environment)</h2>
+<p>One site, one environment, one list <strong>per learner</strong>. Do this before the session:</p>
+<ul>
+<li class="task"><input type="checkbox"> Build the <strong>Contoso IT Hub</strong> site, upload the 4 policies and create the <strong>IT Requests</strong> template list yourself (Lab 00 Tasks 2-4). Learners don't repeat them.</li>
+<li class="task"><input type="checkbox"> Learners only do Lab 00 <strong>Task 1</strong> and <strong>Task 6</strong> (create <code>IT Requests - XX</code> from the existing list).</li>
+<li class="task"><input type="checkbox"> Give every learner at least <strong>Edit</strong> on the site (they create a list and items) and Copilot Studio <strong>maker</strong> access in the environment.</li>
+<li class="task"><input type="checkbox"> Announce the naming rule: initials on every agent, workflow and list (<code>Contoso Service Desk - XX</code>, <code>Contoso License Advisor - XX</code>, <code>Request software approval - XX</code>, <code>Contoso Triage Agent - XX</code>).</li>
+<li class="task"><input type="checkbox"> Credits: all learners draw from the same environment. Set an Azure <strong>budget alert</strong> on the pay-as-you-go plan, and keep an eye on Lab 08 (autonomous runs).</li>
+<li class="task"><input type="checkbox"> Lab 08: check every trigger points to the learner's <strong>own</strong> list. A trigger on the shared template list fires every learner's agent on every item.</li>
+<li class="task"><input type="checkbox"> After the session: deactivate the Lab 08 agents (<strong>Agent management</strong>), unpublish or delete the learners' agents and workflows, and delete the <code>IT Requests - XX</code> lists.</li>
 </ul>
 <h2 id="verify-before-each-delivery-fast-moving-features">Verify before each delivery (fast-moving features)</h2>
 <p>These labs were written in <strong>November 2026</strong> against preview features of the Microsoft Copilot harness. Do a dry run and check:</p>
@@ -205,6 +216,16 @@
 <td>Save, then <strong>New chat</strong></td>
 </tr>
 <tr>
+<td>Several Teams alerts / triage values change on their own</td>
+<td>Learners' triggers point to the <strong>shared</strong> list</td>
+<td>Each trigger and tool must use the learner's own <code>IT Requests - XX</code></td>
+</tr>
+<tr>
+<td>Learner connected someone else's License Advisor</td>
+<td>No initials in agent names</td>
+<td>Rename with initials; reconnect</td>
+</tr>
+<tr>
 <td>Trigger fires in a loop</td>
 <td>"Created <strong>or modified</strong>" trigger + agent updates the item</td>
 <td>Use "When an item is created"</td>
@@ -260,7 +281,7 @@
 
 <p class="source"><a href="https://github.com/medyabi/Copilot-Studio-lab" rel="noopener">View the source on GitHub</a></p>
 </main>
-<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#suggested-agendas">Suggested agendas</a></li><li><a href="#before-the-session-do-this-48-hours-ahead">Before the session (do this 48 hours ahead)</a></li><li><a href="#verify-before-each-delivery-fast-moving-features">Verify before each delivery (fast-moving features)</a></li><li><a href="#common-problems">Common problems</a></li><li><a href="#discussion-questions-use-between-labs">Discussion questions (use between labs)</a></li><li><a href="#answer-key-expected-triage-for-lab-08-test-items">Answer key (expected triage for Lab 08 test items)</a></li></ol></aside>
+<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#suggested-agendas">Suggested agendas</a></li><li><a href="#before-the-session-do-this-48-hours-ahead">Before the session (do this 48 hours ahead)</a></li><li><a href="#running-the-labs-with-a-team-shared-tenant-and-environment">Running the labs with a team (shared tenant and environment)</a></li><li><a href="#verify-before-each-delivery-fast-moving-features">Verify before each delivery (fast-moving features)</a></li><li><a href="#common-problems">Common problems</a></li><li><a href="#discussion-questions-use-between-labs">Discussion questions (use between labs)</a></li><li><a href="#answer-key-expected-triage-for-lab-08-test-items">Answer key (expected triage for Lab 08 test items)</a></li></ol></aside>
 </div>
 <footer class="sitefoot">
   <div class="foot-in">

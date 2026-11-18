@@ -23,7 +23,7 @@
 <main id="content" class="article">
 <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">AI Labs</a></li><li><a href="index.html">Copilot Studio track</a></li></ol></nav>
 <article class="prose">
-<h1 id="lab-00-prepare-the-lab-environment">Lab 00 - Prepare the lab environment</h1><p class="meta"><span>Lab</span><span>10 min read</span><span>Lab time: 30 min</span></p>
+<h1 id="lab-00-prepare-the-lab-environment">Lab 00 - Prepare the lab environment</h1><p class="meta"><span>Lab</span><span>13 min read</span><span>Lab time: 30 min</span></p>
 <h2 id="lab-introduction">Lab introduction</h2>
 <p>Before we build anything, we need a place for our agents to live and some data for them to work with.</p>
 <p>Think of it like a kitchen. Before you cook, you check the oven works and you put the ingredients on the counter. That's this lab. No agents yet - just the <strong>ingredients</strong>:</p>
@@ -36,6 +36,37 @@
 <h2 id="lab-scenario">Lab scenario</h2>
 <p>You work for <strong>Contoso</strong>, a company with offices in Casablanca, Paris, Madrid, Dubai and Lisbon. The IT Service Desk is drowning in repetitive questions ("How do I reset my password?", "How long does Visio take?") and in requests that someone has to read, classify and route by hand.</p>
 <p>Your manager asks you to build agents that help. Step by step.</p>
+<h2 id="working-alone-or-as-a-team">Working alone or as a team?</h2>
+<p>These labs work for one person, or for a whole team sharing one tenant and one Copilot Studio environment.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Who</th>
+<th>Does what</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Trainer</strong>, once, before the session</td>
+<td>Tasks 2-5: the site, the policies, the <strong>IT Requests</strong> template list, the billing plan. Also sets <strong>themself as everyone's manager</strong> in Entra ID (Lab 06 approvals).</td>
+</tr>
+<tr>
+<td><strong>Each learner</strong></td>
+<td>Task 1 (check access) and <strong>Task 6</strong> (create your own list).</td>
+</tr>
+<tr>
+<td><strong>One person on their own</strong></td>
+<td>Tasks 1-5. Skip Task 6.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Why one list per learner? Think of the <strong>IT Requests</strong> list as a whiteboard. One person writing on it is fine. Eight people writing on it at the same time, and erasing each other's work, is chaos. That's what happens in Lab 08: every learner's autonomous agent would react to <strong>every</strong> new item, triage it and overwrite the others.</p>
+<p>The rule for a team is simple:</p>
+<ul>
+<li><strong>Share</strong> the site and the <strong>Documents</strong> library. Agents only <em>read</em> them.</li>
+<li><strong>Own</strong> your list: <code>IT Requests - XX</code>, where XX is your initials.</li>
+<li><strong>Name</strong> everything you build with your initials: <code>Contoso Service Desk - XX</code>, <code>Contoso License Advisor - XX</code>, <code>Request software approval - XX</code>, <code>Contoso Triage Agent - XX</code>. Otherwise, in Lab 07 you'll see eight agents called "Contoso License Advisor" and pick the wrong one.</li>
+</ul>
 <h2 id="job-skills">Job skills</h2>
 <ul>
 <li>Task 1: Check your access and pick your Copilot Studio environment</li>
@@ -43,6 +74,7 @@
 <li>Task 3: Upload the Contoso IT policies</li>
 <li>Task 4: Create the IT Requests list</li>
 <li>Task 5: Give the environment Copilot Credits (admin)</li>
+<li>Task 6: Create your own IT Requests list (team only)</li>
 </ul>
 <hr />
 <h2 id="task-1-check-your-access-and-pick-your-copilot-studio-environment">Task 1: Check your access and pick your Copilot Studio environment</h2>
@@ -364,6 +396,30 @@ Because SharePoint keeps the <strong>permissions</strong>. When an agent answers
 <div class="alert warning"><p class="alert-title">Cost</p><p><strong>Protect your wallet.</strong> Pay-as-you-go has no hard cap. In the Azure portal, open <strong>Cost Management</strong> &gt; <strong>Budgets</strong> and create a budget on the resource group with an e-mail alert. You can unlink the environment from the plan at any time to stop billing.</p>
 <p><strong>Other options:</strong> prepaid <strong>Copilot Credits capacity</strong> (allocate it to the environment under <strong>Licensing</strong> &gt; <strong>Copilot Studio</strong> &gt; <strong>Manage Copilot Credits</strong>) or a one-year <strong>Copilot Credits prepurchase plan</strong> bought in the Azure portal.</p></div>
 <hr />
+<h2 id="task-6-create-your-own-it-requests-list-team-only">Task 6: Create your own IT Requests list (team only)</h2>
+<p>Skip this task if you work alone.</p>
+<ol>
+<li>
+<p>Open the <strong>Contoso IT Hub</strong> site. On <strong>Home</strong>, select <strong>+ New</strong> &gt; <strong>List</strong>.</p>
+</li>
+<li>
+<p>Under <strong>Create from</strong>, select <strong>From existing list</strong>.</p>
+</li>
+<li>
+<p>Pick the <strong>Contoso IT Hub</strong> site, select the <strong>IT Requests</strong> list, and select <strong>Next</strong>.</p>
+</li>
+</ol>
+<p>This copies the <strong>columns, the choices and the default values</strong>, not the items. One click instead of seven columns.</p>
+<ol>
+<li>
+<p>Name it <code>IT Requests - XX</code> with <strong>your initials</strong> (for example <code>IT Requests - MD</code>). Keep <strong>Show list in site navigation</strong> checked and select <strong>Create</strong>.</p>
+</li>
+<li>
+<p>Add one test item (<strong>+ New</strong>): Title <code>Docking station not detected</code>, Category <strong>Hardware</strong>. Check that <strong>Priority</strong> shows <strong>Normal</strong> and <strong>Status</strong> shows <strong>New</strong> without you touching them: the defaults came with the copy.</p>
+</li>
+</ol>
+<div class="alert tip"><p class="alert-title">Tip</p><p>💡 From now on, every time a lab says <strong>IT Requests</strong>, you pick <strong>IT Requests - XX</strong>: in the Lab 05 tools, the Lab 06 workflow and the Lab 08 trigger and tools.</p></div>
+<hr />
 <h2 id="check-your-work">Check your work</h2>
 <ul>
 <li class="task"><input type="checkbox"> You can open <strong>New agent</strong> in Microsoft 365 Copilot.</li>
@@ -371,6 +427,7 @@ Because SharePoint keeps the <strong>permissions</strong>. When an agent answers
 <li class="task"><input type="checkbox"> The <strong>Contoso IT Hub</strong> site has four policies in its <strong>Documents</strong> library.</li>
 <li class="task"><input type="checkbox"> You saved the site URL (<code>.../sites/ContosoITHub</code>) in a notepad.</li>
 <li class="task"><input type="checkbox"> The <strong>IT Requests</strong> list exists with seven custom columns and one item.</li>
+<li class="task"><input type="checkbox"> Team only: your <strong>IT Requests - XX</strong> list exists, with one item.</li>
 <li class="task"><input type="checkbox"> Your lab environment is linked to an <strong>enabled</strong> billing plan with the Copilot Studio meter.</li>
 </ul>
 <h2 id="key-takeaways">Key takeaways</h2>
@@ -386,7 +443,7 @@ Because SharePoint keeps the <strong>permissions</strong>. When an agent answers
 <nav class="pager bottom"><a href="index.html">‹ Overview</a><a href="lab-01-build-your-first-agent-with-agent-builder.html">01 · Build your first agent with natural language ›</a></nav>
 <p class="source"><a href="https://github.com/medyabi/Copilot-Studio-lab" rel="noopener">View the source on GitHub</a></p>
 </main>
-<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#lab-introduction">Lab introduction</a></li><li><a href="#lab-scenario">Lab scenario</a></li><li><a href="#job-skills">Job skills</a></li><li><a href="#task-1-check-your-access-and-pick-your-copilot-studio-environment">Task 1: Check your access and pick your Copilot Studio environment</a></li><li><a href="#task-2-create-the-contoso-it-hub-sharepoint-site">Task 2: Create the Contoso IT Hub SharePoint site</a></li><li><a href="#task-3-upload-the-contoso-it-policies">Task 3: Upload the Contoso IT policies</a></li><li><a href="#task-4-create-the-it-requests-list">Task 4: Create the IT Requests list</a></li><li><a href="#task-5-give-the-environment-copilot-credits-admin">Task 5: Give the environment Copilot Credits (admin)</a></li><li><a href="#check-your-work">Check your work</a></li><li><a href="#key-takeaways">Key takeaways</a></li></ol></aside>
+<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#lab-introduction">Lab introduction</a></li><li><a href="#lab-scenario">Lab scenario</a></li><li><a href="#working-alone-or-as-a-team">Working alone or as a team?</a></li><li><a href="#job-skills">Job skills</a></li><li><a href="#task-1-check-your-access-and-pick-your-copilot-studio-environment">Task 1: Check your access and pick your Copilot Studio environment</a></li><li><a href="#task-2-create-the-contoso-it-hub-sharepoint-site">Task 2: Create the Contoso IT Hub SharePoint site</a></li><li><a href="#task-3-upload-the-contoso-it-policies">Task 3: Upload the Contoso IT policies</a></li><li><a href="#task-4-create-the-it-requests-list">Task 4: Create the IT Requests list</a></li><li><a href="#task-5-give-the-environment-copilot-credits-admin">Task 5: Give the environment Copilot Credits (admin)</a></li><li><a href="#task-6-create-your-own-it-requests-list-team-only">Task 6: Create your own IT Requests list (team only)</a></li><li><a href="#check-your-work">Check your work</a></li><li><a href="#key-takeaways">Key takeaways</a></li></ol></aside>
 </div>
 <footer class="sitefoot">
   <div class="foot-in">
