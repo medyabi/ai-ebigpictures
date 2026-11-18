@@ -207,7 +207,7 @@ Package it with clear instructions and the analysis script so the result looks t
 </ol>
 <p><img alt="The agent can't write to the IT Requests list" src="../assets/stu/Instructions-Labs-media-lab03-18-ceiling.png" /></p>
 <p>That's the ceiling. Agent Builder doesn't author actions that call external services.</p>
-<div class="alert tip"><p class="alert-title">Spot it</p><p><strong>🔍 Spot the mistake.</strong> Look at the ticket in the screenshot: <strong>Category: Security</strong>. Our triage skill says a lost or stolen device is <strong>Hardware, High</strong> - Security is for phishing, suspicious sign-ins and data leaks. Two instructions pulled in different directions (the lost-device urgency vs. the triage rules).
+<div class="alert tip"><p class="alert-title">Spot it</p><p><strong>Spot the mistake.</strong> Look at the ticket in the screenshot: <strong>Category: Security</strong>. Our triage skill says a lost or stolen device is <strong>Hardware, High</strong> - Security is for phishing, suspicious sign-ins and data leaks. Two instructions pulled in different directions (the lost-device urgency vs. the triage rules).
 <strong>Fix it:</strong> in the Agent Builder chat, type <em>"A lost or stolen device is always Category Hardware, Priority High. Security is only for phishing, suspicious sign-ins, malware or data leaks."</em> Select <strong>Update</strong>, then re-run test 3 and this test.
 This is exactly why we test: two good rules can still conflict.</p></div>
 <hr />

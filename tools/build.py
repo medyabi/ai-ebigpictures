@@ -174,6 +174,8 @@ def render_md(repo, src_rel, out_rel):
             kind, label = "note", "Check yourself"
         elif re.search(r"\bcost|credit", lead):
             kind, label = "warning", "Cost"
+        # the title already carries the icon: drop the same emoji at the start of the text
+        inner = re.sub(r"^(\s*<p>(?:<strong>)?)\s*(?:💡|⚠️|⚠|🔍)\ufe0f?\s*", r"\1", inner, count=1)
         return f'<div class="alert {kind}"><p class="alert-title">{label}</p>{inner}</div>'
     body = re.sub(r"<blockquote>\s*(.*?)\s*</blockquote>", callout, body, flags=re.S)
     # task lists

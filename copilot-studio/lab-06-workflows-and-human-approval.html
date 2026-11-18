@@ -38,7 +38,7 @@
 <p>Category B software (Visio, Project, Power BI Pro, Acrobat Pro) needs <strong>manager approval</strong>. The Service Desk wants the agent to collect the request and hand it to a workflow. The workflow logs the request, asks the manager to approve it in Outlook or Teams, and updates the request when the manager decides.</p>
 <div class="alert note"><p class="alert-title">Note</p><p>👥 <strong>Working as a team?</strong> Add your <strong>initials</strong> to everything you create in this lab (for example <code>Request software approval - MD</code>), and always pick <strong>your own</strong> list, <code>IT Requests - XX</code>, from Lab 00 Task 6. Working alone? Skip the suffix and use <code>IT Requests</code>.</p></div>
 <h2 id="before-you-begin">Before you begin</h2>
-<div class="alert important"><p class="alert-title">Important</p><p>⚠️ <strong>Your account needs a manager, and that manager needs a mailbox.</strong></p>
+<div class="alert important"><p class="alert-title">Important</p><p><strong>Your account needs a manager, and that manager needs a mailbox.</strong></p>
 <p>The workflow looks up your manager in Microsoft Entra ID and sends them the approval. Check two things in the <a href="https://admin.microsoft.com" rel="noopener">Microsoft 365 admin center</a> &gt; <strong>Users</strong> &gt; <strong>Active users</strong>:</p>
 <ol>
 <li>Your lab account &gt; <strong>Account</strong> tab &gt; <strong>Manager</strong> is set (in this lab: <em>Julian Duncan</em>). <strong>In a team session, the trainer is everyone's manager</strong>, so every approval lands in the trainer's inbox and is approved live in class.</li>
@@ -116,7 +116,7 @@
 </tr>
 </tbody>
 </table></div>
-<div class="alert important"><p class="alert-title">Important</p><p>⚠️ Typing a label like <code>Requester:</code> or <code>manager's</code> in front of an email chip produces <code>Requester: alex@contoso.com</code>, which is an invalid address. The step fails at <strong>run time</strong>, not at save time. That's what makes this mistake sneaky.</p></div>
+<div class="alert important"><p class="alert-title">Important</p><p>Typing a label like <code>Requester:</code> or <code>manager's</code> in front of an email chip produces <code>Requester: alex@contoso.com</code>, which is an invalid address. The step fails at <strong>run time</strong>, not at save time. That's what makes this mistake sneaky.</p></div>
 <ol start="3">
 <li>
 <p><strong>Check the chip's source.</strong> Hover over a chip to see which step it comes from. <em>Display Name</em> from <strong>Get manager</strong> is the manager. <em>Display Name</em> from another step is someone else.</p>
@@ -125,7 +125,7 @@
 <p><strong>Leave a space on each side of a chip in text.</strong> <code>Your request for</code> <strong>[⚡ SoftwareName]</strong> <code>was approved.</code> If you forget the spaces, the email reads <em>"Your request forMicrosoft Visiowas approved."</em></p>
 </li>
 </ol>
-<div class="alert tip"><p class="alert-title">Tip</p><p>💡 <strong>Rich-text fields (like an email Body)</strong> show the chip with its step name, for example <strong>When an agent calls the flow, SoftwareName</strong>. That's normal. It's still one chip and it still inserts only the value.</p>
+<div class="alert tip"><p class="alert-title">Tip</p><p><strong>Rich-text fields (like an email Body)</strong> show the chip with its step name, for example <strong>When an agent calls the flow, SoftwareName</strong>. That's normal. It's still one chip and it still inserts only the value.</p>
 <p>💡 <strong>Quick check before you save:</strong> read every email / ID field. If you see any black text next to the chip, delete it.</p></div>
 <hr />
 <h2 id="task-1-create-the-workflow-and-its-inputs">Task 1: Create the workflow and its inputs</h2>
