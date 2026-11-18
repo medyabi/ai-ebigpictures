@@ -25,6 +25,7 @@
 <article class="prose">
 <h1 id="poe-verification-analyst">POE Verification Analyst</h1><p class="meta"><span>App</span><span>3 min read</span></p>
 <p>On-device <strong>proof-of-execution</strong> verification: for each case it cross-checks the invoice against the purchase order and the delivery / execution evidence, flags exposure, and detects evidence reused across claims.</p>
+<p><img alt="POE Verification Analyst: the app on a Copilot+ PC" src="../../assets/lai/docs-screenshots-POEVerificationApp.png" /></p>
 <h2 id="how-it-works">How it works</h2>
 <pre class="mermaid">flowchart LR
   DOCS[PO, invoice, delivery note PDFs] --&gt;|pdfText / ocr| EX[extractDocumentFields&lt;br/&gt;model → JSON, validated]
