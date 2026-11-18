@@ -19,11 +19,11 @@
   <a class="gh" href="https://github.com/medyabi" rel="noopener">GitHub</a>
 </header>
 <div class="doc has-toc">
-<details class="toc"><summary>Table of contents</summary><nav aria-label="On-device AI apps for Copilot+ PC"><p class="toc-title">On-device AI apps for Copilot+ PC</p><input id="toc-filter" class="toc-filter" type="search" placeholder="Filter by title" aria-label="Filter by title"><ol class="toc-list"><li><a href="index.html" aria-current="page">Overview</a></li><li><a href="deploy.html">Deployment guide: from git clone to a running app</a></li><li><a href="architecture.html">Architecture shared by all apps</a></li><li><a href="build.html">Building an app</a></li><li><a href="build-your-own-app.html">Build your own on-device AI app for Windows 11 (Copilot+ PC)</a></li><li><a href="use-the-skill.html">Use the windows-ondevice-ai-app skill: step by step</a></li><li><a href="windows-ai-lessons.html">Lessons from building on the Windows AI APIs</a></li><li class="group"><details><summary>The apps</summary><ol><li><a href="apps/aishelfauditorapp.html">AI Shelf Auditor</a></li><li><a href="apps/financecopilotapp.html">Finance Copilot</a></li><li><a href="apps/fraudinvestigatorapp.html">Local Fraud Investigator</a></li><li><a href="apps/hrrecruiterapp.html">HR Recruiter Agent</a></li><li><a href="apps/hybridmedapp.html">HybridMed</a></li><li><a href="apps/hybridmindapp.html">HybridMind</a></li><li><a href="apps/localiqapp.html">LocalIQ</a></li><li><a href="apps/localmindapp.html">LocalMind</a></li><li><a href="apps/poephotoprocessorapp.html">POE Photo Processor</a></li><li><a href="apps/poeverificationapp.html">POE Verification Analyst</a></li><li><a href="apps/readingroomassistantapp.html">Reading Room Assistant (prototype)</a></li></ol></details></li></ol></nav></details>
+<details class="toc"><summary>Table of contents</summary><nav aria-label="On-device AI apps for Copilot+ PC"><p class="toc-title">On-device AI apps for Copilot+ PC</p><input id="toc-filter" class="toc-filter" type="search" placeholder="Filter by title" aria-label="Filter by title"><ol class="toc-list"><li><a href="index.html" aria-current="page">Overview</a></li><li><a href="architecture.html">Architecture shared by all apps</a></li><li><a href="deploy.html">Deployment guide: from git clone to a running app</a></li><li class="group"><details><summary>The apps</summary><ol><li><a href="apps/aishelfauditorapp.html">AI Shelf Auditor</a></li><li><a href="apps/financecopilotapp.html">Finance Copilot</a></li><li><a href="apps/fraudinvestigatorapp.html">Local Fraud Investigator</a></li><li><a href="apps/hrrecruiterapp.html">HR Recruiter Agent</a></li><li><a href="apps/hybridmedapp.html">HybridMed</a></li><li><a href="apps/hybridmindapp.html">HybridMind</a></li><li><a href="apps/localiqapp.html">LocalIQ</a></li><li><a href="apps/localmindapp.html">LocalMind</a></li><li><a href="apps/poephotoprocessorapp.html">POE Photo Processor</a></li><li><a href="apps/poeverificationapp.html">POE Verification Analyst</a></li><li><a href="apps/readingroomassistantapp.html">Reading Room Assistant (prototype)</a></li></ol></details></li></ol></nav></details>
 <main id="content" class="article">
 <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">AI Labs</a></li></ol></nav>
 <article class="prose">
-<h1 id="on-device-ai-apps-for-windows-11-copilot-pc">On-device AI apps for Windows 11 (Copilot+ PC)</h1><p class="meta"><span>Overview</span><span>9 min read</span></p>
+<h1 id="on-device-ai-apps-for-windows-11-copilot-pc">On-device AI apps for Windows 11 (Copilot+ PC)</h1><p class="meta"><span>Overview</span><span>5 min read</span></p>
 <p><img alt="Windows 11" src="https://img.shields.io/badge/Windows-11%20(22621%2B)-0078D4" />
 <img alt=".NET" src="https://img.shields.io/badge/.NET-8-512BD4" />
 <img alt="WinUI 3" src="https://img.shields.io/badge/UI-WinUI%203%20%2B%20WebView2-5C2D91" />
@@ -45,7 +45,7 @@
   LM &amp; OCR &amp; IDG &amp; IDX --- NPU[("NPU of a&lt;br/&gt;Copilot+ PC")]</pre>
 <p>The design rule behind most of them:</p>
 <div class="alert note"><p class="alert-title">Note</p><p><strong>Code computes the facts, the model words them.</strong> Totals, ratios, dates and verification matrices come from deterministic code (visible in Finance, Fraud, POE Verification); LocalIQ additionally checks the answer's numbers and citations against the retrieved text. The on-device model writes the explanation. Each app README says what is and is not checked.</p></div>
-<p>Details: <a href="architecture.html"><code>docs/ARCHITECTURE.md</code></a>. To build a new app the same way, follow <a href="build-your-own-app.html"><code>docs/BUILD-YOUR-OWN-APP.md</code></a>, or let Claude Code do it with the shareable skill in <a href="https://github.com/medyabi/windows-local-ai-apps/blob/main/.claude/skills/windows-ondevice-ai-app" rel="noopener"><code>.claude/skills/windows-ondevice-ai-app/</code></a> (guide: <a href="use-the-skill.html"><code>docs/USE-THE-SKILL.md</code></a>).</p>
+<p>Details: <a href="architecture.html"><code>docs/ARCHITECTURE.md</code></a>.</p>
 <h2 id="catalogue">Catalogue</h2>
 <div class="table-wrap"><table>
 <thead>
@@ -150,111 +150,8 @@ Import-Certificate -FilePath .\dist\LocalMindApp\LocalMindApp.cer -CertStoreLoca
 
 # 5. install
 Add-AppxPackage -Path (Get-ChildItem .\dist\LocalMindApp\*.msix).FullName</code></pre></div>
-<p>Then start the app from the Start menu. The full guide (checks, certificates, first launch, update/uninstall, troubleshooting) is <a href="deploy.html"><code>docs/DEPLOYMENT.md</code></a>. Build internals and the developer loop: <a href="build.html"><code>docs/BUILD.md</code></a>.</p>
+<p>Then start the app from the Start menu. The full guide (checks, certificates, first launch, update/uninstall, troubleshooting) is <a href="deploy.html"><code>docs/DEPLOYMENT.md</code></a>. Build internals and the developer loop: <a href="https://github.com/medyabi/windows-local-ai-apps/blob/main/docs/BUILD.md" rel="noopener"><code>docs/BUILD.md</code></a>.</p>
 <p>No binaries are published here on purpose: you build with your own certificate, so nobody has to trust someone else's.</p>
-<h2 id="build-your-own-local-ai-app">Build your own local AI app</h2>
-<p>You have an idea for a new app? Install the <strong><code>windows-ondevice-ai-app</code> skill</strong> once, describe the idea to Claude Code, and it builds the app the same way as the eleven above: it picks the Windows AI components the idea needs (Phi Silica, OCR, image description, local search, summarize / rewrite / table, image generation), writes the UI and logic, tests it on the NPU, and packages a signed installer.</p>
-<pre class="mermaid">flowchart LR
-  A["1. Download&lt;br/&gt;git clone"] --&gt; B["2. Install the skill&lt;br/&gt;copy 1 folder"]
-  B --&gt; C["3. Open Claude Code&lt;br/&gt;describe your idea"]
-  C --&gt; D["4. Claude scaffolds,&lt;br/&gt;builds and tests on the NPU"]
-  D --&gt; E["5. Try it&lt;br/&gt;dev-register.ps1"]
-  E --&gt; F["6. build-app.ps1&lt;br/&gt;install zip"]
-  F --&gt; G["7. Install on a&lt;br/&gt;Copilot+ PC (admin)"]</pre>
-<h3 id="what-you-need">What you need</h3>
-<div class="table-wrap"><table>
-
-<tbody>
-<tr>
-<td>PC</td>
-<td>Windows 11 24H2 or newer, x64. A <strong>Copilot+ PC</strong> to run the AI features (building works on any Windows 11 PC)</td>
-</tr>
-<tr>
-<td>Tools</td>
-<td><a href="https://claude.com/claude-code" rel="noopener">Claude Code</a>, Git, and the .NET 8 SDK or newer. No Visual Studio</td>
-</tr>
-<tr>
-<td>Network</td>
-<td>First use only: NuGet restore, and Windows downloads the on-device models once</td>
-</tr>
-<tr>
-<td>Access</td>
-<td>This repository is private: ask the owner to add your GitHub account, or ask for the skill zip instead</td>
-</tr>
-</tbody>
-</table></div>
-<h3 id="step-1-download">Step 1. Download</h3>
-<div class="codeblock"><div class="code-head"><span>PowerShell</span><button type="button" class="copy">Copy</button></div><pre><code>winget install --id Microsoft.DotNet.SDK.8
-winget install --id Git.Git
-git clone https://github.com/medyabi/windows-local-ai-apps.git</code></pre></div>
-<h3 id="step-2-install-the-skill-once-per-pc">Step 2. Install the skill (once per PC)</h3>
-<div class="codeblock"><div class="code-head"><span>PowerShell</span><button type="button" class="copy">Copy</button></div><pre><code>New-Item -ItemType Directory -Force "$env:USERPROFILE\.claude\skills" | Out-Null
-Copy-Item .\windows-local-ai-apps\.claude\skills\windows-ondevice-ai-app "$env:USERPROFILE\.claude\skills\" -Recurse -Force</code></pre></div>
-<p>Check that <code>%USERPROFILE%\.claude\skills\windows-ondevice-ai-app\SKILL.md</code> exists. With a zip instead of the repo, unzip it so that the folder <code>windows-ondevice-ai-app</code> lands in <code>%USERPROFILE%\.claude\skills\</code>. If you work inside a clone of this repository, you can skip the copy: Claude Code reads <code>.claude\skills\</code> from the project.</p>
-<h3 id="step-3-describe-your-idea-to-claude-code">Step 3. Describe your idea to Claude Code</h3>
-<p>Start a <strong>new</strong> session (skills are read at start-up) in the folder where projects should live:</p>
-<div class="codeblock"><div class="code-head"><span>PowerShell</span><button type="button" class="copy">Copy</button></div><pre><code>mkdir C:\src ; cd C:\src ; claude</code></pre></div>
-<p>Then write the idea: who uses the app, what goes in, what must come out, what may leave the PC. For example:</p>
-<div class="alert note"><p class="alert-title">Note</p><p>Create a Windows on-device AI app that checks supplier invoices (PDF or photo) against purchase orders and explains the differences. Nothing may leave the PC.</p></div>
-<p>If Claude does not pick the skill up by itself, start with "Use the windows-ondevice-ai-app skill to ...".</p>
-<h3 id="step-4-let-claude-build-it">Step 4. Let Claude build it</h3>
-<p>Claude restates the idea as a short brief, chooses the components, scaffolds the project, replaces the demo screens with the app's own, runs the built-in self-test on the real NPU, and reports what was and was not tested. You confirm the brief and review the screens; ask for changes in the same session ("also read scanned PDFs", "shorter explanations").</p>
-<div class="table-wrap"><table>
-<thead>
-<tr>
-<th>The app needs to...</th>
-<th>Component</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>answer, explain, draft, chat</td>
-<td><code>language</code> (Phi Silica)</td>
-</tr>
-<tr>
-<td>summarize, rewrite in a tone, text to table</td>
-<td><code>textskills</code></td>
-</tr>
-<tr>
-<td>read photos, receipts, whiteboards, scanned PDFs</td>
-<td><code>ocr</code></td>
-</tr>
-<tr>
-<td>read PDFs that have a text layer</td>
-<td><code>pdf</code></td>
-</tr>
-<tr>
-<td>describe a picture</td>
-<td><code>vision</code></td>
-</tr>
-<tr>
-<td>search the user's own documents</td>
-<td><code>index</code></td>
-</tr>
-<tr>
-<td>generate, upscale, cut out pictures</td>
-<td><code>images</code></td>
-</tr>
-</tbody>
-</table></div>
-<h3 id="step-5-try-it">Step 5. Try it</h3>
-<p>Claude starts the app for you. To start it again:</p>
-<div class="codeblock"><div class="code-head"><span>PowerShell</span><button type="button" class="copy">Copy</button></div><pre><code>cd C:\src\&lt;YourApp&gt;
-.\scripts\dev-register.ps1</code></pre></div>
-<p>The first launch downloads the models: wait for the status line to say "ready". If an operation returns nothing, read <code>bridge.log</code> in the app's <code>LocalState</code> folder (operation names, sizes and statuses, never content).</p>
-<h3 id="step-6-package-it">Step 6. Package it</h3>
-<div class="codeblock"><div class="code-head"><span>PowerShell</span><button type="button" class="copy">Copy</button></div><pre><code>.\scripts\build-app.ps1        # -&gt; dist\&lt;YourApp&gt;-x64-install.zip</code></pre></div>
-<h3 id="step-7-deploy-on-another-copilot-pc">Step 7. Deploy on another Copilot+ PC</h3>
-<p>Unzip <code>&lt;YourApp&gt;-x64-install.zip</code>, then right-click <code>Install-&lt;YourApp&gt;.ps1</code> and choose <em>Run with PowerShell as administrator</em>. It trusts the app's self-signed certificate once, then installs the MSIX. Start the app from the Start menu. To ship an update, raise <code>Version</code> in <code>Package.appxmanifest</code> and rebuild: the app upgrades in place and keeps its data.</p>
-<h3 id="without-claude">Without Claude</h3>
-<p>The scripts work on their own: <code>new-app.ps1 -Name InvoiceChecker -Display "Invoice Checker" -Components language,pdf,ocr -Destination C:\src</code> (run from the skill's <code>scripts</code> folder), then <code>dev-register.ps1</code> and <code>build-app.ps1</code> in the new project.</p>
-<h3 id="more">More</h3>
-<ul>
-<li>Full guide with troubleshooting and what was verified: <a href="use-the-skill.html"><code>docs/USE-THE-SKILL.md</code></a></li>
-<li>Which component for which need, with measured limits: <a href="https://github.com/medyabi/windows-local-ai-apps/blob/main/.claude/skills/windows-ondevice-ai-app/reference/components.md" rel="noopener"><code>reference/components.md</code></a></li>
-<li>The design and prompt rules behind the apps: <a href="build-your-own-app.html"><code>docs/BUILD-YOUR-OWN-APP.md</code></a></li>
-<li>Not verified yet: installing a generated app on a clean second PC, ARM64, SDK versions other than <code>2.2.2-experimental9</code>.</li>
-</ul>
 <h2 id="requirements">Requirements</h2>
 <div class="table-wrap"><table>
 
@@ -318,40 +215,13 @@ Copy-Item .\windows-local-ai-apps\.claude\skills\windows-ondevice-ai-app "$env:U
 </tbody>
 </table></div>
 <p>Windows itself may download or update the on-device models (Windows Update).</p>
-<h2 id="repository-structure">Repository structure</h2>
-<div class="codeblock"><div class="code-head"><span></span><button type="button" class="copy">Copy</button></div><pre><code>windows-local-ai-apps/
-├── README.md              this file
-├── LICENSE                MIT
-├── THIRD-PARTY.md         third-party components and their licences
-├── .claude/skills/windows-ondevice-ai-app/   Claude Code skill: idea -&gt; complete on-device AI app
-├── scripts/
-│   └── build-app.ps1      build (and optionally install) any app with your own certificate
-├── tests/
-│   └── LocalMind.RowLookup.Tests/   unit tests (synthetic data) for LocalMind's SKU / part-number row lookup
-├── docs/
-│   ├── DEPLOYMENT.md      step-by-step deployment guide + troubleshooting
-│   ├── ARCHITECTURE.md    shell, bridge, shared files
-│   ├── BUILD.md           build internals, developer loop
-│   ├── BUILD-YOUR-OWN-APP.md  playbook to create a new on-device AI app the same way
-│   ├── USE-THE-SKILL.md   step-by-step: install and use the Claude Code skill
-│   └── WINDOWS-AI-LESSONS.md  things measured the hard way
-└── apps/
-    └── &lt;App&gt;/
-        ├── README.md                  what it does, flow, source files, deploy, try it
-        ├── &lt;App&gt;.csproj, Package.appxmanifest, app.manifest
-        ├── App.xaml(.cs), MainWindow.xaml(.cs)   the host
-        ├── *.cs                       engines (LocalIQ, LocalMind, HybridMind)
-        ├── www/                       the UI
-        └── sample-* / manual-test-documents      synthetic data</code></pre></div>
-<h2 id="lessons-from-building-them">Lessons from building them</h2>
-<p><a href="windows-ai-lessons.html"><code>docs/WINDOWS-AI-LESSONS.md</code></a>: content moderation that returns an empty answer without an exception, the small context window, UI-thread deadlocks with the local index, splitting big JSON calls, and more.</p>
 <h2 id="licence">Licence</h2>
 <p><a href="https://github.com/medyabi/windows-local-ai-apps/blob/main/LICENSE" rel="noopener">MIT</a>. Third-party components: <a href="https://github.com/medyabi/windows-local-ai-apps/blob/main/THIRD-PARTY.md" rel="noopener"><code>THIRD-PARTY.md</code></a>.</p>
 </article>
-<nav class="pager bottom"><span></span><a href="deploy.html">Deployment guide: from git clone to a running app ›</a></nav>
+<nav class="pager bottom"><span></span><a href="architecture.html">Architecture shared by all apps ›</a></nav>
 <p class="source"><a href="https://github.com/medyabi/windows-local-ai-apps" rel="noopener">View the source on GitHub</a></p>
 </main>
-<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#architecture">Architecture</a></li><li><a href="#catalogue">Catalogue</a></li><li><a href="#step-by-step-run-an-app">Step by step: run an app</a></li><li><a href="#build-your-own-local-ai-app">Build your own local AI app</a></li><li><a href="#requirements">Requirements</a></li><li><a href="#privacy-and-network-behaviour-measured-from-the-source-not-promised">Privacy and network behaviour (measured from the source, not promised)</a></li><li><a href="#repository-structure">Repository structure</a></li><li><a href="#lessons-from-building-them">Lessons from building them</a></li><li><a href="#licence">Licence</a></li></ol></aside>
+<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#architecture">Architecture</a></li><li><a href="#catalogue">Catalogue</a></li><li><a href="#step-by-step-run-an-app">Step by step: run an app</a></li><li><a href="#requirements">Requirements</a></li><li><a href="#privacy-and-network-behaviour-measured-from-the-source-not-promised">Privacy and network behaviour (measured from the source, not promised)</a></li><li><a href="#licence">Licence</a></li></ol></aside>
 </div>
 <footer class="sitefoot">
   <div class="foot-in">

@@ -19,7 +19,7 @@
   <a class="gh" href="https://github.com/medyabi" rel="noopener">GitHub</a>
 </header>
 <div class="doc has-toc">
-<details class="toc"><summary>Table of contents</summary><nav aria-label="On-device AI apps for Copilot+ PC"><p class="toc-title">On-device AI apps for Copilot+ PC</p><input id="toc-filter" class="toc-filter" type="search" placeholder="Filter by title" aria-label="Filter by title"><ol class="toc-list"><li><a href="index.html">Overview</a></li><li><a href="deploy.html" aria-current="page">Deployment guide: from git clone to a running app</a></li><li><a href="architecture.html">Architecture shared by all apps</a></li><li><a href="build.html">Building an app</a></li><li><a href="build-your-own-app.html">Build your own on-device AI app for Windows 11 (Copilot+ PC)</a></li><li><a href="use-the-skill.html">Use the windows-ondevice-ai-app skill: step by step</a></li><li><a href="windows-ai-lessons.html">Lessons from building on the Windows AI APIs</a></li><li class="group"><details><summary>The apps</summary><ol><li><a href="apps/aishelfauditorapp.html">AI Shelf Auditor</a></li><li><a href="apps/financecopilotapp.html">Finance Copilot</a></li><li><a href="apps/fraudinvestigatorapp.html">Local Fraud Investigator</a></li><li><a href="apps/hrrecruiterapp.html">HR Recruiter Agent</a></li><li><a href="apps/hybridmedapp.html">HybridMed</a></li><li><a href="apps/hybridmindapp.html">HybridMind</a></li><li><a href="apps/localiqapp.html">LocalIQ</a></li><li><a href="apps/localmindapp.html">LocalMind</a></li><li><a href="apps/poephotoprocessorapp.html">POE Photo Processor</a></li><li><a href="apps/poeverificationapp.html">POE Verification Analyst</a></li><li><a href="apps/readingroomassistantapp.html">Reading Room Assistant (prototype)</a></li></ol></details></li></ol></nav></details>
+<details class="toc"><summary>Table of contents</summary><nav aria-label="On-device AI apps for Copilot+ PC"><p class="toc-title">On-device AI apps for Copilot+ PC</p><input id="toc-filter" class="toc-filter" type="search" placeholder="Filter by title" aria-label="Filter by title"><ol class="toc-list"><li><a href="index.html">Overview</a></li><li><a href="architecture.html">Architecture shared by all apps</a></li><li><a href="deploy.html" aria-current="page">Deployment guide: from git clone to a running app</a></li><li class="group"><details><summary>The apps</summary><ol><li><a href="apps/aishelfauditorapp.html">AI Shelf Auditor</a></li><li><a href="apps/financecopilotapp.html">Finance Copilot</a></li><li><a href="apps/fraudinvestigatorapp.html">Local Fraud Investigator</a></li><li><a href="apps/hrrecruiterapp.html">HR Recruiter Agent</a></li><li><a href="apps/hybridmedapp.html">HybridMed</a></li><li><a href="apps/hybridmindapp.html">HybridMind</a></li><li><a href="apps/localiqapp.html">LocalIQ</a></li><li><a href="apps/localmindapp.html">LocalMind</a></li><li><a href="apps/poephotoprocessorapp.html">POE Photo Processor</a></li><li><a href="apps/poeverificationapp.html">POE Verification Analyst</a></li><li><a href="apps/readingroomassistantapp.html">Reading Room Assistant (prototype)</a></li></ol></details></li></ol></nav></details>
 <main id="content" class="article">
 <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">AI Labs</a></li><li><a href="index.html">Copilot+ PC track</a></li></ol></nav>
 <article class="prose">
@@ -80,7 +80,7 @@ cd windows-local-ai-apps</code></pre></div>
 <li>Verifies .NET is installed.</li>
 <li>Looks in <code>Cert:\CurrentUser\My</code> for a code-signing certificate named <code>CN=OnDeviceAIApps</code> and <strong>creates a self-signed one</strong> (valid 3 years) if there is none. Use <code>-Subject "CN=Your Name"</code> for a different name, or <code>-Thumbprint &lt;value&gt;</code> to reuse an existing certificate.</li>
 <li>Copies the app to <code>%TEMP%\build-LocalMindApp</code> and patches <strong>two values</strong> in the copy: <code>PackageCertificateThumbprint</code> in the <code>.csproj</code> and <code>Publisher</code> in <code>Package.appxmanifest</code> (the two must match the certificate, otherwise signing or installation fails).</li>
-<li>Runs the same <code>dotnet build</code> command as in <a href="build.html"><code>BUILD.md</code></a>.</li>
+<li>Runs the same <code>dotnet build</code> command as in <a href="https://github.com/medyabi/windows-local-ai-apps/blob/main/docs/BUILD.md" rel="noopener"><code>BUILD.md</code></a>.</li>
 <li>Copies the result to <code>dist\LocalMindApp\</code> : the <code>.msix</code> and the <strong>public</strong> <code>.cer</code>. The private key never leaves your certificate store.</li>
 </ol>
 <p>Expected: about 30 s to 2 min per app; a warning <em>"Path to <code>mspdbcmf.exe</code> could not be found. A symbols package will not be generated"</em> is harmless.</p>
@@ -111,7 +111,7 @@ Add-AppxPackage -Path .\dist\&lt;App&gt;\&lt;file&gt;.msix -ForceApplicationShut
 # uninstall (also removes the app's data folder)
 Get-AppxPackage *LocalMind* | Remove-AppxPackage</code></pre></div>
 <h2 id="developer-loop-fast-iteration-on-the-web-ui">Developer loop (fast iteration on the web UI)</h2>
-<p>The unpackaged <code>.exe</code> does not work (no package identity). Register a Debug build loosely instead, see <a href="build.html"><code>BUILD.md</code></a> section 5. Most UI changes are only in <code>www/</code>; rebuild and re-register after editing.</p>
+<p>The unpackaged <code>.exe</code> does not work (no package identity). Register a Debug build loosely instead, see <a href="https://github.com/medyabi/windows-local-ai-apps/blob/main/docs/BUILD.md" rel="noopener"><code>BUILD.md</code></a> section 5. Most UI changes are only in <code>www/</code>; rebuild and re-register after editing.</p>
 <h2 id="troubleshooting">Troubleshooting</h2>
 <div class="table-wrap"><table>
 <thead>
@@ -147,7 +147,7 @@ Get-AppxPackage *LocalMind* | Remove-AppxPackage</code></pre></div>
 </tr>
 <tr>
 <td>Model answers are <strong>empty</strong> with no error</td>
-<td>Windows content moderation refused the prompt. See <a href="windows-ai-lessons.html"><code>WINDOWS-AI-LESSONS.md</code></a>.</td>
+<td>Windows content moderation refused the prompt. See <a href="https://github.com/medyabi/windows-local-ai-apps/blob/main/docs/WINDOWS-AI-LESSONS.md" rel="noopener"><code>WINDOWS-AI-LESSONS.md</code></a>.</td>
 </tr>
 <tr>
 <td>Local-index apps (Fraud, POE Verification, HR, LocalIQ, LocalMind) find nothing right after indexing</td>
@@ -162,7 +162,7 @@ Get-AppxPackage *LocalMind* | Remove-AppxPackage</code></pre></div>
 <h2 id="distributing-to-other-pcs">Distributing to other PCs</h2>
 <p>Give them the <code>.msix</code> <strong>and</strong> the <code>.cer</code>, and have them do step 5 and <code>Add-AppxPackage</code>. For wider distribution, sign with a certificate from a trusted CA instead of a self-signed one, or publish through the Microsoft Store.</p>
 </article>
-<nav class="pager bottom"><a href="index.html">‹ Overview</a><a href="architecture.html">Architecture shared by all apps ›</a></nav>
+<nav class="pager bottom"><a href="architecture.html">‹ Architecture shared by all apps</a><span></span></nav>
 <p class="source"><a href="https://github.com/medyabi/windows-local-ai-apps" rel="noopener">View the source on GitHub</a></p>
 </main>
 <aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#1-check-the-pc">1. Check the PC</a></li><li><a href="#2-install-the-tools">2. Install the tools</a></li><li><a href="#3-get-the-code">3. Get the code</a></li><li><a href="#4-build-the-msix">4. Build the MSIX</a></li><li><a href="#5-trust-your-certificate-once-per-pc">5. Trust your certificate (once per PC)</a></li><li><a href="#6-install">6. Install</a></li><li><a href="#7-first-launch">7. First launch</a></li><li><a href="#8-verify-with-the-sample-data">8. Verify with the sample data</a></li><li><a href="#update-uninstall-clean-up">Update, uninstall, clean up</a></li><li><a href="#developer-loop-fast-iteration-on-the-web-ui">Developer loop (fast iteration on the web UI)</a></li><li><a href="#troubleshooting">Troubleshooting</a></li><li><a href="#distributing-to-other-pcs">Distributing to other PCs</a></li></ol></aside>

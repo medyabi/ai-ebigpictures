@@ -19,7 +19,7 @@
   <a class="gh" href="https://github.com/medyabi" rel="noopener">GitHub</a>
 </header>
 <div class="doc has-toc">
-<details class="toc"><summary>Table of contents</summary><nav aria-label="On-device AI apps for Copilot+ PC"><p class="toc-title">On-device AI apps for Copilot+ PC</p><input id="toc-filter" class="toc-filter" type="search" placeholder="Filter by title" aria-label="Filter by title"><ol class="toc-list"><li><a href="index.html">Overview</a></li><li><a href="deploy.html">Deployment guide: from git clone to a running app</a></li><li><a href="architecture.html" aria-current="page">Architecture shared by all apps</a></li><li><a href="build.html">Building an app</a></li><li><a href="build-your-own-app.html">Build your own on-device AI app for Windows 11 (Copilot+ PC)</a></li><li><a href="use-the-skill.html">Use the windows-ondevice-ai-app skill: step by step</a></li><li><a href="windows-ai-lessons.html">Lessons from building on the Windows AI APIs</a></li><li class="group"><details><summary>The apps</summary><ol><li><a href="apps/aishelfauditorapp.html">AI Shelf Auditor</a></li><li><a href="apps/financecopilotapp.html">Finance Copilot</a></li><li><a href="apps/fraudinvestigatorapp.html">Local Fraud Investigator</a></li><li><a href="apps/hrrecruiterapp.html">HR Recruiter Agent</a></li><li><a href="apps/hybridmedapp.html">HybridMed</a></li><li><a href="apps/hybridmindapp.html">HybridMind</a></li><li><a href="apps/localiqapp.html">LocalIQ</a></li><li><a href="apps/localmindapp.html">LocalMind</a></li><li><a href="apps/poephotoprocessorapp.html">POE Photo Processor</a></li><li><a href="apps/poeverificationapp.html">POE Verification Analyst</a></li><li><a href="apps/readingroomassistantapp.html">Reading Room Assistant (prototype)</a></li></ol></details></li></ol></nav></details>
+<details class="toc"><summary>Table of contents</summary><nav aria-label="On-device AI apps for Copilot+ PC"><p class="toc-title">On-device AI apps for Copilot+ PC</p><input id="toc-filter" class="toc-filter" type="search" placeholder="Filter by title" aria-label="Filter by title"><ol class="toc-list"><li><a href="index.html">Overview</a></li><li><a href="architecture.html" aria-current="page">Architecture shared by all apps</a></li><li><a href="deploy.html">Deployment guide: from git clone to a running app</a></li><li class="group"><details><summary>The apps</summary><ol><li><a href="apps/aishelfauditorapp.html">AI Shelf Auditor</a></li><li><a href="apps/financecopilotapp.html">Finance Copilot</a></li><li><a href="apps/fraudinvestigatorapp.html">Local Fraud Investigator</a></li><li><a href="apps/hrrecruiterapp.html">HR Recruiter Agent</a></li><li><a href="apps/hybridmedapp.html">HybridMed</a></li><li><a href="apps/hybridmindapp.html">HybridMind</a></li><li><a href="apps/localiqapp.html">LocalIQ</a></li><li><a href="apps/localmindapp.html">LocalMind</a></li><li><a href="apps/poephotoprocessorapp.html">POE Photo Processor</a></li><li><a href="apps/poeverificationapp.html">POE Verification Analyst</a></li><li><a href="apps/readingroomassistantapp.html">Reading Room Assistant (prototype)</a></li></ol></details></li></ol></nav></details>
 <main id="content" class="article">
 <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">AI Labs</a></li><li><a href="index.html">Copilot+ PC track</a></li></ol></nav>
 <article class="prose">
@@ -97,7 +97,7 @@
 </tr>
 <tr>
 <td><code>generate</code></td>
-<td><code>LanguageModel.GenerateResponseAsync(prompt)</code> and returns the text. Windows' content moderation can return an empty answer without an exception: see <a href="windows-ai-lessons.html"><code>WINDOWS-AI-LESSONS.md</code></a>.</td>
+<td><code>LanguageModel.GenerateResponseAsync(prompt)</code> and returns the text. Windows' content moderation can return an empty answer without an exception: see <a href="https://github.com/medyabi/windows-local-ai-apps/blob/main/docs/WINDOWS-AI-LESSONS.md" rel="noopener"><code>WINDOWS-AI-LESSONS.md</code></a>.</td>
 <td>all</td>
 </tr>
 <tr>
@@ -144,7 +144,7 @@
 <h2 id="where-data-lives-on-disk">Where data lives on disk</h2>
 <p>Each installed app has <code>%LOCALAPPDATA%\Packages\&lt;PackageFamilyName&gt;\LocalState</code>, containing its stored data and <code>bridge.log</code>. Uninstalling the package removes it.</p>
 </article>
-<nav class="pager bottom"><a href="deploy.html">‹ Deployment guide: from git clone to a running app</a><a href="build.html">Building an app ›</a></nav>
+<nav class="pager bottom"><a href="index.html">‹ Overview</a><a href="deploy.html">Deployment guide: from git clone to a running app ›</a></nav>
 <p class="source"><a href="https://github.com/medyabi/windows-local-ai-apps" rel="noopener">View the source on GitHub</a></p>
 </main>
 <aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#the-five-things-every-app-folder-contains">The five things every app folder contains</a></li><li><a href="#the-json-bridge">The JSON bridge</a></li><li><a href="#design-rules-that-recur">Design rules that recur</a></li><li><a href="#where-data-lives-on-disk">Where data lives on disk</a></li></ol></aside>

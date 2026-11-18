@@ -57,9 +57,7 @@ for f in sorted(os.listdir(os.path.join(COW, "Instructions/Trainer"))):
         add("cow", f"Instructions/Trainer/{f}", "cowork/trainer-guide.html", "Trainer guide")
 
 add("lai", "README.md", "local-ai/index.html", "Overview")
-for f, out in (("DEPLOYMENT.md", "deploy"), ("ARCHITECTURE.md", "architecture"), ("BUILD.md", "build"),
-               ("BUILD-YOUR-OWN-APP.md", "build-your-own-app"), ("USE-THE-SKILL.md", "use-the-skill"),
-               ("WINDOWS-AI-LESSONS.md", "windows-ai-lessons")):
+for f, out in (("ARCHITECTURE.md", "architecture"), ("DEPLOYMENT.md", "deploy")):
     if os.path.isfile(os.path.join(LAI, "docs", f)):
         add("lai", f"docs/{f}", f"local-ai/{out}.html", "Guide")
 for d in sorted(os.listdir(os.path.join(LAI, "apps"))):
@@ -154,6 +152,11 @@ def render_md(repo, src_rel, out_rel):
     with open(os.path.join(ROOTS[repo], src_rel), encoding="utf-8") as fh:
         text = fh.read()
     text = re.sub(r"\A---\n.*?\n---\n", "", text, flags=re.S)
+    if repo == "lai" and src_rel == "README.md":
+        # the site only covers the architecture, deployment and the apps
+        for h in ("Build your own local AI app", "Repository structure", "Lessons from building them"):
+            text = re.sub(r"\n## " + re.escape(h) + r"\n.*?(?=\n## |\Z)", "\n", text, flags=re.S)
+        text = re.sub(r" To build a new app the same way.*", "", text)
     text = text.replace("{{ site.github.repository_nwo }}", REPO_URL[repo].split("github.com/")[1])
     # a closing code fence directly followed by text breaks lists: add a blank line
     out_lines, in_fence = [], False
@@ -471,8 +474,9 @@ def home_page():
   <article class="card">
     <div class="card-head"><span class="ico c-green">{ICONS['localai']}</span><div><p class="card-kicker">Hands-on · {len(NAV['localai'][1])} apps · Copilot+ PC</p>
     <h3><a href="local-ai/index.html">On-device AI apps for Copilot+ PC</a></h3></div></div>
-    <p>AI that runs on the PC, on the NPU, through the Windows AI APIs: Phi Silica, on-device OCR, image description and a local semantic index. Build and install real desktop apps for finance, fraud, HR, retail and personal knowledge, where the data never leaves the device. Then build your own.</p>
-    <ol class="mini">{"".join(f'<li><a href="{t}">{html.escape(l)}</a></li>' for l, t in NAV['localai'][0][1:])}</ol>
+    <p>AI that runs on the PC, on the NPU, through the Windows AI APIs: Phi Silica, on-device OCR, image description and a local semantic index. Build and install real desktop apps for finance, fraud, HR, retail and personal knowledge, where the data never leaves the device.</p>
+    <p class="card-kicker">Start here</p><ol class="mini">{"".join(f'<li><a href="{t}">{html.escape(l)}</a></li>' for l, t in NAV['localai'][0][1:])}</ol>
+    <p class="card-kicker">The apps</p><ul class="mini">{"".join(f'<li><a href="{t}">{html.escape(l)}</a></li>' for l, t in NAV['localai'][1])}</ul>
     <p class="card-foot"><a href="local-ai/index.html">Start the Copilot+ PC track ›</a></p>
   </article>
 </div>
