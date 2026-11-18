@@ -23,7 +23,7 @@
 <main id="content" class="article">
 <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">AI Labs</a></li></ol></nav>
 <article class="prose">
-<h1 id="from-simple-agents-to-autonomous-agents">From Simple Agents to Autonomous Agents</h1><p class="meta"><span>Overview</span><span>3 min read</span></p>
+<h1 id="from-simple-agents-to-autonomous-agents">From Simple Agents to Autonomous Agents</h1><p class="meta"><span>Overview</span><span>4 min read</span></p>
 <h3 id="hands-on-labs-for-microsoft-365-copilot-agent-builder-and-microsoft-copilot-studio">Hands-on labs for Microsoft 365 Copilot Agent Builder and Microsoft Copilot Studio</h3>
 <p>Ten progressive labs. One storyline. You build the <strong>Contoso IT Service Desk</strong> step by step:</p>
 <ul>
@@ -121,18 +121,96 @@
 </table></div>
 <p>Total: about <strong>8 hours</strong>. Split it into two days, or run Labs 00-04 as a half-day "business" track and Labs 05-09 as a full-day "maker" track.</p>
 <hr />
-<h2 id="how-the-agents-grow">How the agents grow</h2>
-<div class="codeblock"><div class="code-head"><span></span><button type="button" class="copy">Copy</button></div><pre><code>Lab 01-03  Agent Builder          "Contoso IT Helper"          instructions -&gt; knowledge -&gt; code interpreter, skills
-                                         |
-                                         | Copy to Copilot Studio
-                                         v
-Lab 04-06  Copilot Studio         "Contoso Service Desk"       knowledge -&gt; connectors -&gt; MCP -&gt; workflow + approval
-                                         |
-Lab 07                                   +--&gt; connected agent "Contoso License Advisor"
-                                         |
-Lab 08                            "Contoso Triage Agent"       trigger (new SharePoint item) -&gt; skill -&gt; update + notify
-                                         |
-Lab 09                            Evaluate -&gt; Publish to Teams &amp; M365 Copilot -&gt; Admin approval -&gt; Monitor</code></pre></div>
+<h2 id="how-the-agent-grows-think-of-it-as-a-robot">How the agent grows: think of it as a robot</h2>
+<p>Across the ten labs you build <strong>one robot</strong>, piece by piece. Each lab adds a part and tests it.</p>
+<p><img alt="The agent as a robot: each part is a Copilot Studio feature, with the lab where you add it" src="../assets/stu/Instructions-Labs-media-robot-analogy.png" /></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Robot part</th>
+<th>What it is in Copilot Studio</th>
+<th>Lab</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Battery</strong></td>
+<td>The environment and its <strong>Copilot Credits</strong>. No power, no robot</td>
+<td>00</td>
+</tr>
+<tr>
+<td><strong>Head</strong></td>
+<td>The <strong>AI model</strong>, the brain</td>
+<td>01</td>
+</tr>
+<tr>
+<td><strong>Rulebook</strong></td>
+<td>The <strong>instructions</strong>: who you are, what you do, what you never do</td>
+<td>01</td>
+</tr>
+<tr>
+<td><strong>Eyes</strong></td>
+<td><strong>Knowledge</strong>: it reads the Contoso policies and cites them</td>
+<td>02</td>
+</tr>
+<tr>
+<td><strong>Cartridges</strong></td>
+<td><strong>Skills</strong>: one precise procedure, loaded only when needed</td>
+<td>03, 07</td>
+</tr>
+<tr>
+<td><strong>Black box</strong></td>
+<td>The <strong>activity trace</strong>: every thought and every move, recorded</td>
+<td>04</td>
+</tr>
+<tr>
+<td><strong>Hand</strong></td>
+<td><strong>Tools</strong> and connectors: it creates tickets and sends emails</td>
+<td>05</td>
+</tr>
+<tr>
+<td><strong>Universal plug</strong></td>
+<td><strong>MCP</strong>: any service that speaks MCP plugs straight in</td>
+<td>05</td>
+</tr>
+<tr>
+<td><strong>Rails</strong></td>
+<td><strong>Workflows</strong>: fixed steps, always in the same order</td>
+<td>06</td>
+</tr>
+<tr>
+<td><strong>Key</strong></td>
+<td><strong>Human approval</strong>: a person decides, not the robot</td>
+<td>06</td>
+</tr>
+<tr>
+<td><strong>Notebook</strong></td>
+<td><strong>Memory</strong>: it remembers each user's preferences</td>
+<td>07</td>
+</tr>
+<tr>
+<td><strong>A colleague robot</strong></td>
+<td><strong>Connected agents</strong>: it asks the License Advisor instead of copying its knowledge</td>
+<td>07</td>
+</tr>
+<tr>
+<td><strong>Alarm clock</strong></td>
+<td><strong>Triggers</strong>: it wakes up on its own when something happens</td>
+<td>08</td>
+</tr>
+<tr>
+<td><strong>Cage</strong></td>
+<td><strong>Guardrails</strong>: fixed inputs, limited tools, a shared account with only the access it needs</td>
+<td>08</td>
+</tr>
+<tr>
+<td><strong>Inspection</strong></td>
+<td><strong>Evaluate, publish and govern</strong> before it leaves the workshop</td>
+<td>09</td>
+</tr>
+</tbody>
+</table></div>
+<p>The agents you build along the way: <strong>Contoso IT Helper</strong> (Labs 01-03, Agent Builder) → <strong>Contoso Service Desk</strong> (Labs 04-07, Copilot Studio) with its colleague <strong>Contoso License Advisor</strong> (Lab 07) → <strong>Contoso Triage Agent</strong> (Lab 08) → evaluated, published and governed (Lab 09).</p>
 <hr />
 <h2 id="prerequisites">Prerequisites</h2>
 <div class="table-wrap"><table>
@@ -199,7 +277,7 @@ Instructions/Trainer    trainer notes, timings and troubleshooting</code></pre><
 <nav class="pager bottom"><span></span><a href="lab-00-prepare-the-lab-environment.html">00 · Prepare the lab environment ›</a></nav>
 <p class="source"><a href="https://github.com/medyabi/Copilot-Studio-lab" rel="noopener">View the source on GitHub</a></p>
 </main>
-<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#the-learning-path">The learning path</a></li><li><a href="#how-the-agents-grow">How the agents grow</a></li><li><a href="#prerequisites">Prerequisites</a></li><li><a href="#repository-layout">Repository layout</a></li><li><a href="#publish-as-a-lab-website">Publish as a lab website</a></li></ol></aside>
+<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#the-learning-path">The learning path</a></li><li><a href="#how-the-agent-grows-think-of-it-as-a-robot">How the agent grows: think of it as a robot</a></li><li><a href="#prerequisites">Prerequisites</a></li><li><a href="#repository-layout">Repository layout</a></li><li><a href="#publish-as-a-lab-website">Publish as a lab website</a></li></ol></aside>
 </div>
 <footer class="sitefoot">
   <div class="foot-in">
