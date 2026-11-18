@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>6: Building and Publishing a Custom Copilot Cowork Plugin (Read-only) · AI Labs</title>
+<meta name="description" content="Hands-on labs for Microsoft Copilot Studio, Agent Builder and Microsoft 365 Copilot Cowork: from a simple agent to autonomous agents.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+</head>
+<body class="t-cowork">
+<a class="skip" href="#content">Skip to main content</a>
+<header class="masthead">
+  <a class="brand" href="../index.html"><img src="../assets/favicon.svg" alt="" width="24" height="24"><span>AI Labs</span></a>
+  <span class="divider" aria-hidden="true"></span>
+  <nav class="mainnav" aria-label="Main"><a href="../copilot-studio/index.html">Copilot Studio</a><a href="index.html" aria-current="true">Copilot Cowork</a><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></nav>
+  <a class="gh" href="https://github.com/medyabi" rel="noopener">GitHub</a>
+</header>
+<div class="doc has-toc">
+<details class="toc"><summary>Table of contents</summary><nav aria-label="AI automation with Copilot Cowork"><p class="toc-title">AI automation with Copilot Cowork</p><input id="toc-filter" class="toc-filter" type="search" placeholder="Filter by title" aria-label="Filter by title"><ol class="toc-list"><li><a href="index.html">Overview</a></li><li><a href="lab-01-getting-started-with-copilot-cowork.html">1 · Getting Started with Copilot Cowork</a></li><li><a href="lab-02-calendar-optimization-and-meeting-coordination.html">2 · AI-Powered Calendar Optimization and Executive Meeting Coordination</a></li><li><a href="lab-03-intelligent-file-organizer.html">3 · Intelligent File Organizer</a></li><li><a href="lab-04-building-custom-cowork-skills.html">4 · Building Custom Cowork Skills (Read-only)</a></li><li><a href="lab-05-personal-work-dashboard.html">5 · Building a Personal Work Dashboard with Copilot Cowork (Read-only)</a></li><li><a href="lab-06-build-and-publish-a-cowork-plugin.html" aria-current="page">6 · Building and Publishing a Custom Copilot Cowork Plugin (Read-only)</a></li><li class="group"><details><summary>Teaching editions</summary><ol><li><a href="teaching/lab-01-getting-started-with-copilot-cowork-teaching.html">1 · Getting Started with Copilot Cowork</a></li><li><a href="teaching/lab-02-calendar-optimization-and-meeting-coordination-teaching.html">2 · Calendar Optimization and Meeting Coordination</a></li><li><a href="teaching/lab-03-intelligent-file-organizer-teaching.html">3 · Intelligent File Organizer</a></li><li><a href="teaching/lab-04-building-custom-cowork-skills-teaching.html">4 · Building Custom Cowork Skills</a></li><li><a href="teaching/lab-05-personal-work-dashboard-teaching.html">5 · Personal Work Dashboard</a></li><li><a href="teaching/lab-06-build-and-publish-a-cowork-plugin-teaching.html">6 · Build and Publish a Cowork Plugin</a></li></ol></details></li><li><a href="trainer-guide.html">Trainer guide</a></li></ol></nav></details>
+<main id="content" class="article">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">AI Labs</a></li><li><a href="index.html">Cowork track</a></li></ol></nav>
+<article class="prose">
+<h1 id="lab-6-building-and-publishing-a-custom-copilot-cowork-plugin-read-only">Lab 6: Building and Publishing a Custom Copilot Cowork Plugin (Read-only)</h1><p class="meta"><span>Lab</span><span>10 min read</span><span>Lab time: 30 min</span></p>
+<h2 id="overview">Overview</h2>
+<p>Organizations can extend Microsoft 365 Copilot beyond its built-in capabilities with custom <strong>plugins</strong> that bring in enterprise knowledge, business processes and external services. A Cowork plugin bundles <strong>skills</strong> with <strong>connectors</strong>. Connectors use the <strong>Model Context Protocol (MCP)</strong> to reach external data sources, so users can retrieve live information and run specialized tasks in natural language.</p>
+<p>In this lab, you see how Cowork generates a complete <strong>Financial Research</strong> plugin package from a structured prompt. The plugin adds seven financial research skills and connects to the public <strong>SEC EDGAR</strong> filing repository through a remote MCP server. You then see how the package is reviewed, published from the <strong>Microsoft 365 admin center</strong>, enabled in Cowork and tested with natural-language questions about a public company.</p>
+<div class="alert warning"><p class="alert-title">Cost</p><p><strong>Read-only lab:</strong> <strong>This whole lab is a guided walkthrough.</strong> Publishing a custom app requires an admin role that participants are not assigned, and generating the package consumes Copilot credits. Read each step and its screenshot (your trainer may demonstrate them live), but don't run them in your own environment.</p>
+<p><strong>Trainer note:</strong> The SEC EDGAR MCP server used here (<code>secedgar.caseyjhand.com</code>) is a <strong>community-hosted server</strong>, not a Microsoft or SEC service, and it uses no authentication. It is fine for public filing data in a demo. In production, use only MCP servers your organization has reviewed and approved.</p>
+<p><strong>Disclaimer:</strong> Cowork is AI-powered, so the generated files, summaries and results differ between runs.</p></div>
+<h2 id="objectives">Objectives</h2>
+<ul>
+<li>Task 1: Review plugins and skills in Cowork</li>
+<li>Task 2: Generate the plugin package with Cowork</li>
+<li>Task 3: Publish the plugin from the Microsoft 365 admin center</li>
+<li>Task 4: Enable and test the plugin in Cowork</li>
+</ul>
+<h2 id="task-1-review-plugins-and-skills-in-cowork">Task 1: Review plugins and skills in Cowork</h2>
+<p>In this task, the plugins and skills already available in Cowork are reviewed, to confirm the environment is ready for a custom plugin.</p>
+<ol>
+<li>In the left pane, select <strong>New</strong>, and make sure <strong>Cowork</strong> is selected in the task box.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab6-01.png" /></p>
+<ol start="2">
+<li>In the task box, select the <strong>+ (2)</strong> icon, then select <strong>Plugins (3)</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab6-02.png" /></p>
+<ol start="3">
+<li>On the <strong>Plugins</strong> page, make sure <strong>Cowork</strong> is selected. Review the plugins under <strong>Added</strong>, then select <strong>Add</strong> to see the two ways to add a capability: <strong>New skill</strong> and <strong>Upload</strong>.</li>
+</ol>
+<div class="alert note"><p class="alert-title">Note</p><p><strong>Note:</strong> The demo environment already contains copies of <strong>Financial Research</strong> from earlier runs. A clean environment shows only the built-in plugins.</p></div>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab6-03.png" /></p>
+<ol start="4">
+<li>Open the <strong>filter (1)</strong> and select <strong>Skills (2)</strong>. Check that no custom skills are listed (<strong>No items found</strong>).</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab6-04.png" /></p>
+<h2 id="task-2-generate-the-plugin-package-with-cowork">Task 2: Generate the plugin package with Cowork</h2>
+<p>In this task, Cowork generates the complete Financial Research plugin package: the manifest, seven skills, the connector configuration, the icons and the ZIP file to deploy.</p>
+<ol>
+<li>Select <strong>New (1)</strong>, enter the following prompt <strong>(2)</strong> in the task box, then select <strong>Send (3)</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab6-05.png" /></p>
+<div class="codeblock"><div class="code-head"><span></span><button type="button" class="copy">Copy</button></div><pre><code># Microsoft 365 Copilot Cowork Plugin Generation Prompt
+
+Build a Microsoft 365 Copilot Cowork (Frontier) plugin package called
+**Financial Research** that:
+- Adds seven SEC EDGAR research skills.
+- Includes one Remote MCP Connector (SEC EDGAR public server).
+- Produces a single ZIP package ready for upload via the Microsoft 365 Admin Center.
+- Validates against the Microsoft 365 Unified App Manifest (devPreview) schema.
+- Binds to Microsoft 365 Copilot Cowork (not just Microsoft Teams).
+
+## Output Path
+Place all source files under: output/microsoft-financial-research-tools/
+Place the final ZIP at: output/microsoft-financial-research-tools.zip
+
+## Package Structure
+microsoft-financial-research-tools/
+|-- manifest.json
+|-- color.png      (192 x 192 RGBA, Microsoft blue background)
+|-- outline.png    (32 x 32 RGBA, transparent bg, white glyph)
+`-- skills/
+    |-- company-snapshot/SKILL.md
+    |-- financial-trends/SKILL.md
+    |-- peer-comparison/SKILL.md
+    |-- risk-factor-analysis/SKILL.md
+    |-- earnings-deep-dive/SKILL.md
+    |-- executive-research/SKILL.md
+    `-- filing-search/SKILL.md
+
+## manifest.json (use this canonical structure)
+agentSkills and agentConnectors MUST be top-level properties and MUST NOT be nested under copilotAgents.
+
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/teams/vDevPreview/MicrosoftTeams.schema.json",
+  "manifestVersion": "devPreview",
+  "version": "1.0.0",
+  "id": "&lt;NEW GUID v4&gt;",
+  "packageName": "com.microsoft.financial-research-tools",
+  "developer": {
+    "name": "Microsoft",
+    "websiteUrl": "https://www.microsoft.com",
+    "privacyUrl": "https://privacy.microsoft.com",
+    "termsOfUseUrl": "https://www.microsoft.com/legal/terms-of-use"
+  },
+  "name": {
+    "short": "Financial Research",
+    "full": "Microsoft Financial Research Tools"
+  },
+  "description": {
+    "short": "SEC EDGAR research skills for public-company analysis.",
+    "full": "Seven skills plus the SEC EDGAR MCP connector for company snapshots, financial trends, peer comparison, risk-factor analysis, earnings deep dives, executive research, and full-text filing search."
+  },
+  "icons": { "color": "color.png", "outline": "outline.png" },
+  "accentColor": "#0078D4",
+  "agentSkills": [
+    { "folder": "./skills/company-snapshot" },
+    { "folder": "./skills/financial-trends" },
+    { "folder": "./skills/peer-comparison" },
+    { "folder": "./skills/risk-factor-analysis" },
+    { "folder": "./skills/earnings-deep-dive" },
+    { "folder": "./skills/executive-research" },
+    { "folder": "./skills/filing-search" }
+  ],
+  "agentConnectors": [
+    {
+      "id": "secedgar",
+      "displayName": "SEC EDGAR",
+      "description": "Public SEC EDGAR data: company search, filings (10-K/10-Q/8-K/DEF 14A), XBRL financials, full-text search.",
+      "toolSource": {
+        "remoteMcpServer": {
+          "mcpServerUrl": "https://secedgar.caseyjhand.com/mcp",
+          "authorization": { "type": "None" }
+        }
+      }
+    }
+  ],
+  "validDomains": [ "secedgar.caseyjhand.com" ]
+}
+
+## Schema Rules
+- agentSkills and agentConnectors MUST be top-level properties.
+- Do NOT place them under copilotAgents.
+- copilotAgents only accepts declarativeAgents.
+- packageName MUST be included.
+- manifestVersion MUST be "devPreview".
+- Use the Microsoft Teams vDevPreview schema URL.
+- agentConnectors[].toolSource.remoteMcpServer.authorization.type MUST be "None".
+- validDomains MUST include: secedgar.caseyjhand.com
+- Generate a new GUID v4 for the id.
+
+## SKILL.md Frontmatter (every skill must use this)
+---
+name: &lt;kebab-case folder name&gt;
+description: |
+  &lt;2-4 sentence description&gt;
+  Use when the user asks:
+  "&lt;trigger phrase 1&gt;"
+  "&lt;trigger phrase 2&gt;"
+  "&lt;trigger phrase 3&gt;"
+license: MIT
+metadata:
+  author: Microsoft
+  version: "1.0"
+  cowork.category: Finance
+  cowork.icon: &lt;PascalCase Fluent UI icon&gt;
+---
+# &lt;Display Name&gt;
+## What This Skill Does
+## When to Use
+## Workflow
+## Output Format
+
+IMPORTANT: cowork.category and cowork.icon MUST be nested under metadata.
+
+## Skills, Fluent icons, and trigger phrases
+company-snapshot (icon: BuildingBank)
+- snapshot of &lt;ticker&gt;
+- overview of &lt;company&gt;
+- tell me about &lt;company&gt;
+financial-trends (icon: ChartMultiple)
+- 5-year financials for &lt;company&gt;
+- revenue trend / how has &lt;company&gt; grown
+peer-comparison (icon: ScaleFill)
+- compare A vs B / benchmark &lt;company&gt;
+- rank companies by revenue
+risk-factor-analysis (icon: ShieldError)
+- what are the risks for &lt;company&gt;
+- risk factors in &lt;company&gt;'s 10-K
+earnings-deep-dive (icon: DocumentBulletList)
+- analyze latest earnings / earnings recap
+executive-research (icon: People)
+- who runs &lt;company&gt; / leadership of &lt;company&gt;
+- executive compensation
+filing-search (icon: SearchInfo)
+- find filings mentioning &lt;phrase&gt;
+- which companies disclosed &lt;topic&gt;
+
+Each skill should invoke these MCP tools:
+- secedgar_company_search
+- secedgar_get_filing
+- secedgar_get_financials
+- secedgar_search_filings
+
+## Icons
+color.png   : 192 x 192 RGBA, Microsoft Blue (#0078D4), white centered chart/document glyph.
+outline.png : 32 x 32 RGBA, transparent bg, white outline glyph.
+Generate icons using Pillow. Do NOT use external image services.
+
+## Packaging
+Use Python's zipfile module.
+Place manifest.json at the ROOT of the ZIP.
+Generate: output/microsoft-financial-research-tools.zip
+
+## Validation Checklist
+[ ] manifest.json is at the ZIP root
+[ ] Uses the Microsoft Teams vDevPreview schema
+[ ] manifestVersion = devPreview
+[ ] packageName is present
+[ ] New GUID v4 generated
+[ ] agentSkills is top-level
+[ ] agentConnectors is top-level
+[ ] Every skill folder exists
+[ ] Every SKILL.md contains valid metadata
+[ ] metadata.cowork.category is nested correctly
+[ ] metadata.cowork.icon is nested correctly
+[ ] color.png is 192 x 192
+[ ] outline.png is 32 x 32
+[ ] validDomains contains secedgar.caseyjhand.com
+[ ] ZIP rebuilt after latest edits
+
+## Upload
+Upload ONLY through the Microsoft 365 Admin Center:
+Copilot &gt; Agents &gt; All Agents &gt; Upload Agent
+Do NOT upload through the Teams Admin Center (lenient validation may register the package as a Teams-only app).
+
+## Success Criteria
+- microsoft-financial-research-tools.zip exists.
+- All validation checks pass.
+- The plugin uploads successfully.
+- Supported On displays the Copilot icon.
+- Categories are populated.
+- SHA256 hash of the ZIP is reported.
+- A summary of the generated package is provided.</code></pre></div>
+<ol start="2">
+<li>Cowork starts working through the steps in the <strong>Workspace</strong> panel: building the manifest, skills and icons, then packaging, validating and preparing the ZIP.</li>
+</ol>
+<div class="alert note"><p class="alert-title">Note</p><p><strong>Note:</strong> Cowork can take <strong>5–10 minutes</strong> to complete this task.</p></div>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab6-06.png" /></p>
+<ol start="3">
+<li>When all steps are complete, review Cowork's summary and the files listed under <strong>Output</strong>: the ZIP file (<strong>microsoft-...-tools.zip</strong>), the seven <strong>SKILL.md</strong> files, <strong>manifest.json</strong>, <strong>color.png</strong> and <strong>outline.png</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab6-07.png" /></p>
+<ol start="4">
+<li>Under <strong>Output</strong>, select the <strong>more options (...) (1)</strong> icon next to the ZIP file, then select <strong>Open in OneDrive (2)</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab6-08.png" /></p>
+<ol start="5">
+<li>Review the contents of the <strong>microsoft-financial-research-tools</strong> package: <strong>color.png</strong>, <strong>manifest.json</strong>, <strong>outline.png</strong> and the <strong>skills</strong> folder. Then select the <strong>Download (1)</strong> icon.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab6-09.png" /></p>
+<ol start="6">
+<li>In the browser's <strong>Downloads</strong> panel, select <strong>Open file</strong> under the downloaded ZIP.</li>
+</ol>
+<div class="alert note"><p class="alert-title">Note</p><p><strong>Note:</strong> If you downloaded the file more than once, the browser adds a number to the name, for example <strong>microsoft-financial-research-tools (1).zip</strong>.</p></div>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab6-10.png" /></p>
+<ol start="7">
+<li>Double-click the <strong>skills</strong> folder to open it.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab6-11.png" /></p>
+<ol start="8">
+<li>Review the seven skill folders: <strong>company-snapshot</strong>, <strong>earnings-deep-dive</strong>, <strong>executive-research</strong>, <strong>filing-search</strong>, <strong>financial-trends</strong>, <strong>peer-comparison</strong> and <strong>risk-factor-analysis</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab6-12.png" /></p>
+<h2 id="task-3-publish-the-plugin-from-the-microsoft-365-admin-center">Task 3: Publish the plugin from the Microsoft 365 admin center</h2>
+<p>In this task, the generated package is published from the Microsoft 365 admin center, so it becomes available to Copilot users across the organization.</p>
+<div class="alert note"><p class="alert-title">Note</p><p><strong>Note:</strong> This task requires an admin role that participants are not assigned.</p></div>
+<ol>
+<li>Go to the Microsoft 365 admin center:</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span></span><button type="button" class="copy">Copy</button></div><pre><code>https://admin.cloud.microsoft</code></pre></div>
+<ol start="2">
+<li>Select <strong>Settings (1)</strong> in the left navigation, select <strong>Integrated apps (2)</strong>, then select <strong>Upload custom apps (3)</strong>.</li>
+</ol>
+<div class="alert note"><p class="alert-title">Note</p><p><strong>Note:</strong> Cowork's summary (and the <strong>Upload</strong> section of the prompt) points to <strong>Copilot &gt; Agents &gt; All agents &gt; Upload agent</strong>. This lab uses <strong>Settings &gt; Integrated apps</strong>, which also deploys the package from the Microsoft 365 admin center. Don't use the Teams admin center.</p></div>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab6-13.png" /></p>
+<ol start="3">
+<li>Check that <strong>App type (1)</strong> is set to <strong>Teams app</strong>, then select <strong>Choose File (2)</strong> to upload the ZIP file.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab6-14.png" /></p>
+<ol start="4">
+<li>Select the <strong>microsoft-financial-research-tools (1)</strong> ZIP file, then select <strong>Open (2)</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab6-15.png" /></p>
+<ol start="5">
+<li>Check that the <strong>Manifest file validated</strong> message appears, then select <strong>Next</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab6-16.png" /></p>
+<ol start="6">
+<li>Check the details of <strong>Financial Research</strong> under <strong>Apps to deploy</strong>, then select <strong>Next</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab6-17.png" /></p>
+<ol start="7">
+<li>Under <strong>Assign users</strong>, select <strong>All users (1)</strong>, then select <strong>Next (2)</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab6-18.png" /></p>
+<ol start="8">
+<li>Check that <strong>Apps to deploy</strong> shows <strong>Financial Research</strong> and <strong>Assigned users</strong> shows <strong>Entire organization</strong>, then select <strong>Finish deployment</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab6-19.png" /></p>
+<ol start="9">
+<li>Check that <strong>Deployment completed</strong> shows <strong>Financial Research</strong> as <strong>Deployed</strong>, then select <strong>Done</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab6-20.png" /></p>
+<div class="alert note"><p class="alert-title">Note</p><p><strong>If the deployment doesn't complete:</strong> you can still add the plugin from Microsoft 365 Copilot, as shown in the next three steps.</p></div>
+<ol start="10">
+<li>In the left pane, select <strong>Plugins</strong>, search for <strong>Financial Research (1)</strong> under <strong>Discover</strong>, and select the plugin <strong>(2)</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab6-21.png" /></p>
+<ol start="11">
+<li>Select <strong>Install</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab6-22.png" /></p>
+<ol start="12">
+<li>When the installation is complete, turn on the plugin's toggle to enable it in Cowork.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab6-23.png" /></p>
+<h2 id="task-4-enable-and-test-the-plugin-in-cowork">Task 4: Enable and test the plugin in Cowork</h2>
+<p>In this task, the published plugin is enabled in Cowork and tested with natural-language research questions answered from SEC EDGAR data.</p>
+<ol>
+<li>Go back to Microsoft 365 Copilot:</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span></span><button type="button" class="copy">Copy</button></div><pre><code>https://m365.cloud.microsoft</code></pre></div>
+<ol start="2">
+<li>In the left pane, select <strong>Plugins (1)</strong>, make sure <strong>Cowork (2)</strong> is selected, and check that <strong>Financial Research</strong> now appears under <strong>Added</strong>. Select it.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab6-24.png" /></p>
+<ol start="3">
+<li>Review the plugin page: the <strong>SEC EDGAR</strong> connection and the list of skills. Notice that the toggle is <strong>off</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab6-25.png" /></p>
+<ol start="4">
+<li>Turn on the toggle to enable the plugin.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab6-26.png" /></p>
+<ol start="5">
+<li>Select <strong>New</strong>, enter the following prompt <strong>(1)</strong> in the task box, then select <strong>Send (2)</strong>:</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span></span><button type="button" class="copy">Copy</button></div><pre><code>Give me a snapshot of Microsoft</code></pre></div>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab6-27.png" /></p>
+<ol start="6">
+<li>Check that <strong>Financial Research</strong> appears under <strong>Plugins</strong> in the Workspace panel, and that Cowork calls the SEC EDGAR tools (such as <strong>Secedgar get filing</strong>) to build the company snapshot.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab6-28.png" /></p>
+<ol start="7">
+<li>Review the company snapshot that Cowork generated with the custom plugin: identifiers, industry, exchange, fiscal year end, latest 10-K and a business summary.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab6-29.png" /></p>
+<ol start="8">
+<li>In the same conversation, enter the following prompt <strong>(1)</strong> and select <strong>Send (2)</strong>:</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span></span><button type="button" class="copy">Copy</button></div><pre><code>Show Microsoft's five-year revenue trend</code></pre></div>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab6-30.png" /></p>
+<ol start="9">
+<li>Check that Cowork calls the <strong>Secedgar get financials</strong> MCP tool (listed under <strong>Skills &amp; Plugins</strong>) to build the five-year trend.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab6-31.png" /></p>
+<ol start="10">
+<li>Review the result: a five-year table of revenue, operating income, net income and margins, with growth rates and a short analysis.</li>
+</ol>
+<div class="alert note"><p class="alert-title">Note</p><p><strong>Note:</strong> Cowork's answers about public companies are for research only, not investment advice. Check the figures against the source filings before using them.</p></div>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab6-32.png" /></p>
+<h2 id="review">Review</h2>
+<p>In this lab, you saw how to:</p>
+<ul>
+<li>Review the plugins and skills available in Cowork</li>
+<li>Generate a complete plugin package with Cowork from a structured prompt: a manifest, seven skills, a remote MCP connector, icons and a ZIP file</li>
+<li>Publish the package to the whole organization from the Microsoft 365 admin center, or add it from the <strong>Plugins</strong> page if deployment fails</li>
+<li>Enable the plugin in Cowork and test it with natural-language questions answered from SEC EDGAR data</li>
+</ul>
+</article>
+<nav class="pager bottom"><a href="lab-05-personal-work-dashboard.html">‹ 5 · Building a Personal Work Dashboard with Copilot Cowork (Read-only)</a><span></span></nav>
+<p class="source"><a href="https://github.com/medyabi/Copilot-Cowork-lab" rel="noopener">View the source on GitHub</a></p>
+</main>
+<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#overview">Overview</a></li><li><a href="#objectives">Objectives</a></li><li><a href="#task-1-review-plugins-and-skills-in-cowork">Task 1: Review plugins and skills in Cowork</a></li><li><a href="#task-2-generate-the-plugin-package-with-cowork">Task 2: Generate the plugin package with Cowork</a></li><li><a href="#task-3-publish-the-plugin-from-the-microsoft-365-admin-center">Task 3: Publish the plugin from the Microsoft 365 admin center</a></li><li><a href="#task-4-enable-and-test-the-plugin-in-cowork">Task 4: Enable and test the plugin in Cowork</a></li><li><a href="#review">Review</a></li></ol></aside>
+</div>
+<footer class="sitefoot">
+  <div class="foot-in">
+    <div><strong>AI Labs</strong><p>Hands-on Copilot labs by Mohamed Dyabi, Microsoft Certified Trainer.</p></div>
+    <ul>
+      <li><a href="../copilot-studio/index.html">Copilot Studio track</a></li>
+      <li><a href="index.html">Copilot Cowork track</a></li>
+      <li><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Studio-lab" rel="noopener">Copilot Studio labs on GitHub</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Cowork-lab" rel="noopener">Cowork labs on GitHub</a></li>
+    </ul>
+  </div>
+  <p class="fine">Use a test or demo tenant: these labs create agents, workflows and SharePoint items, and consume Copilot Credits. Preview features and labels change often. An independent site, not affiliated with Microsoft. © 2026 Mohamed Dyabi</p>
+</footer>
+<script>
+(function(){
+  // Table of contents: open on wide screens, collapsible on small ones
+  var toc = document.querySelector('details.toc');
+  if (toc) {
+    var mq = window.matchMedia('(min-width: 1024px)');
+    var sync = function(){ if (mq.matches) toc.open = true; };
+    sync(); if (mq.addEventListener) mq.addEventListener('change', sync);
+    var cur = toc.querySelector('[aria-current="page"]');
+    if (cur && cur.scrollIntoView && mq.matches) cur.scrollIntoView({block: 'center'});
+  }
+  // Filter by title
+  var f = document.getElementById('toc-filter');
+  if (f) f.addEventListener('input', function(){
+    var q = f.value.trim().toLowerCase();
+    document.querySelectorAll('.toc-list li').forEach(function(li){
+      var hit = !q || li.textContent.toLowerCase().indexOf(q) !== -1;
+      li.hidden = !hit;
+    });
+  });
+  // Copy buttons on code blocks
+  document.querySelectorAll('.codeblock').forEach(function(cb){
+    var btn = cb.querySelector('.copy'), code = cb.querySelector('code');
+    if (!btn || !code) return;
+    btn.addEventListener('click', function(){
+      navigator.clipboard.writeText(code.innerText).then(function(){
+        btn.textContent = 'Copied'; setTimeout(function(){ btn.textContent = 'Copy'; }, 1500);
+      }, function(){ btn.textContent = 'Select and copy'; });
+    });
+  });
+  // Highlight the current section in "In this article"
+  var links = document.querySelectorAll('.aside-toc a');
+  if (links.length && 'IntersectionObserver' in window) {
+    var map = {}; links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var obs = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting) {
+        links.forEach(function(a){ a.classList.remove('on'); });
+        var a = map[e.target.id]; if (a) a.classList.add('on');
+      }});
+    }, {rootMargin: '0px 0px -75% 0px'});
+    Object.keys(map).forEach(function(id){ var h = document.getElementById(id); if (h) obs.observe(h); });
+  }
+})();
+</script>
+</body>
+</html>

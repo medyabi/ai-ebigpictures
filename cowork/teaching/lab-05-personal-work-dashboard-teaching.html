@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>5: Personal Work Dashboard · AI Labs</title>
+<meta name="description" content="Hands-on labs for Microsoft Copilot Studio, Agent Builder and Microsoft 365 Copilot Cowork: from a simple agent to autonomous agents.">
+<link rel="stylesheet" href="../../assets/site.css">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../../assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
+</head>
+<body class="t-cowork">
+<a class="skip" href="#content">Skip to main content</a>
+<header class="masthead">
+  <a class="brand" href="../../index.html"><img src="../../assets/favicon.svg" alt="" width="24" height="24"><span>AI Labs</span></a>
+  <span class="divider" aria-hidden="true"></span>
+  <nav class="mainnav" aria-label="Main"><a href="../../copilot-studio/index.html">Copilot Studio</a><a href="../index.html" aria-current="true">Copilot Cowork</a><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></nav>
+  <a class="gh" href="https://github.com/medyabi" rel="noopener">GitHub</a>
+</header>
+<div class="doc has-toc">
+<details class="toc"><summary>Table of contents</summary><nav aria-label="AI automation with Copilot Cowork"><p class="toc-title">AI automation with Copilot Cowork</p><input id="toc-filter" class="toc-filter" type="search" placeholder="Filter by title" aria-label="Filter by title"><ol class="toc-list"><li><a href="../index.html">Overview</a></li><li><a href="../lab-01-getting-started-with-copilot-cowork.html">1 · Getting Started with Copilot Cowork</a></li><li><a href="../lab-02-calendar-optimization-and-meeting-coordination.html">2 · AI-Powered Calendar Optimization and Executive Meeting Coordination</a></li><li><a href="../lab-03-intelligent-file-organizer.html">3 · Intelligent File Organizer</a></li><li><a href="../lab-04-building-custom-cowork-skills.html">4 · Building Custom Cowork Skills (Read-only)</a></li><li><a href="../lab-05-personal-work-dashboard.html">5 · Building a Personal Work Dashboard with Copilot Cowork (Read-only)</a></li><li><a href="../lab-06-build-and-publish-a-cowork-plugin.html">6 · Building and Publishing a Custom Copilot Cowork Plugin (Read-only)</a></li><li class="group"><details open><summary>Teaching editions</summary><ol><li><a href="lab-01-getting-started-with-copilot-cowork-teaching.html">1 · Getting Started with Copilot Cowork</a></li><li><a href="lab-02-calendar-optimization-and-meeting-coordination-teaching.html">2 · Calendar Optimization and Meeting Coordination</a></li><li><a href="lab-03-intelligent-file-organizer-teaching.html">3 · Intelligent File Organizer</a></li><li><a href="lab-04-building-custom-cowork-skills-teaching.html">4 · Building Custom Cowork Skills</a></li><li><a href="lab-05-personal-work-dashboard-teaching.html" aria-current="page">5 · Personal Work Dashboard</a></li><li><a href="lab-06-build-and-publish-a-cowork-plugin-teaching.html">6 · Build and Publish a Cowork Plugin</a></li></ol></details></li><li><a href="../trainer-guide.html">Trainer guide</a></li></ol></nav></details>
+<main id="content" class="article">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../../index.html">AI Labs</a></li><li><a href="../index.html">Cowork track</a></li></ol></nav>
+<article class="prose">
+<h1 id="lab-5-personal-work-dashboard-teaching-edition">Lab 5: Personal Work Dashboard (Teaching edition)</h1><p class="meta"><span>Teaching edition</span><span>5 min read</span><span>Lab time: 30 min</span></p>
+<p><strong>Time:</strong> about 30 minutes. The prompts and screenshots for every step are in the <a href="../lab-05-personal-work-dashboard.html">lab instructions</a>. This whole lab is a walkthrough to save Copilot credits.</p>
+<h2 id="before-we-start-the-monday-morning-tab-dance">Before we start: the Monday-morning tab dance</h2>
+<p>You know the routine. Open Outlook: what's unread? Open Teams: who pinged me? Open Calendar: what's today? Open OneDrive: where was that file? Ten tabs later, you still don't have the full picture.</p>
+<p>What if one page showed all of it, and <strong>updated itself every hour</strong>?</p>
+<p>That's this lab. Cowork builds a <strong>personal work dashboard</strong>: one HTML page with your meetings, emails, chats, files and projects. Then we schedule it, customize it and lock its format in.</p>
+<p>Think of it like a car dashboard. You don't open the engine to check your speed. The numbers come to you.</p>
+<h2 id="task-1-get-in">Task 1: Get in</h2>
+<p>Sign in at <code>m365.cloud.microsoft</code>, select <strong>New</strong> and make sure <strong>Cowork</strong> is on. Nothing new here. Let's get to the good part.</p>
+<h2 id="task-2-build-the-dashboard">Task 2: Build the dashboard</h2>
+<h3 id="a-long-prompt-on-purpose">A long prompt, on purpose</h3>
+<p>Look at the Task 2 prompt. It's long. Very long. Why?</p>
+<p>Because a dashboard is a <strong>specification</strong>, not a question. The prompt tells Cowork three kinds of things:</p>
+<ol>
+<li><strong>What to gather</strong>: calendar, inbox, Teams, OneDrive, and a search for action-required emails. All <strong>in parallel</strong>, so it's faster.</li>
+<li><strong>What to build</strong>: a header, six KPI tiles, an urgent banner, a schedule, prep notes, projects, charts and more.</li>
+<li><strong>How to build it</strong>: colors, layout, and one big rule called <strong>portability</strong>.</li>
+</ol>
+<h3 id="whats-portability-and-why-care">What's portability, and why care?</h3>
+<p>The prompt says: <strong>zero external requests, zero JavaScript required</strong>. No chart libraries. Charts drawn with plain CSS.</p>
+<p>Why so strict? Because this file will be opened in places that block scripts: email attachments, previews, locked-down browsers. A dashboard that shows "0" everywhere because a script didn't load is worse than no dashboard. So we ask for numbers written <strong>directly in the HTML</strong>.</p>
+<p>That's a good habit for any AI-generated file: tell it <strong>where</strong> the file will be opened, not just what it should contain.</p>
+<h3 id="every-item-is-a-link">Every item is a link</h3>
+<p>One more rule: <strong>every item must be clickable</strong>. An email opens in Outlook. A chat opens in Teams. A folder opens in OneDrive. The dashboard isn't just a report. It's a <strong>launchpad</strong>.</p>
+<h3 id="wait-for-it">Wait for it</h3>
+<p>This one takes <strong>5 to 10 minutes</strong>. Cowork is pulling data from five sources, guessing your top projects and writing a full page. Watch the <strong>Workspace</strong> panel tick off the steps.</p>
+<p>When it's done, open <strong>dashboard.html</strong>. Six KPI tiles, colored by urgency. A red banner for today's fires. That's your day on one screen.</p>
+<h2 id="task-3-make-it-refresh-itself">Task 3: Make it refresh itself</h2>
+<p>A dashboard from 8 AM is old news by noon. So we schedule it.</p>
+<p>The Task 3 prompt asks for:</p>
+<ul>
+<li>A refresh <strong>every weekday at :55 past the hour</strong>, 6:55 AM to 5:55 PM.</li>
+<li>An <strong>email</strong> with the dashboard attached, but <strong>only at the 9 AM run</strong>. Every other hour refreshes silently.</li>
+<li>Automatic <strong>daylight saving</strong> handling, so the schedule never drifts.</li>
+</ul>
+<p>Why :55 and not :00? So the dashboard is fresh <strong>just before</strong> the hour, when meetings start.</p>
+<p>Cowork shows a <strong>Create recurring task?</strong> card, then a <strong>Review permissions</strong> page. Look at what it asks for: permission to <strong>send email</strong> through Outlook. Why? Because the task will run when you're <strong>not there</strong>. No one will be around to click an approval card at 9 AM. So you grant that permission now, once, for this task only.</p>
+<h3 id="test-it-now">Test it now</h3>
+<p>Don't wait until tomorrow to find out it's broken. Open the task and click <strong>Run now</strong>.</p>
+<p>What happens? Cowork rebuilds the file and says <strong>"silent refresh, no email"</strong>. Why no email? Because it's not the 9 AM run. The rule works.</p>
+<p>Open the dashboard: the <strong>Last refreshed</strong> time has changed.</p>
+<h3 id="a-word-about-cost">A word about cost</h3>
+<p>Twelve runs a day, five days a week. That's <strong>60 runs a week</strong>, and every run uses credits. Great in production, expensive in a workshop. That's exactly why this lab is a walkthrough. If your trainer demos it, they'll pause it afterwards.</p>
+<h2 id="task-4-make-it-yours">Task 4: Make it yours</h2>
+<h3 id="explore-and-switch-theme">Explore and switch theme</h3>
+<p>Scroll through the cards: tomorrow's schedule, prep notes, a bar chart of your week, a doughnut of where your time goes. Click the <strong>Light/Dark</strong> button. Dark mode, no JavaScript library needed.</p>
+<h3 id="lock-it-in">Lock it in</h3>
+<p>Here's a problem. Every time Cowork rebuilds the dashboard, it could design it slightly differently. New colors, cards in a new order. That's annoying for something you look at every day.</p>
+<p>The fix is one sentence: <strong>"Lock this dashboard format in for all future ones."</strong></p>
+<p>Cowork then:</p>
+<ul>
+<li>saves a <strong>reference copy</strong> and the code that builds it in your OneDrive,</li>
+<li>updates the <strong>scheduled task</strong> so every run must match that reference,</li>
+<li>saves it as a lasting <strong>preference</strong> for future dashboards.</li>
+</ul>
+<p>It asks for approval twice: a <strong>Copy file</strong> card (choose <strong>Always allow</strong> so future runs don't stall) and an <strong>Edit scheduled task</strong> card.</p>
+<p>Now the design is fixed. Only the <strong>data</strong> changes.</p>
+<h3 id="change-one-thing">Change one thing</h3>
+<p>Don't need the Training &amp; Learning card? Say so: <strong>"Remove the training and learning card."</strong></p>
+<p>Cowork removes it from the live dashboard <strong>and</strong> from the locked-in standard, then rearranges the other cards so the rows stay even. One sentence, and every future refresh follows.</p>
+<h2 id="task-5-manage-the-automation">Task 5: Manage the automation</h2>
+<p>Go to <strong>Automations &gt; Scheduled</strong>. There's your task. Open the <strong>...</strong> menu: <strong>Edit</strong>, <strong>Run now</strong>, <strong>Pause</strong>, <strong>Delete</strong>.</p>
+<p>See two copies of the same task in the screenshot? That happens when a schedule is created twice. Two copies means twice the runs and twice the credits. Delete the duplicate.</p>
+<h2 id="what-did-we-learn">What did we learn?</h2>
+<ul>
+<li><strong>A dashboard is a specification.</strong> Tell Cowork what to gather, what to show and how to build it.</li>
+<li><strong>Say where the file will be opened.</strong> Portable HTML works in email, previews and locked-down browsers.</li>
+<li><strong>Every item should be a link.</strong> A dashboard is a launchpad, not just a report.</li>
+<li><strong>Scheduled tasks run without you.</strong> Grant only the permissions they need, and test them with <strong>Run now</strong>.</li>
+<li><strong>Lock the format, refresh the data.</strong> A stable layout makes a daily tool usable.</li>
+<li><strong>Automations cost credits.</strong> Pause or delete what you don't use, and watch for duplicates.</li>
+</ul>
+<p>Next up, Lab 6.</p>
+</article>
+
+<p class="source"><a href="https://github.com/medyabi/Copilot-Cowork-lab" rel="noopener">View the source on GitHub</a></p>
+</main>
+<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#before-we-start-the-monday-morning-tab-dance">Before we start: the Monday-morning tab dance</a></li><li><a href="#task-1-get-in">Task 1: Get in</a></li><li><a href="#task-2-build-the-dashboard">Task 2: Build the dashboard</a></li><li><a href="#task-3-make-it-refresh-itself">Task 3: Make it refresh itself</a></li><li><a href="#task-4-make-it-yours">Task 4: Make it yours</a></li><li><a href="#task-5-manage-the-automation">Task 5: Manage the automation</a></li><li><a href="#what-did-we-learn">What did we learn?</a></li></ol></aside>
+</div>
+<footer class="sitefoot">
+  <div class="foot-in">
+    <div><strong>AI Labs</strong><p>Hands-on Copilot labs by Mohamed Dyabi, Microsoft Certified Trainer.</p></div>
+    <ul>
+      <li><a href="../../copilot-studio/index.html">Copilot Studio track</a></li>
+      <li><a href="../index.html">Copilot Cowork track</a></li>
+      <li><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Studio-lab" rel="noopener">Copilot Studio labs on GitHub</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Cowork-lab" rel="noopener">Cowork labs on GitHub</a></li>
+    </ul>
+  </div>
+  <p class="fine">Use a test or demo tenant: these labs create agents, workflows and SharePoint items, and consume Copilot Credits. Preview features and labels change often. An independent site, not affiliated with Microsoft. © 2026 Mohamed Dyabi</p>
+</footer>
+<script>
+(function(){
+  // Table of contents: open on wide screens, collapsible on small ones
+  var toc = document.querySelector('details.toc');
+  if (toc) {
+    var mq = window.matchMedia('(min-width: 1024px)');
+    var sync = function(){ if (mq.matches) toc.open = true; };
+    sync(); if (mq.addEventListener) mq.addEventListener('change', sync);
+    var cur = toc.querySelector('[aria-current="page"]');
+    if (cur && cur.scrollIntoView && mq.matches) cur.scrollIntoView({block: 'center'});
+  }
+  // Filter by title
+  var f = document.getElementById('toc-filter');
+  if (f) f.addEventListener('input', function(){
+    var q = f.value.trim().toLowerCase();
+    document.querySelectorAll('.toc-list li').forEach(function(li){
+      var hit = !q || li.textContent.toLowerCase().indexOf(q) !== -1;
+      li.hidden = !hit;
+    });
+  });
+  // Copy buttons on code blocks
+  document.querySelectorAll('.codeblock').forEach(function(cb){
+    var btn = cb.querySelector('.copy'), code = cb.querySelector('code');
+    if (!btn || !code) return;
+    btn.addEventListener('click', function(){
+      navigator.clipboard.writeText(code.innerText).then(function(){
+        btn.textContent = 'Copied'; setTimeout(function(){ btn.textContent = 'Copy'; }, 1500);
+      }, function(){ btn.textContent = 'Select and copy'; });
+    });
+  });
+  // Highlight the current section in "In this article"
+  var links = document.querySelectorAll('.aside-toc a');
+  if (links.length && 'IntersectionObserver' in window) {
+    var map = {}; links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var obs = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting) {
+        links.forEach(function(a){ a.classList.remove('on'); });
+        var a = map[e.target.id]; if (a) a.classList.add('on');
+      }});
+    }, {rootMargin: '0px 0px -75% 0px'});
+    Object.keys(map).forEach(function(id){ var h = document.getElementById(id); if (h) obs.observe(h); });
+  }
+})();
+</script>
+</body>
+</html>

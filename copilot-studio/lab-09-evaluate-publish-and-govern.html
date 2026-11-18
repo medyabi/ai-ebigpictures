@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>09: Evaluate, publish and govern your agents · AI Labs</title>
+<meta name="description" content="Hands-on labs for Microsoft Copilot Studio, Agent Builder and Microsoft 365 Copilot Cowork: from a simple agent to autonomous agents.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+</head>
+<body class="t-studio">
+<a class="skip" href="#content">Skip to main content</a>
+<header class="masthead">
+  <a class="brand" href="../index.html"><img src="../assets/favicon.svg" alt="" width="24" height="24"><span>AI Labs</span></a>
+  <span class="divider" aria-hidden="true"></span>
+  <nav class="mainnav" aria-label="Main"><a href="index.html" aria-current="true">Copilot Studio</a><a href="../cowork/index.html">Copilot Cowork</a><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></nav>
+  <a class="gh" href="https://github.com/medyabi" rel="noopener">GitHub</a>
+</header>
+<div class="doc has-toc">
+<details class="toc"><summary>Table of contents</summary><nav aria-label="From simple agents to autonomous agents"><p class="toc-title">From simple agents to autonomous agents</p><input id="toc-filter" class="toc-filter" type="search" placeholder="Filter by title" aria-label="Filter by title"><ol class="toc-list"><li><a href="index.html">Overview</a></li><li><a href="lab-00-prepare-the-lab-environment.html">00 · Prepare the lab environment</a></li><li><a href="lab-01-build-your-first-agent-with-agent-builder.html">01 · Build your first agent with natural language</a></li><li><a href="lab-02-ground-your-agent-in-company-knowledge.html">02 · Ground your agent in company knowledge</a></li><li><a href="lab-03-capabilities-skills-and-copy-to-copilot-studio.html">03 · Capabilities, skills and the jump to Copilot Studio</a></li><li><a href="lab-04-your-first-copilot-studio-agent.html">04 · Your first Copilot Studio agent</a></li><li><a href="lab-05-connectors-and-mcp-tools.html">05 · Give your agent hands: connectors and MCP tools</a></li><li><a href="lab-06-workflows-and-human-approval.html">06 · Workflows and human approval</a></li><li><a href="lab-07-skills-memory-and-connected-agents.html">07 · Skills, memory and connected agents</a></li><li><a href="lab-08-build-an-autonomous-agent.html">08 · Build an autonomous agent with triggers</a></li><li><a href="lab-09-evaluate-publish-and-govern.html" aria-current="page">09 · Evaluate, publish and govern your agents</a></li><li><a href="trainer-notes.html">Trainer guide</a></li></ol></nav></details>
+<main id="content" class="article">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">AI Labs</a></li><li><a href="index.html">Copilot Studio track</a></li></ol></nav>
+<article class="prose">
+<h1 id="lab-09-evaluate-publish-and-govern-your-agents">Lab 09 - Evaluate, publish and govern your agents</h1><p class="meta"><span>Lab</span><span>7 min read</span><span>Lab time: 45 min</span></p>
+<h2 id="lab-introduction">Lab introduction</h2>
+<p>You've built an agent that answers, acts, delegates and runs on its own. Is it ready for 5,000 employees?</p>
+<p>"It worked when I tried it" isn't an answer. Production needs three things:</p>
+<ol>
+<li><strong>Evidence</strong> - an evaluation you can re-run after every change, so you know quality didn't drop.</li>
+<li><strong>A controlled release</strong> - publish, share with a pilot group, then ask the admin to approve it for the organization.</li>
+<li><strong>Governance</strong> - who can build, which connectors are allowed, what it costs, what it did.</li>
+</ol>
+<p>This lab is the bridge between a demo and a service.</p>
+<h2 id="lab-scenario">Lab scenario</h2>
+<p>The Service Desk manager wants to roll out <strong>Contoso Service Desk</strong> in Teams and Microsoft 365 Copilot. The CISO wants proof that it behaves, and the IT admin wants to approve it before anyone sees it in the Agent Store.</p>
+<h2 id="job-skills">Job skills</h2>
+<ul>
+<li>Task 1: Create and run an evaluation</li>
+<li>Task 2: Improve and re-run</li>
+<li>Task 3: Publish to Teams and Microsoft 365 Copilot</li>
+<li>Task 4: Approve the agent as an admin</li>
+<li>Task 5: Monitor usage and cost</li>
+<li>Task 6: Review the governance controls</li>
+<li>Task 7: Clean up</li>
+</ul>
+<hr />
+<h2 id="task-1-create-and-run-an-evaluation">Task 1: Create and run an evaluation</h2>
+<ol>
+<li>
+<p>Open <strong>Contoso Service Desk</strong> and select the <strong>Evaluate</strong> tab.</p>
+</li>
+<li>
+<p>Select <strong>Create a test set</strong> (or <strong>New evaluation</strong>).</p>
+</li>
+<li>
+<p>Add test cases. Three ways - try at least two:
+   - <strong>Upload a CSV</strong>: download the template from the dialog, then copy the questions from <code>Allfiles/Labs/09/Contoso-ServiceDesk-TestSet.csv</code> into it and upload.
+   - <strong>Generate with AI</strong>: let Copilot Studio create questions from your agent's description, instructions and knowledge.
+   - <strong>Write</strong>: add one by hand, for example <code>Can I use my personal laptop on the office network?</code></p>
+</li>
+<li>
+<p>Name the evaluation <code>Service Desk - baseline</code>, keep the test method <strong>General quality</strong>, and select <strong>Evaluate</strong>.</p>
+</li>
+<li>
+<p>Wait for the run to finish (a few minutes), then open <strong>Recent results</strong>:
+   - the overall <strong>score</strong>,
+   - each conversation and its result,
+   - the <strong>Copilot Credits used</strong> (to generate and to grade responses).</p>
+</li>
+</ol>
+<div class="alert note"><p class="alert-title">Note</p><p>📸 <strong>Screenshot:</strong> <code>lab09-01-evaluation-results.png</code></p>
+<p><strong>What does "General quality" check?</strong> It's an AI grader that judges relevance and completeness. It does <strong>not</strong> compare the answer with your expected response. So read the failing cases yourself, using the expected answers in the CSV as your checklist.</p>
+<p><strong>Limitation:</strong> evaluations run as the <strong>signed-in user</strong> and support agents using <em>No authentication</em> or <em>Authenticate with Microsoft</em>. Tools that need a connection use your connection during the run.</p></div>
+<hr />
+<h2 id="task-2-improve-and-re-run">Task 2: Improve and re-run</h2>
+<ol>
+<li>
+<p>Pick the weakest case from the results. Typical culprits:
+   - the joke about the CFO wasn't refused firmly enough,
+   - the Wi-Fi password question produced a guess,
+   - the monitor ticket didn't ask for confirmation.</p>
+</li>
+<li>
+<p>Fix the <strong>cause</strong> - instructions, a knowledge description, or a tool description. Not the test.</p>
+</li>
+<li>
+<p>On <strong>Evaluate</strong>, select <strong>Evaluate test set again</strong>. Compare the new score with the baseline.</p>
+</li>
+<li>
+<p>Optional: switch the agent <strong>Model</strong> (Lab 04, Task 3), re-run, and compare quality <strong>and</strong> credits. Is the bigger model worth it for this agent?</p>
+</li>
+</ol>
+<div class="alert note"><p class="alert-title">Note</p><p><strong>The habit to build:</strong> <em>change → evaluate → compare</em>. Every time. A prompt tweak that fixes one case can quietly break three others.</p></div>
+<hr />
+<h2 id="task-3-publish-to-teams-and-microsoft-365-copilot">Task 3: Publish to Teams and Microsoft 365 Copilot</h2>
+<ol>
+<li>
+<p>Select <strong>Publish</strong>. Wait for the confirmation.</p>
+</li>
+<li>
+<p>Open the channels for the agent and select <strong>Teams and Microsoft 365 Copilot</strong> (wording may be <em>Microsoft Teams and Microsoft Copilot</em>).</p>
+</li>
+<li>
+<p>Make sure <strong>Make agent available in Microsoft Copilot</strong> is selected, then <strong>Add channel</strong>.</p>
+</li>
+<li>
+<p>Select <strong>Edit details</strong>: short description, long description, icon, developer name (<code>Contoso IT</code>). <strong>Save</strong>.</p>
+</li>
+<li>
+<p><strong>Pilot first:</strong> share the agent with a small group (your table, or a security group) and open it in Teams with <strong>See agent in Teams</strong>. Test it in Teams and in the Microsoft 365 Copilot app.</p>
+</li>
+<li>
+<p>When the pilot is happy, submit the agent <strong>for admin approval</strong> so it can appear in the organization's catalog (Agent Store &gt; <em>Built by your org</em>).</p>
+</li>
+</ol>
+<div class="alert important"><p class="alert-title">Important</p><p>📸 <strong>Screenshot:</strong> <code>lab09-02-teams-channel.png</code></p>
+<p><strong>Don't forget the dependencies:</strong> the Service Desk agent calls the <strong>Request software approval</strong> workflow and the <strong>License Advisor</strong> connected agent. Both must be published. And users need access to the <strong>Contoso IT Hub</strong> SharePoint site, or the agent can't answer policy questions for them.</p></div>
+<hr />
+<h2 id="task-4-approve-the-agent-as-an-admin">Task 4: Approve the agent as an admin</h2>
+<div class="alert note"><p class="alert-title">Note</p><p>Trainer or admin account required.</p></div>
+<ol>
+<li>
+<p>Go to the <a href="https://admin.microsoft.com" rel="noopener">Microsoft 365 admin center</a> &gt; <strong>Copilot</strong> controls &gt; <strong>Agents</strong> &gt; <strong>All agents</strong> &gt; <strong>Requests</strong>.</p>
+</li>
+<li>
+<p>Select <strong>Contoso Service Desk</strong>. Review the <strong>Data &amp; tools</strong> tab: knowledge sources, tools, connected agents. Ask yourself: <em>would I approve this connector list in production?</em></p>
+</li>
+<li>
+<p>Select <strong>Publish</strong> and choose the availability: <strong>specific users/groups</strong> (recommended for a first wave) or everyone.</p>
+</li>
+<li>
+<p>As a user, open the <strong>Agent Store</strong> in Microsoft 365 Copilot and find the agent under <strong>Built by your org</strong>.</p>
+</li>
+</ol>
+<hr />
+<h2 id="task-5-monitor-usage-and-cost">Task 5: Monitor usage and cost</h2>
+<ol>
+<li>
+<p>Back in Copilot Studio, open the agent's <strong>Monitor</strong> area (production data appears once people use the published agent).</p>
+</li>
+<li>
+<p>Look for: sessions, tool success/failure, unanswered questions, user feedback.</p>
+</li>
+<li>
+<p>For <strong>Contoso Triage Agent</strong> (Lab 08), open <strong>Activity</strong> and filter for <strong>failed</strong> runs. Open one and find the step that failed.</p>
+</li>
+<li>
+<p>Check the Copilot Credits consumption of your environment (Power Platform admin center &gt; <strong>Licensing</strong> / capacity, depending on your tenant). Which agent costs the most? The autonomous one usually does - it runs whether anyone watches or not.</p>
+</li>
+</ol>
+<hr />
+<h2 id="task-6-review-the-governance-controls">Task 6: Review the governance controls</h2>
+<p>Walk through these with your trainer. You don't need to change anything - just know where each control lives.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Control</th>
+<th>Where</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Data policies (DLP)</strong></td>
+<td>Power Platform admin center</td>
+<td>Allow/block connectors per environment. A blocked tool shows as unavailable in <strong>Add a tool</strong>.</td>
+</tr>
+<tr>
+<td><strong>Knowledge sources for agents</strong></td>
+<td>Power Platform admin center</td>
+<td>Allow or block file upload, SharePoint/OneDrive, public websites as knowledge</td>
+</tr>
+<tr>
+<td><strong>Environment strategy</strong></td>
+<td>Power Platform admin center</td>
+<td>Separate Dev / Test / Prod environments; move agents with <strong>solutions</strong> and pipelines</td>
+</tr>
+<tr>
+<td><strong>Agent approval &amp; availability</strong></td>
+<td>Microsoft 365 admin center &gt; Agents</td>
+<td>Who sees which agent; approve/reject requests; agent inventory</td>
+</tr>
+<tr>
+<td><strong>Agent Builder sharing</strong></td>
+<td>Microsoft 365 admin center</td>
+<td>Who can share Agent Builder agents and how widely</td>
+</tr>
+<tr>
+<td><strong>Copilot Credits</strong></td>
+<td>Power Platform admin center</td>
+<td>Capacity, consumption per agent, pay-as-you-go billing</td>
+</tr>
+<tr>
+<td><strong>Audit</strong></td>
+<td>Microsoft Purview</td>
+<td>Agent interactions and admin actions in the audit log</td>
+</tr>
+</tbody>
+</table></div>
+<div class="alert note"><p class="alert-title">Check yourself</p><p><strong>Question:</strong> A maker built an amazing agent in the <strong>default</strong> environment with a connector to Dropbox. What could go wrong?
+<strong>Answer:</strong> Everyone has access to the default environment, the connector may move company data outside the tenant, and there's no Dev/Test/Prod path. That's why admins set <strong>DLP policies</strong> and give makers dedicated environments.</p></div>
+<hr />
+<h2 id="task-7-clean-up">Task 7: Clean up</h2>
+<p>If you used a shared or production tenant:</p>
+<ol>
+<li>In Copilot Studio, open <strong>Contoso Triage Agent</strong> &gt; <strong>Agent management</strong> and turn it <strong>off</strong> (it keeps consuming credits otherwise).</li>
+<li>Delete the test agents you don't need: Contoso IT Helper (copy), Contoso Service Desk, Contoso License Advisor, Contoso Triage Agent.</li>
+<li>Delete the <strong>Request software approval</strong> workflow.</li>
+<li>In Microsoft 365 Copilot, delete the Agent Builder version of <strong>Contoso IT Helper</strong>.</li>
+<li>Delete the <strong>Contoso IT Hub</strong> SharePoint site.</li>
+</ol>
+<hr />
+<h2 id="check-your-work">Check your work</h2>
+<ul>
+<li class="task"><input type="checkbox"> A baseline evaluation and at least one re-run exist; you can explain the score difference.</li>
+<li class="task"><input type="checkbox"> The agent works in Teams and in Microsoft 365 Copilot for a pilot user.</li>
+<li class="task"><input type="checkbox"> You know where an admin approves the agent and where DLP policies live.</li>
+</ul>
+<h2 id="key-takeaways">Key takeaways</h2>
+<ul>
+<li><strong>Evaluate → change → re-evaluate.</strong> Treat agent quality like code quality.</li>
+<li>Release in waves: <strong>publish → pilot → admin approval → org catalog</strong>.</li>
+<li>Publishing an agent means publishing its <strong>dependencies</strong> too (workflows, connected agents, data access).</li>
+<li>Governance is shared: <strong>Power Platform admin center</strong> for building and connectors, <strong>Microsoft 365 admin center</strong> for availability.</li>
+<li>Autonomous agents cost money while nobody watches. Monitor them.</li>
+</ul>
+<hr />
+<h2 id="you-made-it">🎓 You made it</h2>
+<p>You went from a chat helper with three paragraphs of instructions to a governed, multi-agent, autonomous Service Desk:</p>
+<div class="codeblock"><div class="code-head"><span></span><button type="button" class="copy">Copy</button></div><pre><code>Lab 01  instructions          -&gt;  it talks
+Lab 02  knowledge             -&gt;  it knows (and cites)
+Lab 03  code + skills         -&gt;  it computes, the same way every time
+Lab 04  Copilot Studio        -&gt;  it plans
+Lab 05  connectors + MCP      -&gt;  it acts
+Lab 06  workflow + approval   -&gt;  it follows process, a human decides
+Lab 07  skills, memory, A2A   -&gt;  it delegates and remembers
+Lab 08  triggers              -&gt;  it starts on its own, within guardrails
+Lab 09  evaluate + govern     -&gt;  it's ready for production</code></pre></div>
+<p><strong>Back to:</strong> <a href="index.html">Lab list</a></p>
+</article>
+<nav class="pager bottom"><a href="lab-08-build-an-autonomous-agent.html">‹ 08 · Build an autonomous agent with triggers</a><span></span></nav>
+<p class="source"><a href="https://github.com/medyabi/Copilot-Studio-lab" rel="noopener">View the source on GitHub</a></p>
+</main>
+<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#lab-introduction">Lab introduction</a></li><li><a href="#lab-scenario">Lab scenario</a></li><li><a href="#job-skills">Job skills</a></li><li><a href="#task-1-create-and-run-an-evaluation">Task 1: Create and run an evaluation</a></li><li><a href="#task-2-improve-and-re-run">Task 2: Improve and re-run</a></li><li><a href="#task-3-publish-to-teams-and-microsoft-365-copilot">Task 3: Publish to Teams and Microsoft 365 Copilot</a></li><li><a href="#task-4-approve-the-agent-as-an-admin">Task 4: Approve the agent as an admin</a></li><li><a href="#task-5-monitor-usage-and-cost">Task 5: Monitor usage and cost</a></li><li><a href="#task-6-review-the-governance-controls">Task 6: Review the governance controls</a></li><li><a href="#task-7-clean-up">Task 7: Clean up</a></li><li><a href="#check-your-work">Check your work</a></li><li><a href="#key-takeaways">Key takeaways</a></li><li><a href="#you-made-it">🎓 You made it</a></li></ol></aside>
+</div>
+<footer class="sitefoot">
+  <div class="foot-in">
+    <div><strong>AI Labs</strong><p>Hands-on Copilot labs by Mohamed Dyabi, Microsoft Certified Trainer.</p></div>
+    <ul>
+      <li><a href="index.html">Copilot Studio track</a></li>
+      <li><a href="../cowork/index.html">Copilot Cowork track</a></li>
+      <li><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Studio-lab" rel="noopener">Copilot Studio labs on GitHub</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Cowork-lab" rel="noopener">Cowork labs on GitHub</a></li>
+    </ul>
+  </div>
+  <p class="fine">Use a test or demo tenant: these labs create agents, workflows and SharePoint items, and consume Copilot Credits. Preview features and labels change often. An independent site, not affiliated with Microsoft. © 2026 Mohamed Dyabi</p>
+</footer>
+<script>
+(function(){
+  // Table of contents: open on wide screens, collapsible on small ones
+  var toc = document.querySelector('details.toc');
+  if (toc) {
+    var mq = window.matchMedia('(min-width: 1024px)');
+    var sync = function(){ if (mq.matches) toc.open = true; };
+    sync(); if (mq.addEventListener) mq.addEventListener('change', sync);
+    var cur = toc.querySelector('[aria-current="page"]');
+    if (cur && cur.scrollIntoView && mq.matches) cur.scrollIntoView({block: 'center'});
+  }
+  // Filter by title
+  var f = document.getElementById('toc-filter');
+  if (f) f.addEventListener('input', function(){
+    var q = f.value.trim().toLowerCase();
+    document.querySelectorAll('.toc-list li').forEach(function(li){
+      var hit = !q || li.textContent.toLowerCase().indexOf(q) !== -1;
+      li.hidden = !hit;
+    });
+  });
+  // Copy buttons on code blocks
+  document.querySelectorAll('.codeblock').forEach(function(cb){
+    var btn = cb.querySelector('.copy'), code = cb.querySelector('code');
+    if (!btn || !code) return;
+    btn.addEventListener('click', function(){
+      navigator.clipboard.writeText(code.innerText).then(function(){
+        btn.textContent = 'Copied'; setTimeout(function(){ btn.textContent = 'Copy'; }, 1500);
+      }, function(){ btn.textContent = 'Select and copy'; });
+    });
+  });
+  // Highlight the current section in "In this article"
+  var links = document.querySelectorAll('.aside-toc a');
+  if (links.length && 'IntersectionObserver' in window) {
+    var map = {}; links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var obs = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting) {
+        links.forEach(function(a){ a.classList.remove('on'); });
+        var a = map[e.target.id]; if (a) a.classList.add('on');
+      }});
+    }, {rootMargin: '0px 0px -75% 0px'});
+    Object.keys(map).forEach(function(id){ var h = document.getElementById(id); if (h) obs.observe(h); });
+  }
+})();
+</script><script>
+(function(){
+  var key = 'progress:' + location.pathname;
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('li.task input'));
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(key) || '{}'); } catch (e) {}
+  boxes.forEach(function(b, i){
+    b.id = 'task-' + i;
+    if (saved[i]) b.checked = true;
+    b.addEventListener('change', function(){
+      saved[i] = b.checked;
+      try { localStorage.setItem(key, JSON.stringify(saved)); } catch (e) {}
+    });
+  });
+})();
+</script>
+</body>
+</html>

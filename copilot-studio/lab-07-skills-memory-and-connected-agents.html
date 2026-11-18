@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>07: Skills, memory and connected agents · AI Labs</title>
+<meta name="description" content="Hands-on labs for Microsoft Copilot Studio, Agent Builder and Microsoft 365 Copilot Cowork: from a simple agent to autonomous agents.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+</head>
+<body class="t-studio">
+<a class="skip" href="#content">Skip to main content</a>
+<header class="masthead">
+  <a class="brand" href="../index.html"><img src="../assets/favicon.svg" alt="" width="24" height="24"><span>AI Labs</span></a>
+  <span class="divider" aria-hidden="true"></span>
+  <nav class="mainnav" aria-label="Main"><a href="index.html" aria-current="true">Copilot Studio</a><a href="../cowork/index.html">Copilot Cowork</a><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></nav>
+  <a class="gh" href="https://github.com/medyabi" rel="noopener">GitHub</a>
+</header>
+<div class="doc has-toc">
+<details class="toc"><summary>Table of contents</summary><nav aria-label="From simple agents to autonomous agents"><p class="toc-title">From simple agents to autonomous agents</p><input id="toc-filter" class="toc-filter" type="search" placeholder="Filter by title" aria-label="Filter by title"><ol class="toc-list"><li><a href="index.html">Overview</a></li><li><a href="lab-00-prepare-the-lab-environment.html">00 · Prepare the lab environment</a></li><li><a href="lab-01-build-your-first-agent-with-agent-builder.html">01 · Build your first agent with natural language</a></li><li><a href="lab-02-ground-your-agent-in-company-knowledge.html">02 · Ground your agent in company knowledge</a></li><li><a href="lab-03-capabilities-skills-and-copy-to-copilot-studio.html">03 · Capabilities, skills and the jump to Copilot Studio</a></li><li><a href="lab-04-your-first-copilot-studio-agent.html">04 · Your first Copilot Studio agent</a></li><li><a href="lab-05-connectors-and-mcp-tools.html">05 · Give your agent hands: connectors and MCP tools</a></li><li><a href="lab-06-workflows-and-human-approval.html">06 · Workflows and human approval</a></li><li><a href="lab-07-skills-memory-and-connected-agents.html" aria-current="page">07 · Skills, memory and connected agents</a></li><li><a href="lab-08-build-an-autonomous-agent.html">08 · Build an autonomous agent with triggers</a></li><li><a href="lab-09-evaluate-publish-and-govern.html">09 · Evaluate, publish and govern your agents</a></li><li><a href="trainer-notes.html">Trainer guide</a></li></ol></nav></details>
+<main id="content" class="article">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">AI Labs</a></li><li><a href="index.html">Copilot Studio track</a></li></ol></nav>
+<article class="prose">
+<h1 id="lab-07-skills-memory-and-connected-agents">Lab 07 - Skills, memory and connected agents</h1><p class="meta"><span>Lab</span><span>11 min read</span><span>Lab time: 60 min</span></p>
+<h2 id="lab-introduction">Lab introduction</h2>
+<p>Our Service Desk agent is getting big. It has instructions for policies, for tickets, for software and for tools. Soon it will be one giant prompt that nobody dares to touch.</p>
+<p>How do real teams handle this? The same way they handle big code: <strong>split it into pieces</strong>.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Piece</th>
+<th>What it gives you</th>
+<th>Analogy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Skill</strong></td>
+<td>A focused procedure the agent loads only when needed</td>
+<td>A checklist in a drawer</td>
+</tr>
+<tr>
+<td><strong>Memory</strong></td>
+<td>The agent remembers each user's preferences between conversations</td>
+<td>A colleague who remembers you prefer French</td>
+</tr>
+<tr>
+<td><strong>Connected agent</strong></td>
+<td>A whole specialist agent your agent can delegate to</td>
+<td>Transferring a call to the licensing expert</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="lab-scenario">Lab scenario</h2>
+<p>The Service Desk manager has three requests:</p>
+<ol>
+<li>"Triage must follow <strong>exactly</strong> our rules, the same rules you used in Lab 03."</li>
+<li>"Users hate repeating that they're in Dubai or that they want answers in French."</li>
+<li>"The licensing team built their own agent. Don't copy their knowledge. <strong>Ask their agent</strong>."</li>
+</ol>
+<h2 id="job-skills">Job skills</h2>
+<ul>
+<li>Task 1: Add the triage skill to the Service Desk agent</li>
+<li>Task 2: Create a skill from blank</li>
+<li>Task 3: Turn on memory</li>
+<li>Task 4: Build and publish the License Advisor agent</li>
+<li>Task 5: Connect the License Advisor to the Service Desk agent</li>
+<li>Task 6: Test the whole team</li>
+</ul>
+<hr />
+<h2 id="task-1-add-the-triage-skill">Task 1: Add the triage skill</h2>
+<p>Remember the <code>it-ticket-triage</code> skill from Lab 03? You reuse the <strong>exact same package</strong> here. A skill written once in Agent Builder runs unchanged in Copilot Studio. That's portability.</p>
+<ol>
+<li>Open <strong>Contoso Service Desk</strong> &gt; <strong>Build</strong> tab. On the right, next to <strong>Skills</strong>, select <strong>+</strong>.</li>
+</ol>
+<p><img alt="Build tab - Skills section" src="../assets/stu/Instructions-Labs-media-lab07-01-build.png" /></p>
+<ol>
+<li>The menu shows three options:</li>
+</ol>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Option</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Upload a skill</strong></td>
+<td>Upload a <code>SKILL.md</code> or a <code>.zip</code> package that contains one</td>
+</tr>
+<tr>
+<td><strong>Create from blank</strong></td>
+<td>Write the skill in the designer (Task 2)</td>
+</tr>
+<tr>
+<td><strong>Browse skills (preview)</strong></td>
+<td>Pick a ready-made skill from a gallery</td>
+</tr>
+</tbody>
+</table></div>
+<p><img alt="Skills menu" src="../assets/stu/Instructions-Labs-media-lab07-02-skills-menu.png" /></p>
+<ol>
+<li>Select <strong>Upload a skill</strong> and drop <code>Allfiles/Labs/03/it-ticket-triage.zip</code>.</li>
+</ol>
+<p><img alt="Upload a skill" src="../assets/stu/Instructions-Labs-media-lab07-03-upload-skill.png" /></p>
+<p>Look at the file requirements: the <code>SKILL.md</code> must contain the skill <strong>name</strong> and <strong>description</strong> in YAML. That's the front matter at the top of the file.</p>
+<ol>
+<li>The skill appears as a chip under <strong>Skills</strong>. Select it to open its details: <strong>Name</strong>, <strong>Description</strong> and <strong>Instructions</strong>, read from the <code>SKILL.md</code>.</li>
+</ol>
+<p><img alt="Skill details" src="../assets/stu/Instructions-Labs-media-lab07-04-skill-details.png" /></p>
+<p>Read the <strong>Description</strong> as if you were the model. It says <em>when</em> to use the skill ("whenever you must classify, prioritize or route a Contoso IT request"), not only <em>what</em> it does. That's how the agent decides to load it.</p>
+<h3 id="remove-the-duplicate-rules-from-the-instructions">Remove the duplicate rules from the instructions</h3>
+<p>The triage rules now live in the skill. If they also live in the instructions, sooner or later the two will disagree. So you replace them with a pointer.</p>
+<ol>
+<li>
+<p>In <strong>Instructions</strong> &gt; <strong>How you work</strong>, find step <strong>4</strong>. It wraps over three lines and ends with <em>"Priority (Low | Normal | High | Critical), Description."</em></p>
+</li>
+<li>
+<p>Select the text of step 4: click right after the <strong>4.</strong> and <strong>Shift</strong>-click after <strong>Description.</strong></p>
+</li>
+</ol>
+<p><img alt="Select step 4" src="../assets/stu/Instructions-Labs-media-lab07-05-select-step4.png" /></p>
+<ol>
+<li>Type the new text. <strong>Don't type "4."</strong> because the editor keeps the list number:</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span>Text</span><button type="button" class="copy">Copy</button></div><pre><code>When the user needs something done, use the it-ticket-triage skill to set Category, Priority and AssignedTeam, then prepare the ticket summary.</code></pre></div>
+<p><img alt="Step 4 replaced" src="../assets/stu/Instructions-Labs-media-lab07-06-step4-replaced.png" /></p>
+<ol>
+<li>Select <strong>Save</strong>.</li>
+</ol>
+<hr />
+<h2 id="task-2-create-a-skill-from-blank">Task 2: Create a skill from blank</h2>
+<p>Uploading is great when the skill already exists. Now you write one yourself.</p>
+<ol>
+<li>
+<p><strong>Skills</strong> &gt; <strong>+</strong> &gt; <strong>Create from blank</strong>.</p>
+</li>
+<li>
+<p>Fill in the form:</p>
+</li>
+</ol>
+<ul>
+<li><strong>Name</strong>: <code>ticket-closure-message</code></li>
+<li>
+<p><strong>Description</strong>:</p>
+<div class="codeblock"><div class="code-head"><span>Text</span><button type="button" class="copy">Copy</button></div><pre><code>Use this skill when a ticket is resolved and the user needs a closure message. Returns a polite message of exactly two lines.</code></pre></div>
+</li>
+<li>
+<p><strong>Instructions</strong>:</p>
+<div class="codeblock"><div class="code-head"><span>Text</span><button type="button" class="copy">Copy</button></div><pre><code># Ticket closure message
+Write exactly two lines:
+1. Thank the user by first name and confirm what was fixed, in one sentence.
+2. Tell them to reply within 5 days if the problem comes back, otherwise the ticket closes.
+Tone: polite, short, no emojis. Answer in the user's language.</code></pre></div>
+</li>
+</ul>
+<p><img alt="Create from blank" src="../assets/stu/Instructions-Labs-media-lab07-07-create-from-blank.png" /></p>
+<ol>
+<li>Select <strong>Create</strong>, then <strong>Save</strong> the agent. You now have two skills.</li>
+</ol>
+<p><img alt="Two skills" src="../assets/stu/Instructions-Labs-media-lab07-08-two-skills.png" /></p>
+<ol>
+<li>On <strong>Preview</strong>, select <strong>New chat</strong> and turn on <strong>Debug mode</strong>. Type:</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span>Text</span><button type="button" class="copy">Copy</button></div><pre><code>My VPN works again, you can close my ticket.</code></pre></div>
+<p>🔍 <strong>What happened?</strong> The agent called <strong>Find my IT requests</strong>, found <strong>no VPN ticket</strong> and closed nothing. It didn't use the skill.</p>
+<p><img alt="No VPN ticket - no skill" src="../assets/stu/Instructions-Labs-media-lab07-09-test-no-ticket.png" /></p>
+<p>Is that a failure? No. Writing "your ticket is closed" for a ticket that doesn't exist would be a made-up answer. The agent checked the facts first. That's <strong>grounded</strong> behavior.</p>
+<ol>
+<li>Select <strong>New chat</strong> and use a ticket that exists (check your IT Requests list for its number):</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span>Text</span><button type="button" class="copy">Copy</button></div><pre><code>Ticket 1 is fixed, my second monitor works again. Write the closure message.</code></pre></div>
+<p>The trace shows <strong>Used skill: ticket-closure-message</strong>, and the answer follows the skill: a thank-you with what was fixed, then the 5-day rule.</p>
+<p><img alt="Skill used" src="../assets/stu/Instructions-Labs-media-lab07-10-skill-used.png" /></p>
+<div class="alert note"><p class="alert-title">Note</p><p><strong>Skill or tool?</strong> The skill only <strong>writes</strong> the message. Ticket 1 is still <em>New</em> in SharePoint. A skill changes <em>how the agent works</em>. Changing <em>data</em> needs a <strong>tool</strong> (like <em>Update item</em> in Lab 06).</p>
+<p><strong>Built-in skills.</strong> The Microsoft Copilot harness already ships skills for reading Word, PDF, Excel, PowerPoint, CSV, HTML and Markdown files. You'll see one in Task 4: <strong>Used skill: analyzing-docx</strong>.</p></div>
+<hr />
+<h2 id="task-3-turn-on-memory">Task 3: Turn on memory</h2>
+<ol>
+<li>On <strong>Build</strong>, at the bottom of the right panel, turn <strong>Memory (Preview)</strong> on. Select <strong>Save</strong>.</li>
+</ol>
+<p><img alt="Memory on" src="../assets/stu/Instructions-Labs-media-lab07-11-memory-on.png" /></p>
+<div class="alert important"><p class="alert-title">Important</p><p>⚠️ If you leave the page with unsaved changes, you get <em>Leave without saving?</em> Select <strong>Save and continue</strong>.</p>
+<p><img alt="Leave without saving" src="../assets/stu/Instructions-Labs-media-lab07-16-leave-without-saving.png" /></p></div>
+<ol>
+<li>On <strong>Preview</strong>, select <strong>New chat</strong>. The agent now tells the user it remembers, and offers <strong>Manage memories</strong>.</li>
+</ol>
+<p><img alt="Memory notice" src="../assets/stu/Instructions-Labs-media-lab07-12-memory-notice.png" /></p>
+<ol>
+<li>Type:</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span>Text</span><button type="button" class="copy">Copy</button></div><pre><code>For your info: I work from the Dubai office and I prefer answers in French.</code></pre></div>
+<p>The trace shows <strong>Used tool: Saved to memory</strong> twice, once per fact. The agent confirms, already in French.</p>
+<p><img alt="Saved to memory" src="../assets/stu/Instructions-Labs-media-lab07-13-saved-to-memory.png" /></p>
+<ol>
+<li>Select <strong>New chat</strong>. This is a new conversation, not just a new message. Type in <strong>English</strong>:</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span>Text</span><button type="button" class="copy">Copy</button></div><pre><code>My laptop battery dies after one hour.</code></pre></div>
+<ol>
+<li>Read the trace: <strong>Used tool: Searched your memory</strong>, next to the triage skill and the policy search.</li>
+</ol>
+<p><img alt="Memory searched" src="../assets/stu/Instructions-Labs-media-lab07-14-memory-trace.png" /></p>
+<p>The answer is <strong>in French</strong>, even though you wrote in English. And the triage skill did its job: Hardware / Normal / Endpoint.</p>
+<p><img alt="Answer in French with triage" src="../assets/stu/Instructions-Labs-media-lab07-15-memory-answer.png" /></p>
+<div class="alert note"><p class="alert-title">Note</p><p><strong>What you should know about memory (preview):</strong>
+- Each user has a <strong>separate, private</strong> memory. You, the maker, can't read it.
+- Memories are deleted after <strong>28 days</strong> without a conversation (the notice says so).
+- Users see and delete their memories with <strong>Manage memories</strong>.
+- Turning memory off stops the agent from <em>using</em> memories. It doesn't delete them.</p>
+<p><strong>Question:</strong> Would you turn on memory for an HR agent that handles sick leave?
+<strong>Answer:</strong> Think twice. Memory is great for preferences, but risky for sensitive data. Decide per agent.</p></div>
+<hr />
+<h2 id="task-4-build-and-publish-the-license-advisor-agent">Task 4: Build and publish the License Advisor agent</h2>
+<ol>
+<li>
+<p>Go to <strong>Agents</strong> &gt; <strong>New agent</strong>. Name it <code>Contoso License Advisor</code>.</p>
+</li>
+<li>
+<p><strong>Instructions</strong>:</p>
+</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span>Text</span><button type="button" class="copy">Copy</button></div><pre><code>You are the Contoso License Advisor. You answer questions about which Microsoft licenses
+Contoso owns, who is eligible, the approval needed and the monthly charge to the cost center.
+Answer only from the Contoso License Catalog. Always state the monthly charge and the approval rule.
+If a license is not in the catalog, say so and suggest contacting the Licensing team (licensing@contoso.com).</code></pre></div>
+<ol>
+<li><strong>Knowledge</strong> &gt; <strong>+</strong> &gt; upload <code>Allfiles/Labs/07/Contoso-License-Catalog.docx</code>. Name it <code>Contoso License Catalog</code> and select <strong>Add to agent</strong>.</li>
+</ol>
+<p><img alt="Upload the license catalog" src="../assets/stu/Instructions-Labs-media-lab07-17-license-knowledge.png" /></p>
+<ol>
+<li>On <strong>Preview</strong>, type <code>How much does a Copilot license cost my cost center?</code></li>
+</ol>
+<p>Expected: <strong>EUR 28 per month</strong>, manager approval. Look at the trace: <strong>Searched knowledge</strong>, then <strong>Used skill: analyzing-docx</strong>. That's a built-in skill reading the Word file.</p>
+<p><img alt="License Advisor test" src="../assets/stu/Instructions-Labs-media-lab07-18-license-test.png" /></p>
+<ol>
+<li>Open <strong>...</strong> &gt; <strong>Settings</strong> &gt; <strong>AI + behavior</strong>. Check that <strong>Allow other agents to connect</strong> is <strong>on</strong>. It's on by default, but this is the switch that makes the agent usable by others.</li>
+</ol>
+<p><img alt="Allow other agents to connect" src="../assets/stu/Instructions-Labs-media-lab07-19-allow-connect.png" /></p>
+<ol>
+<li>Select <strong>Publish</strong>. The dialog offers channels. You don't need one: another agent calls it, not a person.</li>
+</ol>
+<p><img alt="Publish dialog" src="../assets/stu/Instructions-Labs-media-lab07-20-publish-dialog.png" /></p>
+<ol>
+<li>Select <strong>Publish agent</strong>. When you see <em>Your agent is published</em>, select <strong>Done</strong>.</li>
+</ol>
+<p><img alt="Published" src="../assets/stu/Instructions-Labs-media-lab07-21-published.png" /></p>
+<div class="alert note"><p class="alert-title">Note</p><p>A connected agent must be <strong>published</strong>. The parent always uses the latest <em>published</em> version, not your draft.</p></div>
+<hr />
+<h2 id="task-5-connect-the-license-advisor">Task 5: Connect the License Advisor</h2>
+<ol>
+<li>
+<p>Open <strong>Contoso Service Desk</strong> &gt; <strong>Build</strong>. Next to <strong>Connected agents</strong>, select <strong>+</strong>.</p>
+</li>
+<li>
+<p>The list shows the agents you can connect. Older agents built in the classic designer show <em>Classic agent connections are not supported</em>. Only agents built in the new experience (and published) can be connected here.</p>
+</li>
+</ol>
+<p><img alt="Add a connected agent" src="../assets/stu/Instructions-Labs-media-lab07-22-connected-agent-list.png" /></p>
+<ol>
+<li>Select <strong>Contoso License Advisor</strong>. Write the <strong>Description</strong>. The parent reads it to decide <strong>when to delegate</strong>, the same way it reads tool descriptions:</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span>Text</span><button type="button" class="copy">Copy</button></div><pre><code>Specialist for Microsoft license questions at Contoso: which licenses exist, eligibility, approval rules and the monthly charge to a cost center. Delegate any question about license cost, eligibility or license reclaim.</code></pre></div>
+<p><img alt="Connect agent" src="../assets/stu/Instructions-Labs-media-lab07-23-connect-description.png" /></p>
+<p>Below the description you can read the child agent's own instructions. The parent doesn't use them, but they help you write a good description.</p>
+<ol>
+<li>Select <strong>Connect</strong>, then <strong>Save</strong>.</li>
+</ol>
+<div class="alert note"><p class="alert-title">Note</p><p><strong>Connected agents can come from anywhere.</strong> With <strong>+ Add</strong> in the same dialog, you can also connect agents built in <strong>Microsoft Foundry</strong>, with the <strong>Microsoft 365 Agents SDK</strong>, or any remote agent that speaks <strong>A2A</strong> (Agent2Agent protocol). That's how you build a multi-agent system across teams and platforms.</p>
+<p><strong>Security note:</strong> when the parent calls the child, <strong>data access</strong> still follows each tool's connection. If the child's tools use <em>author</em> authentication, users could see data through the parent that they couldn't see directly. Prefer <strong>user authentication</strong> for connected agents' tools.</p></div>
+<hr />
+<h2 id="task-6-test-the-whole-team">Task 6: Test the whole team</h2>
+<p>On <strong>Preview</strong> of <strong>Contoso Service Desk</strong> (Debug mode on), send these four messages:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Message</th>
+<th>Expected route</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>How much would Power BI Pro cost my cost center per month?</code></td>
+<td><strong>License Advisor</strong> → EUR 13</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>I need Visio. Cost center IT-4410, it's for DC diagrams. How much will my cost center pay?</code></td>
+<td><strong>License Advisor</strong> (EUR 14) + confirmation before the <strong>Request software approval</strong> workflow</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>Triage: the whole Lisbon office has no Wi-Fi</code></td>
+<td><strong>Skill</strong> it-ticket-triage → Network / Critical / Network</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>Is my password policy 14 characters?</code></td>
+<td>Own <strong>knowledge</strong> only, no delegation</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="test-1-delegation">Test 1: delegation</h3>
+<p>While the agent works, the trace shows <strong>Using tool: Contoso License Advisor</strong>. To the parent, a connected agent looks just like a tool.</p>
+<p><img alt="Delegating" src="../assets/stu/Instructions-Labs-media-lab07-24-test1-delegating.png" /></p>
+<p>The answer: Power BI Pro is <strong>EUR 13 per month</strong>, sourced from the license catalog <em>via the License Advisor</em>. And it's in <strong>French</strong>: memory still works.</p>
+<p><img alt="Test 1 answer" src="../assets/stu/Instructions-Labs-media-lab07-25-test1-answer.png" /></p>
+<p>Read the end of the answer. The parent combined <strong>two</strong> sources: the License Advisor for the price, and its own Software Request Policy for the approval rule (Category B, manager, 2 business days). Then it offers to submit the request.</p>
+<p><img alt="Test 1 answer - end" src="../assets/stu/Instructions-Labs-media-lab07-26-test1-answer-end.png" /></p>
+<h3 id="test-2-two-specialists-one-answer">Test 2: two specialists, one answer</h3>
+<p>The License Advisor gives the price (<strong>EUR 14</strong>). The parent applies its own policy (Category B) and builds the request summary. It asks <strong>oui/non</strong> before calling the workflow, exactly as the Lab 06 instructions require.</p>
+<p><img alt="Test 2 - Visio" src="../assets/stu/Instructions-Labs-media-lab07-27-test2-visio.png" /></p>
+<div class="alert note"><p class="alert-title">Note</p><p>Reply <code>oui</code> (or <code>yes</code>) to see the whole chain: connected agent → workflow → approval.</p></div>
+<h3 id="test-3-the-skill">Test 3: the skill</h3>
+<p><strong>Used skill: it-ticket-triage</strong>: Network / <strong>Critical</strong> / Network team. The skill's rule says <em>more than 10 people blocked = Critical</em>. The agent even says it <strong>assumed</strong> a whole office means more than 10 people, then asks three questions before creating the ticket.</p>
+<p><img alt="Test 3 - triage" src="../assets/stu/Instructions-Labs-media-lab07-28-test3-triage.png" /></p>
+<h3 id="test-4-no-delegation">Test 4: no delegation</h3>
+<p>Only <strong>sharepoint_semantic_search</strong> and <strong>sharepoint_lexical_search</strong>: the parent answered from its own knowledge (Password and MFA policy). Passwords aren't a license question, so it didn't call the License Advisor.</p>
+<p><img alt="Test 4 - own knowledge" src="../assets/stu/Instructions-Labs-media-lab07-29-test4-own-knowledge.png" /></p>
+<div class="alert note"><p class="alert-title">Check yourself</p><p><strong>Question:</strong> When should you build a connected agent instead of just adding the knowledge to your agent?
+<strong>Answer:</strong> When another team <strong>owns</strong> that knowledge and its rules, when it needs its <strong>own</strong> tools and permissions, or when <strong>several</strong> parent agents need it. One owner, one agent, many consumers.</p></div>
+<hr />
+<h2 id="check-your-work">Check your work</h2>
+<ul>
+<li class="task"><input type="checkbox"> <strong>it-ticket-triage</strong> and <strong>ticket-closure-message</strong> are listed under Skills; step 4 of the instructions points to the skill.</li>
+<li class="task"><input type="checkbox"> Memory is on, and a new conversation answers in French.</li>
+<li class="task"><input type="checkbox"> <strong>Contoso License Advisor</strong> is published, and connected to the Service Desk agent.</li>
+<li class="task"><input type="checkbox"> Test 1 shows <strong>Used tool: Contoso License Advisor</strong>; test 4 doesn't.</li>
+</ul>
+<h2 id="key-takeaways">Key takeaways</h2>
+<ul>
+<li><strong>Skills</strong> keep instructions small and procedures consistent. They travel from Agent Builder to Copilot Studio unchanged. Keep each rule in <strong>one</strong> place.</li>
+<li>The agent picks skills, tools and connected agents by reading their <strong>descriptions</strong>. Write <em>when</em>, not only <em>what</em>.</li>
+<li><strong>Memory</strong> is per user, private, expires after 28 days, and should be a deliberate choice.</li>
+<li><strong>Connected agents</strong> let each team own its specialist. To the parent, a connected agent is just another tool.</li>
+<li>Delegation doesn't bypass data permissions. The connection identity of each tool does.</li>
+</ul>
+<p><strong>Next:</strong> <a href="lab-08-build-an-autonomous-agent.html">Lab 08 - Build an autonomous agent with triggers</a></p>
+</article>
+<nav class="pager bottom"><a href="lab-06-workflows-and-human-approval.html">‹ 06 · Workflows and human approval</a><a href="lab-08-build-an-autonomous-agent.html">08 · Build an autonomous agent with triggers ›</a></nav>
+<p class="source"><a href="https://github.com/medyabi/Copilot-Studio-lab" rel="noopener">View the source on GitHub</a></p>
+</main>
+<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#lab-introduction">Lab introduction</a></li><li><a href="#lab-scenario">Lab scenario</a></li><li><a href="#job-skills">Job skills</a></li><li><a href="#task-1-add-the-triage-skill">Task 1: Add the triage skill</a></li><li><a href="#task-2-create-a-skill-from-blank">Task 2: Create a skill from blank</a></li><li><a href="#task-3-turn-on-memory">Task 3: Turn on memory</a></li><li><a href="#task-4-build-and-publish-the-license-advisor-agent">Task 4: Build and publish the License Advisor agent</a></li><li><a href="#task-5-connect-the-license-advisor">Task 5: Connect the License Advisor</a></li><li><a href="#task-6-test-the-whole-team">Task 6: Test the whole team</a></li><li><a href="#check-your-work">Check your work</a></li><li><a href="#key-takeaways">Key takeaways</a></li></ol></aside>
+</div>
+<footer class="sitefoot">
+  <div class="foot-in">
+    <div><strong>AI Labs</strong><p>Hands-on Copilot labs by Mohamed Dyabi, Microsoft Certified Trainer.</p></div>
+    <ul>
+      <li><a href="index.html">Copilot Studio track</a></li>
+      <li><a href="../cowork/index.html">Copilot Cowork track</a></li>
+      <li><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Studio-lab" rel="noopener">Copilot Studio labs on GitHub</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Cowork-lab" rel="noopener">Cowork labs on GitHub</a></li>
+    </ul>
+  </div>
+  <p class="fine">Use a test or demo tenant: these labs create agents, workflows and SharePoint items, and consume Copilot Credits. Preview features and labels change often. An independent site, not affiliated with Microsoft. © 2026 Mohamed Dyabi</p>
+</footer>
+<script>
+(function(){
+  // Table of contents: open on wide screens, collapsible on small ones
+  var toc = document.querySelector('details.toc');
+  if (toc) {
+    var mq = window.matchMedia('(min-width: 1024px)');
+    var sync = function(){ if (mq.matches) toc.open = true; };
+    sync(); if (mq.addEventListener) mq.addEventListener('change', sync);
+    var cur = toc.querySelector('[aria-current="page"]');
+    if (cur && cur.scrollIntoView && mq.matches) cur.scrollIntoView({block: 'center'});
+  }
+  // Filter by title
+  var f = document.getElementById('toc-filter');
+  if (f) f.addEventListener('input', function(){
+    var q = f.value.trim().toLowerCase();
+    document.querySelectorAll('.toc-list li').forEach(function(li){
+      var hit = !q || li.textContent.toLowerCase().indexOf(q) !== -1;
+      li.hidden = !hit;
+    });
+  });
+  // Copy buttons on code blocks
+  document.querySelectorAll('.codeblock').forEach(function(cb){
+    var btn = cb.querySelector('.copy'), code = cb.querySelector('code');
+    if (!btn || !code) return;
+    btn.addEventListener('click', function(){
+      navigator.clipboard.writeText(code.innerText).then(function(){
+        btn.textContent = 'Copied'; setTimeout(function(){ btn.textContent = 'Copy'; }, 1500);
+      }, function(){ btn.textContent = 'Select and copy'; });
+    });
+  });
+  // Highlight the current section in "In this article"
+  var links = document.querySelectorAll('.aside-toc a');
+  if (links.length && 'IntersectionObserver' in window) {
+    var map = {}; links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var obs = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting) {
+        links.forEach(function(a){ a.classList.remove('on'); });
+        var a = map[e.target.id]; if (a) a.classList.add('on');
+      }});
+    }, {rootMargin: '0px 0px -75% 0px'});
+    Object.keys(map).forEach(function(id){ var h = document.getElementById(id); if (h) obs.observe(h); });
+  }
+})();
+</script><script>
+(function(){
+  var key = 'progress:' + location.pathname;
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('li.task input'));
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(key) || '{}'); } catch (e) {}
+  boxes.forEach(function(b, i){
+    b.id = 'task-' + i;
+    if (saved[i]) b.checked = true;
+    b.addEventListener('change', function(){
+      saved[i] = b.checked;
+      try { localStorage.setItem(key, JSON.stringify(saved)); } catch (e) {}
+    });
+  });
+})();
+</script>
+</body>
+</html>

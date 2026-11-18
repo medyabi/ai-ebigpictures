@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trainer Guide · AI Labs</title>
+<meta name="description" content="Hands-on labs for Microsoft Copilot Studio, Agent Builder and Microsoft 365 Copilot Cowork: from a simple agent to autonomous agents.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+</head>
+<body class="t-cowork">
+<a class="skip" href="#content">Skip to main content</a>
+<header class="masthead">
+  <a class="brand" href="../index.html"><img src="../assets/favicon.svg" alt="" width="24" height="24"><span>AI Labs</span></a>
+  <span class="divider" aria-hidden="true"></span>
+  <nav class="mainnav" aria-label="Main"><a href="../copilot-studio/index.html">Copilot Studio</a><a href="index.html" aria-current="true">Copilot Cowork</a><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></nav>
+  <a class="gh" href="https://github.com/medyabi" rel="noopener">GitHub</a>
+</header>
+<div class="doc has-toc">
+<details class="toc"><summary>Table of contents</summary><nav aria-label="AI automation with Copilot Cowork"><p class="toc-title">AI automation with Copilot Cowork</p><input id="toc-filter" class="toc-filter" type="search" placeholder="Filter by title" aria-label="Filter by title"><ol class="toc-list"><li><a href="index.html">Overview</a></li><li><a href="lab-01-getting-started-with-copilot-cowork.html">1 · Getting Started with Copilot Cowork</a></li><li><a href="lab-02-calendar-optimization-and-meeting-coordination.html">2 · AI-Powered Calendar Optimization and Executive Meeting Coordination</a></li><li><a href="lab-03-intelligent-file-organizer.html">3 · Intelligent File Organizer</a></li><li><a href="lab-04-building-custom-cowork-skills.html">4 · Building Custom Cowork Skills (Read-only)</a></li><li><a href="lab-05-personal-work-dashboard.html">5 · Building a Personal Work Dashboard with Copilot Cowork (Read-only)</a></li><li><a href="lab-06-build-and-publish-a-cowork-plugin.html">6 · Building and Publishing a Custom Copilot Cowork Plugin (Read-only)</a></li><li class="group"><details><summary>Teaching editions</summary><ol><li><a href="teaching/lab-01-getting-started-with-copilot-cowork-teaching.html">1 · Getting Started with Copilot Cowork</a></li><li><a href="teaching/lab-02-calendar-optimization-and-meeting-coordination-teaching.html">2 · Calendar Optimization and Meeting Coordination</a></li><li><a href="teaching/lab-03-intelligent-file-organizer-teaching.html">3 · Intelligent File Organizer</a></li><li><a href="teaching/lab-04-building-custom-cowork-skills-teaching.html">4 · Building Custom Cowork Skills</a></li><li><a href="teaching/lab-05-personal-work-dashboard-teaching.html">5 · Personal Work Dashboard</a></li><li><a href="teaching/lab-06-build-and-publish-a-cowork-plugin-teaching.html">6 · Build and Publish a Cowork Plugin</a></li></ol></details></li><li><a href="trainer-guide.html" aria-current="page">Trainer guide</a></li></ol></nav></details>
+<main id="content" class="article">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">AI Labs</a></li><li><a href="index.html">Cowork track</a></li></ol></nav>
+<article class="prose">
+<h1 id="trainer-guide">Trainer Guide</h1><p class="meta"><span>Trainer guide</span><span>9 min read</span></p>
+<h2 id="workshop-overview">Workshop overview</h2>
+<p><strong>Copilot Cowork</strong> is the agentic workspace inside Microsoft 365 Copilot. You describe an outcome and Cowork plans the steps. It then works across Outlook, Calendar, Teams, OneDrive, SharePoint, Word and Excel to deliver the finished result. Any action that changes something, such as sending an email or creating an event, goes through an <strong>approval card</strong> first, so the user stays in control.</p>
+<p>Over six progressive labs, participants move from their first Cowork task to building and publishing their own plugin. By the end they can:</p>
+<ul>
+<li>Hand Cowork multi-step email, calendar and file work, and review each action before it runs</li>
+<li>Set standing calendar rules and automate an out-of-office handoff</li>
+<li>Produce grounded executive meeting briefs and post-meeting follow-up</li>
+<li>Classify, rename and govern business documents in OneDrive, with approval at each step</li>
+<li>Build reusable <strong>custom skills</strong> with the conversational Skill Builder</li>
+<li>Schedule a self-refreshing personal work dashboard built on Microsoft Graph data</li>
+<li>Package, validate and publish a <strong>custom plugin</strong> that connects Cowork to an external system through the <strong>Model Context Protocol (MCP)</strong></li>
+</ul>
+<div class="alert important"><p class="alert-title">Important</p><p><strong>Disclaimer for participants:</strong> Cowork is AI-powered, so outputs vary between users and sessions. Follow the workflow and the expected outcome; don't expect your results to match the screenshots word for word.</p></div>
+<h2 id="lab-map">Lab map</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Lab</th>
+<th>Title</th>
+<th>Duration</th>
+<th>What participants produce</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Getting Started with Copilot Cowork</td>
+<td>40 min</td>
+<td>A seeded environment (5 emails, 3 events, OneDrive files, a Teams team) and a first scheduled automation</td>
+</tr>
+<tr>
+<td>2</td>
+<td>AI-Powered Calendar Optimization and Executive Meeting Coordination</td>
+<td>40 min</td>
+<td>Standing calendar rules applied to a week, two new meetings, a Word prep brief, and an approved vacation handoff</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Intelligent File Organizer</td>
+<td>40 min</td>
+<td>Project Orion files classified and renamed into business-function folders, an approved archive, an Excel governance tracker and a Teams summary</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Building Custom Cowork Skills (read-only)</td>
+<td>30 min</td>
+<td>A skill specification in Notepad (hands-on); walkthrough of building, testing, sharing and publishing two custom skills</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Building a Personal Work Dashboard (read-only)</td>
+<td>30 min</td>
+<td>Walkthrough of an HTML work dashboard that refreshes hourly on weekdays, emails itself at 9 AM, and has a locked-in format</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Building and Publishing a Custom Cowork Plugin (read-only)</td>
+<td>30 min</td>
+<td>Walkthrough of a Financial Research plugin (7 skills + SEC EDGAR MCP connector) generated by Cowork, deployed from the Microsoft 365 admin center and tested</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Dependency:</strong> Lab 1, Tasks 2–4 seed the data that every later lab uses. Participants must complete them before moving on.</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<p><strong>Each participant needs:</strong></p>
+<ul>
+<li>A <strong>Microsoft 365 Copilot</strong> license with <strong>Copilot Cowork</strong> enabled. Cowork is currently delivered through the <strong>Frontier</strong> program, so the tenant must be enrolled.</li>
+<li>Permission to use Outlook, Calendar, Teams, OneDrive, SharePoint, Word, Excel and Microsoft To Do</li>
+<li>Access to the provisioned lab VM and its local folder <code>C:\LabFiles\lab file</code></li>
+<li>Basic familiarity with Microsoft 365 apps</li>
+</ul>
+<p><strong>For Lab 6 only:</strong></p>
+<ul>
+<li>Access to the <strong>Microsoft 365 admin center</strong>, as a tenant administrator or with the <strong>Copilot administrator</strong> role</li>
+<li>Permission to upload custom apps (<strong>Manage apps &gt; Upload custom app</strong>). Custom app policies control who can sideload.</li>
+</ul>
+<p><strong>Trainer pre-flight (run the day before):</strong></p>
+<ul>
+<li>Sign in with one lab account and run Lab 1 end to end.</li>
+<li>Confirm that <strong>Plugins</strong> and <strong>Automations</strong> appear in the left navigation.</li>
+<li>Check whether Teams meeting links can be created in the tenant (see Lab 1, Task 3).</li>
+<li>Confirm that <code>C:\LabFiles\lab file</code> contains 5 folders (<code>Archivecandidates</code>, <code>Healthcare</code>, <code>Project Orion Files</code>, <code>Retail</code>, <code>Shared files</code>) and 4 files.</li>
+</ul>
+<h2 id="trainer-delivery-notes">Trainer delivery notes</h2>
+<p><strong>Behaviors to expect (and explain to the room):</strong></p>
+<ul>
+<li><strong>Approval cards are not consistent.</strong> Even when the prompt grants upfront approval, Cowork sometimes shows a <strong>Send email?</strong> or <strong>Create calendar event?</strong> card and sometimes acts directly. Both are correct. Use the moment to explain risk levels: cards carry a <strong>Medium risk</strong> badge.</li>
+<li><strong>Same conversation, longer step list.</strong> Task 3 runs in the same Cowork conversation as Task 2, so the Workspace <strong>Steps</strong> counter carries over (for example, 7/11).</li>
+<li><strong>Dates shift with the run day.</strong> Calendar events go on the next 3 business days, so every participant gets different dates.</li>
+<li><strong>Names vary.</strong> The scheduled task in Task 5 may be called <em>Weekday Morning Briefing</em>, <em>Weekday Morning Day-Ahead Briefing</em> or similar. Check the type and schedule, not the exact name.</li>
+<li><strong>"Always allow" is scoped.</strong> The button on a scheduled email reads <em>Always allow: Only to \&lt;your address&gt;</em>. Point out that the permission covers self-addressed mail only.</li>
+</ul>
+<p><strong>Known environment issue:</strong></p>
+<ul>
+<li>In some sandbox tenants Cowork <strong>cannot add a Teams meeting link</strong> to events. It creates them anyway and says so in its summary. Tell participants this is an environment limit, not their mistake. They can switch on <strong>Teams meeting</strong> in Outlook if they need the link.</li>
+</ul>
+<p><strong>Screenshot hygiene before publishing:</strong></p>
+<ul>
+<li>Blur every user ID and tenant name. Two Lab 1 source shots (the Project Orion folder upload and the Add content picker) showed an ODL user number. The copies in this guide are blurred, but your original files are not.</li>
+<li>Recapture the app-launcher shots (Outlook, OneDrive, Teams) taken in the older Cowork UI (<em>New task / My tasks / Scheduled / Customize</em>).</li>
+<li>Never print real Temporary Access Passes in the guide; use placeholders.</li>
+</ul>
+<p><strong>Timing tip:</strong> Task 4 (uploads) is the slowest part of Lab 1. Start the uploads, then talk through the Plugins page while they finish.</p>
+<h3 id="lab-2-notes">Lab 2 notes</h3>
+<ul>
+<li><strong>Data volume sets expectations.</strong> The Lab 2 Task 3 screenshots come from a mailbox with about 22 messages, 4 drafts and 11 meetings (Clearwater, Fourth Coffee, Zava and more). Lab 1 only seeds 5 emails and 3 events, so participants will see far fewer findings. Either extend the Lab 1 seeding or tell the room up front.</li>
+<li><strong>Intentional conflicts.</strong> The vacation week is the same week that Tasks 1 and 2 fill with focus blocks and meetings. Point this out so nobody thinks they set the wrong dates.</li>
+<li><strong>Planner and To Do may be unreachable.</strong> Cowork often reports them as a coverage gap. Use it as a teaching moment on honest agents.</li>
+<li><strong>Placeholder signatures.</strong> In the screenshots, Cowork signed the Tailspin reply as <em>Alex</em>. Make participants edit drafts before clicking <strong>Reply</strong>.</li>
+<li><strong>Overlap with Lab 3.</strong> Lab 2 Task 2 already builds a Steering Committee prep brief. Make sure Lab 3 goes further (for example, post-meeting follow-up) rather than repeating it.</li>
+</ul>
+<h3 id="lab-3-notes">Lab 3 notes</h3>
+<ul>
+<li><strong>One conversation only.</strong> Tasks 2 and 3 reuse the file inventory from Task 1. A participant who starts a new task in between loses it and gets different results.</li>
+<li><strong>File count.</strong> Lab 1 says Project Orion Files holds <strong>8 items</strong>, but in Lab 3 Cowork reads <strong>11 files</strong>. Check the source folder and align the two numbers.</li>
+<li><strong>Archive location.</strong> In the original run, Cowork created <strong>Archive</strong> directly under Lab Files, while the guide said to look inside Project Orion - Renamed Files. The archive prompt now names the location explicitly.</li>
+<li><strong>Sharing check.</strong> Cowork can't report 'anyone' links from the content inventory, and file timestamps are all fresh after the rename. Expect these gaps and use them to discuss evidence quality.</li>
+<li><strong>Upload fallback.</strong> The tracker upload to Lab Files can fail; Cowork then saves it to the Cowork folder and the Teams post names the file without a link.</li>
+<li><strong>Retail is a team, not a channel.</strong> The Task 3 prompt now posts to the General channel of the Retail team.</li>
+</ul>
+<h3 id="lab-4-notes">Lab 4 notes</h3>
+<ul>
+<li><strong>Read-only scope.</strong> Only Task 1 (Notepad) is hands-on. Tasks 2–8 are a walkthrough to save Copilot credits. Building and testing skills consumes credits, so if you demo live, budget for it.</li>
+<li><strong>Pre-existing skill in the screenshots.</strong> The demo account already had a <strong>weekly-status-email</strong> skill, so Cowork mentions it in its summaries and in "When NOT to Use". A clean tenant won't show it.</li>
+<li><strong>Older interface.</strong> Many screenshots show the <strong>Customize</strong> page and <strong>Create skill with Cowork</strong>; the current UI uses <strong>Plugins</strong> and <strong>New skill</strong>. Recapture when possible.</li>
+<li><strong>Duplicate skill after upload.</strong> Task 7 leaves two copies with the same triggers. Delete <strong>project-status-brief-1</strong> after the demo.</li>
+<li><strong>Risk rating.</strong> The two quality reports show <em>Risk medium</em> and <em>Risk high</em>. Be ready to explain why before learners share skills.</li>
+</ul>
+<h3 id="lab-5-notes">Lab 5 notes</h3>
+<ul>
+<li><strong>Read-only scope.</strong> The whole lab is a walkthrough. The original labelled it read-only but wrote every step as hands-on; the steps now describe what happens.</li>
+<li><strong>Credit cost.</strong> The scheduled task runs <strong>12 times every weekday</strong>. If you demo it, <strong>pause or delete it</strong> at the end of the session.</li>
+<li><strong>Time zones.</strong> The schedule prompt was written for a Pacific-time device on an account set to IST. Adapt it to your region.</li>
+<li><strong>Task name.</strong> "Refresh work dashboard (hourly at 9 AM, email at 9 AM)" is confusing; consider "Refresh work dashboard (hourly, email at 9 AM)".</li>
+<li><strong>Duplicate task.</strong> The final screenshot shows the task twice. Delete the duplicate so it doesn't run (and cost credits) twice.</li>
+<li><strong>Older interface.</strong> Some screenshots show the Chat / Cowork / Code tabs and the Customize page. Recapture when possible.</li>
+</ul>
+<h3 id="lab-6-notes">Lab 6 notes</h3>
+<ul>
+<li><strong>Read-only scope.</strong> The whole lab is a walkthrough: publishing needs an admin role participants don't have. The original note said <strong>AI Administrator</strong> while Task 3 said <strong>Global Administrator</strong>; the lab now says "an admin role participants are not assigned". Confirm which role you want to name.</li>
+<li><strong>Two upload paths.</strong> The prompt and Cowork's summary say <strong>Copilot &gt; Agents &gt; All agents &gt; Upload agent</strong>; the screenshots use <strong>Settings &gt; Integrated apps &gt; Upload custom apps</strong>. Both are in the Microsoft 365 admin center. The lab keeps the screenshots' path and explains the difference. Never use the Teams admin center.</li>
+<li><strong>Third-party MCP server.</strong> <code>secedgar.caseyjhand.com</code> is a community server with no authentication. Fine for public SEC data in a demo; stress that production plugins should use approved servers only.</li>
+<li><strong>Publisher shown as Microsoft.</strong> The manifest sets the developer to <strong>Microsoft</strong> and the package name to <code>com.microsoft.*</code>, so the plugin page says <strong>Created by Microsoft</strong>. Consider using your organization's name so learners don't copy that pattern.</li>
+<li><strong>Leftover plugins.</strong> The demo tenant already had three <strong>Financial Research</strong> copies before Task 1. Remove old copies before a live demo.</li>
+<li><strong>Older interface.</strong> Some screenshots show the <strong>Customize</strong> page and the Chat / Cowork / Code tabs. Recapture when possible.</li>
+<li><strong>Not investment advice.</strong> The results include real financial figures. Remind learners to check them against the filings.</li>
+</ul>
+</article>
+
+<p class="source"><a href="https://github.com/medyabi/Copilot-Cowork-lab" rel="noopener">View the source on GitHub</a></p>
+</main>
+<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#workshop-overview">Workshop overview</a></li><li><a href="#lab-map">Lab map</a></li><li><a href="#prerequisites">Prerequisites</a></li><li><a href="#trainer-delivery-notes">Trainer delivery notes</a></li></ol></aside>
+</div>
+<footer class="sitefoot">
+  <div class="foot-in">
+    <div><strong>AI Labs</strong><p>Hands-on Copilot labs by Mohamed Dyabi, Microsoft Certified Trainer.</p></div>
+    <ul>
+      <li><a href="../copilot-studio/index.html">Copilot Studio track</a></li>
+      <li><a href="index.html">Copilot Cowork track</a></li>
+      <li><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Studio-lab" rel="noopener">Copilot Studio labs on GitHub</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Cowork-lab" rel="noopener">Cowork labs on GitHub</a></li>
+    </ul>
+  </div>
+  <p class="fine">Use a test or demo tenant: these labs create agents, workflows and SharePoint items, and consume Copilot Credits. Preview features and labels change often. An independent site, not affiliated with Microsoft. © 2026 Mohamed Dyabi</p>
+</footer>
+<script>
+(function(){
+  // Table of contents: open on wide screens, collapsible on small ones
+  var toc = document.querySelector('details.toc');
+  if (toc) {
+    var mq = window.matchMedia('(min-width: 1024px)');
+    var sync = function(){ if (mq.matches) toc.open = true; };
+    sync(); if (mq.addEventListener) mq.addEventListener('change', sync);
+    var cur = toc.querySelector('[aria-current="page"]');
+    if (cur && cur.scrollIntoView && mq.matches) cur.scrollIntoView({block: 'center'});
+  }
+  // Filter by title
+  var f = document.getElementById('toc-filter');
+  if (f) f.addEventListener('input', function(){
+    var q = f.value.trim().toLowerCase();
+    document.querySelectorAll('.toc-list li').forEach(function(li){
+      var hit = !q || li.textContent.toLowerCase().indexOf(q) !== -1;
+      li.hidden = !hit;
+    });
+  });
+  // Copy buttons on code blocks
+  document.querySelectorAll('.codeblock').forEach(function(cb){
+    var btn = cb.querySelector('.copy'), code = cb.querySelector('code');
+    if (!btn || !code) return;
+    btn.addEventListener('click', function(){
+      navigator.clipboard.writeText(code.innerText).then(function(){
+        btn.textContent = 'Copied'; setTimeout(function(){ btn.textContent = 'Copy'; }, 1500);
+      }, function(){ btn.textContent = 'Select and copy'; });
+    });
+  });
+  // Highlight the current section in "In this article"
+  var links = document.querySelectorAll('.aside-toc a');
+  if (links.length && 'IntersectionObserver' in window) {
+    var map = {}; links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var obs = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting) {
+        links.forEach(function(a){ a.classList.remove('on'); });
+        var a = map[e.target.id]; if (a) a.classList.add('on');
+      }});
+    }, {rootMargin: '0px 0px -75% 0px'});
+    Object.keys(map).forEach(function(id){ var h = document.getElementById(id); if (h) obs.observe(h); });
+  }
+})();
+</script>
+</body>
+</html>

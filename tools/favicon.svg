@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- chat bubble (agent) -->
+  <path d="M10 8h44a6 6 0 0 1 6 6v26a6 6 0 0 1-6 6H28l-12 10v-10h-6a6 6 0 0 1-6-6V14a6 6 0 0 1 6-6Z" fill="#34495A"/>
+  <!-- AI sparkle -->
+  <path d="M32 13c1.2 6.6 3.4 8.8 10 10-6.6 1.2-8.8 3.4-10 10-1.2-6.6-3.4-8.8-10-10 6.6-1.2 8.8-3.4 10-10Z" fill="#00A4EF"/>
+  <!-- Microsoft colors -->
+  <rect x="14" y="36" width="5" height="4" rx="1" fill="#F25022"/>
+  <rect x="21" y="36" width="5" height="4" rx="1" fill="#7FBA00"/>
+  <rect x="38" y="36" width="5" height="4" rx="1" fill="#FFB900"/>
+  <rect x="45" y="36" width="5" height="4" rx="1" fill="#00A4EF"/>
+  <circle cx="47" cy="17" r="3" fill="#FFB900"/>
+</svg>

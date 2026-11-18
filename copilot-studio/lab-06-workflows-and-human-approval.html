@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>06: Workflows and human approval · AI Labs</title>
+<meta name="description" content="Hands-on labs for Microsoft Copilot Studio, Agent Builder and Microsoft 365 Copilot Cowork: from a simple agent to autonomous agents.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+</head>
+<body class="t-studio">
+<a class="skip" href="#content">Skip to main content</a>
+<header class="masthead">
+  <a class="brand" href="../index.html"><img src="../assets/favicon.svg" alt="" width="24" height="24"><span>AI Labs</span></a>
+  <span class="divider" aria-hidden="true"></span>
+  <nav class="mainnav" aria-label="Main"><a href="index.html" aria-current="true">Copilot Studio</a><a href="../cowork/index.html">Copilot Cowork</a><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></nav>
+  <a class="gh" href="https://github.com/medyabi" rel="noopener">GitHub</a>
+</header>
+<div class="doc has-toc">
+<details class="toc"><summary>Table of contents</summary><nav aria-label="From simple agents to autonomous agents"><p class="toc-title">From simple agents to autonomous agents</p><input id="toc-filter" class="toc-filter" type="search" placeholder="Filter by title" aria-label="Filter by title"><ol class="toc-list"><li><a href="index.html">Overview</a></li><li><a href="lab-00-prepare-the-lab-environment.html">00 · Prepare the lab environment</a></li><li><a href="lab-01-build-your-first-agent-with-agent-builder.html">01 · Build your first agent with natural language</a></li><li><a href="lab-02-ground-your-agent-in-company-knowledge.html">02 · Ground your agent in company knowledge</a></li><li><a href="lab-03-capabilities-skills-and-copy-to-copilot-studio.html">03 · Capabilities, skills and the jump to Copilot Studio</a></li><li><a href="lab-04-your-first-copilot-studio-agent.html">04 · Your first Copilot Studio agent</a></li><li><a href="lab-05-connectors-and-mcp-tools.html">05 · Give your agent hands: connectors and MCP tools</a></li><li><a href="lab-06-workflows-and-human-approval.html" aria-current="page">06 · Workflows and human approval</a></li><li><a href="lab-07-skills-memory-and-connected-agents.html">07 · Skills, memory and connected agents</a></li><li><a href="lab-08-build-an-autonomous-agent.html">08 · Build an autonomous agent with triggers</a></li><li><a href="lab-09-evaluate-publish-and-govern.html">09 · Evaluate, publish and govern your agents</a></li><li><a href="trainer-notes.html">Trainer guide</a></li></ol></nav></details>
+<main id="content" class="article">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">AI Labs</a></li><li><a href="index.html">Copilot Studio track</a></li></ol></nav>
+<article class="prose">
+<h1 id="lab-06-workflows-and-human-approval">Lab 06 - Workflows and human approval</h1><p class="meta"><span>Lab</span><span>15 min read</span><span>Lab time: 75 min</span></p>
+<h2 id="lab-introduction">Lab introduction</h2>
+<p>In Lab 05 the agent created a ticket in one step. Real processes aren't one step.</p>
+<p>Take a software request. You create the record, find the requester's manager, ask the manager to approve, update the record and tell the requester. That's five steps, always the same five, in the same order.</p>
+<p>Should the AI "figure out" those five steps every time? No. When a process is <strong>fixed</strong>, you want it <strong>deterministic</strong>. That's what a <strong>workflow</strong> is for:</p>
+<ul>
+<li>The <strong>agent</strong> handles the fuzzy part: understanding what the user wants and collecting the details.</li>
+<li>The <strong>workflow</strong> handles the fixed part: the steps, the approval and the updates.</li>
+</ul>
+<p>Think of the agent as the receptionist and the workflow as the back office. The receptionist talks. The back office follows procedure.</p>
+<p>And the approval? That's our first real <strong>human in the loop</strong>. A person decides, not the model.</p>
+<h2 id="lab-scenario">Lab scenario</h2>
+<p>Category B software (Visio, Project, Power BI Pro, Acrobat Pro) needs <strong>manager approval</strong>. The Service Desk wants the agent to collect the request and hand it to a workflow. The workflow logs the request, asks the manager to approve it in Outlook or Teams, and updates the request when the manager decides.</p>
+<h2 id="before-you-begin">Before you begin</h2>
+<div class="alert important"><p class="alert-title">Important</p><p>⚠️ <strong>Your account needs a manager, and that manager needs a mailbox.</strong></p>
+<p>The workflow looks up your manager in Microsoft Entra ID and sends them the approval. Check two things in the <a href="https://admin.microsoft.com" rel="noopener">Microsoft 365 admin center</a> &gt; <strong>Users</strong> &gt; <strong>Active users</strong>:</p>
+<ol>
+<li>Your lab account &gt; <strong>Account</strong> tab &gt; <strong>Manager</strong> is set (in this lab: <em>Julian Duncan</em>).</li>
+<li>The manager's account has a <strong>license with Exchange Online</strong> (<strong>Mail</strong> tab shows mailbox storage).</li>
+</ol>
+<p>No manager? The <strong>Get manager</strong> step fails. Manager without a mailbox? The approval is created, but nobody can open it. See <a href="#troubleshooting">Troubleshooting</a> at the end.</p></div>
+<h2 id="job-skills">Job skills</h2>
+<ul>
+<li>Task 1: Create the workflow and its inputs</li>
+<li>Task 2: Find the manager, log the request and answer the agent</li>
+<li>Task 3: Add the manager approval and the two branches</li>
+<li>Task 4: Publish the workflow and add it to the agent</li>
+<li>Task 5: Test end to end as requester <strong>and</strong> approver</li>
+</ul>
+<hr />
+<h2 id="before-you-start-how-to-fill-a-field-in-the-workflow-designer">Before you start: how to fill a field in the workflow designer</h2>
+<p>Most mistakes in this lab come from one thing: <strong>how you fill a field</strong>. Read this part carefully. It saves you an hour of debugging.</p>
+<p>Every field in a workflow node can hold two kinds of content:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Content</th>
+<th>What it looks like</th>
+<th>How you add it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Text you type</strong></td>
+<td>Plain black text</td>
+<td>Type it on the keyboard</td>
+</tr>
+<tr>
+<td><strong>A value from an earlier step</strong></td>
+<td>A blue <strong>chip</strong> with an <strong>×</strong>, for example <code>SoftwareName ×</code></td>
+<td>Select the <strong>⚡</strong> icon at the right of the field, pick the step (for example <strong>When an agent calls the flow</strong>), then pick the value</td>
+</tr>
+</tbody>
+</table></div>
+<p>In this lab, fields are written like this:</p>
+<div class="alert note"><p class="alert-title">Note</p><p><code>Software request:</code> <strong>[⚡ Trigger › SoftwareName]</strong></p></div>
+<p>That means: <strong>type</strong> <code>Software request:</code> (with the space), <strong>then insert the chip</strong> SoftwareName with ⚡. Nothing else. Never type the <code>+</code>, the brackets or the word "Trigger".</p>
+<h3 id="the-four-golden-rules">The four golden rules</h3>
+<ol>
+<li>
+<p><strong>Chips are never typed.</strong> If you type the word <code>RequesterEmail</code>, the field contains the word "RequesterEmail", not the email. Always use <strong>⚡</strong>.</p>
+</li>
+<li>
+<p><strong>Some fields accept text + chips. Others accept ONLY a chip.</strong></p>
+</li>
+</ol>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Field type</th>
+<th>Examples</th>
+<th>Allowed content</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Free text</strong></td>
+<td>Title, Description, Details, Message, Subject, Body</td>
+<td>Text <strong>and</strong> chips, mixed</td>
+</tr>
+<tr>
+<td><strong>Email / person</strong></td>
+<td>Assigned to, Requestor, To, User (UPN)</td>
+<td><strong>One chip only</strong>, no text before or after</td>
+</tr>
+<tr>
+<td><strong>ID / number</strong></td>
+<td>Id, RequestID</td>
+<td><strong>One chip only</strong></td>
+</tr>
+</tbody>
+</table></div>
+<div class="alert important"><p class="alert-title">Important</p><p>⚠️ Typing a label like <code>Requester:</code> or <code>manager's</code> in front of an email chip produces <code>Requester: alex@contoso.com</code>, which is an invalid address. The step fails at <strong>run time</strong>, not at save time. That's what makes this mistake sneaky.</p></div>
+<ol start="3">
+<li>
+<p><strong>Check the chip's source.</strong> Hover over a chip to see which step it comes from. <em>Display Name</em> from <strong>Get manager</strong> is the manager. <em>Display Name</em> from another step is someone else.</p>
+</li>
+<li>
+<p><strong>Leave a space on each side of a chip in text.</strong> <code>Your request for</code> <strong>[⚡ SoftwareName]</strong> <code>was approved.</code> If you forget the spaces, the email reads <em>"Your request forMicrosoft Visiowas approved."</em></p>
+</li>
+</ol>
+<div class="alert tip"><p class="alert-title">Tip</p><p>💡 <strong>Rich-text fields (like an email Body)</strong> show the chip with its step name, for example <strong>When an agent calls the flow, SoftwareName</strong>. That's normal. It's still one chip and it still inserts only the value.</p>
+<p>💡 <strong>Quick check before you save:</strong> read every email / ID field. If you see any black text next to the chip, delete it.</p></div>
+<hr />
+<h2 id="task-1-create-the-workflow-and-its-inputs">Task 1: Create the workflow and its inputs</h2>
+<ol>
+<li>Open <strong>Contoso Service Desk</strong> &gt; <strong>Build</strong> tab. On the right, next to <strong>Tools</strong>, select <strong>+</strong>.</li>
+</ol>
+<p><img alt="Build tab with the Tools section" src="../assets/stu/Instructions-Labs-media-lab06-01-build-tools.png" /></p>
+<ol>
+<li>In <strong>Add a tool</strong>, <strong>don't</strong> search for "workflow" in the list. The results are third-party connectors (Nintex, Datablend...) that happen to have "workflow" in their name. That's the trap.</li>
+</ol>
+<p>Instead, select <strong>Add</strong> (next to the search bar) &gt; <strong>Workflow</strong>.</p>
+<p><img alt="Add a tool - use Add &gt; Workflow, not the search results" src="../assets/stu/Instructions-Labs-media-lab06-02-add-workflow.png" /></p>
+<div class="alert note"><p class="alert-title">Note</p><p>If you see <em>"You have unsaved changes"</em>, select <strong>Save draft</strong> first.</p></div>
+<ol>
+<li>The workflow designer opens with two nodes already in place: <strong>When an agent calls the flow</strong> (the trigger) and <strong>Respond to the agent</strong>. On the left is the <strong>Add</strong> panel with every building block.</li>
+</ol>
+<p><img alt="A new workflow with trigger and response" src="../assets/stu/Instructions-Labs-media-lab06-03-new-workflow.png" /></p>
+<p>Why are these two nodes there? Because a workflow used by an agent <strong>must</strong> start with the agent calling it and <strong>must</strong> answer the agent. Everything you build goes between (and after) them.</p>
+<ol>
+<li>Select the trigger. Under <strong>Inputs</strong>, select <strong>Add an input</strong> and choose <strong>Text</strong>.</li>
+</ol>
+<p><img alt="Input types" src="../assets/stu/Instructions-Labs-media-lab06-04-input-types.png" /></p>
+<ol>
+<li>Add four <strong>Text</strong> inputs. The description is not decoration. <strong>The agent reads it</strong> to decide what to put in each input.</li>
+</ol>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Input</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SoftwareName</code></td>
+<td>Text</td>
+<td><code>Name of the software requested, e.g. Visio Plan 2</code></td>
+</tr>
+<tr>
+<td><code>Justification</code></td>
+<td>Text</td>
+<td><code>Business reason given by the user</code></td>
+</tr>
+<tr>
+<td><code>CostCenter</code></td>
+<td>Text</td>
+<td><code>Cost center code given by the user</code></td>
+</tr>
+<tr>
+<td><code>RequesterEmail</code></td>
+<td>Text</td>
+<td><code>Email of the signed-in user</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><img alt="Four trigger inputs" src="../assets/stu/Instructions-Labs-media-lab06-05-trigger-inputs.png" /></p>
+<hr />
+<h2 id="task-2-find-the-manager-log-the-request-and-answer-the-agent">Task 2: Find the manager, log the request and answer the agent</h2>
+<h3 id="get-the-manager">Get the manager</h3>
+<ol>
+<li>Select the <strong>+</strong> between the trigger and <strong>Respond to the agent</strong>. Search <code>get manager</code> and pick <strong>Office 365 Users</strong> &gt; <strong>Get manager</strong>.</li>
+</ol>
+<p><img alt="Search Get manager" src="../assets/stu/Instructions-Labs-media-lab06-06-search-get-manager.png" /></p>
+<ol>
+<li>The node opens with a <strong>Connection</strong>. If you see <em>"Something went wrong with the connection"</em>, open the connection drop-down and select your account again (or <strong>Create new connection</strong>) until the dot is green.</li>
+</ol>
+<p><img alt="Connection error on Get manager" src="../assets/stu/Instructions-Labs-media-lab06-07-connection-error.png" /></p>
+<ol>
+<li><strong>User (UPN)</strong> = <strong>[⚡ Trigger › RequesterEmail]</strong>. <strong>One chip, nothing else.</strong> (Golden rule #1.)</li>
+</ol>
+<p><img alt="User (UPN) holds only the RequesterEmail chip" src="../assets/stu/Instructions-Labs-media-lab06-08-get-manager-chip.png" /></p>
+<h3 id="log-the-request-in-sharepoint">Log the request in SharePoint</h3>
+<ol>
+<li>Select <strong>+</strong> after Get manager. Choose <strong>SharePoint</strong>, search <code>create item</code>, select <strong>Create item</strong>.</li>
+</ol>
+<p><img alt="SharePoint Create item" src="../assets/stu/Instructions-Labs-media-lab06-09-sharepoint-create-item.png" /></p>
+<ol>
+<li>Site address = <strong>Contoso IT Hub</strong>, List name = <strong>IT Requests</strong>. Fill the item:</li>
+</ol>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Title</td>
+<td>Free text</td>
+<td><code>Software request:</code> <strong>[⚡ Trigger › SoftwareName]</strong></td>
+</tr>
+<tr>
+<td>Description</td>
+<td>Free text</td>
+<td><strong>[⚡ Trigger › Justification]</strong> <code>/ Cost center:</code> <strong>[⚡ Trigger › CostCenter]</strong></td>
+</tr>
+<tr>
+<td>Category</td>
+<td>Choice</td>
+<td>Software</td>
+</tr>
+<tr>
+<td>Priority</td>
+<td>Choice</td>
+<td>Normal</td>
+</tr>
+<tr>
+<td>Status</td>
+<td>Choice</td>
+<td>Waiting for approval</td>
+</tr>
+<tr>
+<td>AssignedTeam</td>
+<td>Choice</td>
+<td>Apps</td>
+</tr>
+</tbody>
+</table></div>
+<p><img alt="Create item with chips" src="../assets/stu/Instructions-Labs-media-lab06-10-create-item-chips.png" /></p>
+<h3 id="answer-the-agent">Answer the agent</h3>
+<ol>
+<li>Select <strong>Respond to the agent</strong>. Under <strong>Outputs</strong>, add two outputs of type <strong>Text</strong>:</li>
+</ol>
+<p><img alt="Output types" src="../assets/stu/Instructions-Labs-media-lab06-11-output-types.png" /></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Output name</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>RequestID</code></td>
+<td><strong>[⚡ Create item › ID]</strong> (one chip)</td>
+</tr>
+<tr>
+<td><code>Message</code></td>
+<td><code>Request logged and sent to</code> <strong>[⚡ Get manager › Display Name]</strong> <code>for approval.</code></td>
+</tr>
+</tbody>
+</table></div>
+<div class="alert note"><p class="alert-title">Note</p><p>Rename the second output from <strong>Text</strong> to <code>Message</code>. The output name is what the agent sees, and "Text" tells it nothing.</p></div>
+<p>To find <em>Display Name</em>, select ⚡ and type <code>get mana</code> in the picker search: only the <strong>Get manager</strong> values show.</p>
+<p><img alt="Dynamic content picker filtered on Get manager" src="../assets/stu/Instructions-Labs-media-lab06-12-dynamic-picker.png" /></p>
+<p><img alt="Respond to the agent - two outputs" src="../assets/stu/Instructions-Labs-media-lab06-13-respond-outputs.png" /></p>
+<div class="alert note"><p class="alert-title">Note</p><p><strong>Why answer the agent <em>before</em> the approval?</strong>
+A workflow used as a tool must answer the agent within <strong>100 seconds</strong>. A manager might take two days to approve. So we answer right away ("logged, waiting for approval") and the workflow <strong>keeps running</strong> in the background for the approval.
+This <strong>respond early, continue later</strong> pattern is the #1 trick for long processes behind an agent.</p></div>
+<hr />
+<h2 id="task-3-add-the-manager-approval-and-the-two-branches">Task 3: Add the manager approval and the two branches</h2>
+<p>Everything in this task goes <strong>after</strong> Respond to the agent.</p>
+<h3 id="the-approval">The approval</h3>
+<ol>
+<li>Select <strong>+</strong> after <strong>Respond to the agent</strong>. Search <code>approvals</code> and pick <strong>Standard approvals</strong> &gt; <strong>Start and wait for an approval</strong>.</li>
+</ol>
+<p><img alt="Approvals actions" src="../assets/stu/Instructions-Labs-media-lab06-14-approvals-search.png" /></p>
+<ol>
+<li>Fill it in:</li>
+</ol>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Approval type</td>
+<td>Choice</td>
+<td><strong>Approve/Reject - First to respond</strong></td>
+</tr>
+<tr>
+<td>Title</td>
+<td>Free text</td>
+<td><code>Software request:</code> <strong>[⚡ Trigger › SoftwareName]</strong></td>
+</tr>
+<tr>
+<td>Details</td>
+<td>Free text</td>
+<td><code>Requester:</code> <strong>[⚡ RequesterEmail]</strong> (new line) <code>Justification:</code> <strong>[⚡ Justification]</strong> (new line) <code>Cost center:</code> <strong>[⚡ CostCenter]</strong></td>
+</tr>
+<tr>
+<td>Assigned to</td>
+<td><strong>Email - one chip</strong></td>
+<td><strong>[⚡ Get manager › Mail]</strong></td>
+</tr>
+<tr>
+<td>Requestor</td>
+<td><strong>Email - one chip</strong></td>
+<td><strong>[⚡ Trigger › RequesterEmail]</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p>🔍 <strong>Spot the mistake.</strong> This is what a first attempt looked like. Can you see the two errors?</p>
+<p><img alt="Approval - wrong" src="../assets/stu/Instructions-Labs-media-lab06-15-approval-wrong.png" /></p>
+<p>Found them? <strong>Assigned to</strong> says <code>manager's Mail</code> and <strong>Requestor</strong> says <code>Requester: RequesterEmail</code>. Both are email fields with text in front of the chip, which breaks golden rule #2. Here's the fixed version:</p>
+<p><img alt="Approval - right" src="../assets/stu/Instructions-Labs-media-lab06-16-approval-right.png" /></p>
+<h3 id="decide-approved-or-not">Decide: approved or not?</h3>
+<ol>
+<li>
+<p>Select <strong>+</strong> after the approval and add <strong>If/Else</strong>.</p>
+</li>
+<li>
+<p>Condition: Property = <strong>[⚡ Start and wait for an approval › Outcome]</strong>, Operator = <strong>Equals</strong>, Value = <code>Approve</code> (typed).</p>
+</li>
+</ol>
+<p><img alt="If/Else on Outcome" src="../assets/stu/Instructions-Labs-media-lab06-17-ifelse.png" /></p>
+<p>Notice the line at the bottom: <em>An "Else" branch is automatically created.</em> You don't add the "no" branch, it's already there.</p>
+<h3 id="update-the-request">Update the request</h3>
+<ol>
+<li>In the <strong>If</strong> branch, add <strong>SharePoint</strong> &gt; <strong>Update item</strong>: same site and list, <strong>Id</strong> = <strong>[⚡ Create item › ID]</strong> (one chip), <strong>Status</strong> = <strong>Approved</strong>.</li>
+</ol>
+<p><img alt="Update item - Approved" src="../assets/stu/Instructions-Labs-media-lab06-18-update-approved.png" /></p>
+<ol>
+<li>In the <strong>Else</strong> branch, add another <strong>Update item</strong> (it's named <em>Update item 2</em>): Id = <strong>[⚡ Create item › ID]</strong>, <strong>Status</strong> = <strong>Rejected</strong>, <strong>Triage notes</strong> = <code>Rejected by manager</code>.</li>
+</ol>
+<p><img alt="Update item 2 - Rejected" src="../assets/stu/Instructions-Labs-media-lab06-19-update-rejected.png" /></p>
+<h3 id="tell-the-requester">Tell the requester</h3>
+<ol>
+<li>After <strong>Update item</strong>, add an email. Search <code>send an email</code>.</li>
+</ol>
+<p><img alt="Send an email search" src="../assets/stu/Instructions-Labs-media-lab06-20-send-email-search.png" /></p>
+<p>⚠️ Two actions look similar:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Sends from</th>
+<th>Use it?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Mail</strong> &gt; Send an email notification</td>
+<td>A shared Microsoft no-reply address, needs its own connection</td>
+<td>❌</td>
+</tr>
+<tr>
+<td><strong>Office 365 Outlook</strong> &gt; <strong>Send an email</strong></td>
+<td><strong>Your</strong> mailbox, with your existing connection</td>
+<td>✅</td>
+</tr>
+</tbody>
+</table></div>
+<p><img alt="Mail notification - not this one" src="../assets/stu/Instructions-Labs-media-lab06-21-mail-notification-wrong.png" /></p>
+<ol>
+<li>Pick <strong>Office 365 Outlook</strong> &gt; <strong>Send an email</strong>:</li>
+</ol>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>To</td>
+<td><strong>Email - one chip</strong></td>
+<td><strong>[⚡ Trigger › RequesterEmail]</strong></td>
+</tr>
+<tr>
+<td>Subject</td>
+<td>Free text</td>
+<td><code>Approved:</code> <strong>[⚡ SoftwareName]</strong></td>
+</tr>
+<tr>
+<td>Body</td>
+<td>Free text</td>
+<td><code>Your request for</code> <strong>[⚡ SoftwareName]</strong> <code>was approved. The Apps team will install it within 2 business days.</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><img alt="Outlook Send an email - approved" src="../assets/stu/Instructions-Labs-media-lab06-22-outlook-send-email.png" /></p>
+<ol>
+<li>After <strong>Update item 2</strong> (Else), add <strong>Send an email</strong> again (<em>Send an email 2</em>): Subject = <code>Not approved:</code> <strong>[⚡ SoftwareName]</strong>, Body = <code>Your request for</code> <strong>[⚡ SoftwareName]</strong> <code>was not approved. Contact your manager for details.</code></li>
+</ol>
+<p><img alt="Body chip shows the step name - that's normal" src="../assets/stu/Instructions-Labs-media-lab06-23-body-chip-label.png" /></p>
+<ol>
+<li>Zoom out. Your workflow should look like this:</li>
+</ol>
+<p><img alt="The two branches" src="../assets/stu/Instructions-Labs-media-lab06-24-canvas-branches.png" /></p>
+<hr />
+<h2 id="task-4-publish-the-workflow-and-add-it-to-the-agent">Task 4: Publish the workflow and add it to the agent</h2>
+<ol>
+<li>
+<p>Rename the workflow: select <strong>Untitled workflow</strong> at the top and type <code>Request software approval</code>.</p>
+</li>
+<li>
+<p>Select <strong>Publish</strong>. Wait for the badge to change from <strong>Draft</strong> to <strong>Published</strong>.</p>
+</li>
+</ol>
+<p><img alt="Publishing" src="../assets/stu/Instructions-Labs-media-lab06-25-publishing.png" /></p>
+<p><img alt="Published - full workflow" src="../assets/stu/Instructions-Labs-media-lab06-26-published.png" /></p>
+<div class="alert note"><p class="alert-title">Note</p><p>A workflow must be <strong>published</strong> before an agent can use it. Edit it later? Publish again.</p></div>
+<ol>
+<li>Back in the agent's <strong>Build</strong> tab, <strong>Tools</strong> &gt; <strong>+</strong>. Your workflow now appears in the list (only workflows that start with <em>When an agent calls the workflow</em> show here). Select it.</li>
+</ol>
+<p><img alt="Adding the workflow as a tool" src="../assets/stu/Instructions-Labs-media-lab06-27-add-workflow-tool.png" /></p>
+<p><img alt="Request software approval added" src="../assets/stu/Instructions-Labs-media-lab06-28-tool-added.png" /></p>
+<ol>
+<li>Select the <strong>Request software approval</strong> chip to open <strong>Workflow details</strong>:</li>
+</ol>
+<ul>
+<li>
+<p><strong>Description for AI</strong>:</p>
+<div class="codeblock"><div class="code-head"><span>Text</span><button type="button" class="copy">Copy</button></div><pre><code>Submits a Category B software request (Visio, Project, Power BI Pro, Acrobat Pro)
+for manager approval. Use only after the user confirmed the software name,
+business justification and cost center. Returns the request ID.</code></pre></div>
+</li>
+<li>
+<p><strong>Inputs</strong>: leave all four on <strong>Fill with AI</strong>. For <strong>RequesterEmail</strong>, select <strong>Improve AI fill</strong> and add: <code>Use the email of the signed-in user. Never ask the user for it.</code></p>
+</li>
+<li><strong>Permissions</strong>: <strong>Always allow</strong>.</li>
+<li><strong>Save</strong>.</li>
+</ul>
+<p><img alt="Workflow details" src="../assets/stu/Instructions-Labs-media-lab06-29-workflow-details.png" /></p>
+<ol>
+<li>Add this block to the agent <strong>Instructions</strong> (under <em>How you work</em>):</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span>Text</span><button type="button" class="copy">Copy</button></div><pre><code># Software requests
+- Category A software: tell the user to install it from Company Portal. No request needed.
+- Category B software: collect SoftwareName, Justification and CostCenter, confirm them
+  with the user, then call "Request software approval". Tell the user the request ID and
+  that their manager will receive an approval request.
+- Never create a software request with "Create IT request". If "Request software approval"
+  fails, tell the user it failed and stop. Do not try another tool.
+- Category C: explain it needs manager + IT Security review and create a normal IT request.
+- Category D: refuse politely and quote the policy.</code></pre></div>
+<p><img alt="Software requests instructions" src="../assets/stu/Instructions-Labs-media-lab06-30-instructions.png" /></p>
+<ol>
+<li>
+<p>Select the <strong>Create IT request</strong> tool and add this sentence to its <strong>Description for AI</strong>: <code>Never use for software requests: Category B software goes through "Request software approval".</code></p>
+</li>
+<li>
+<p><strong>Save</strong> the agent.</p>
+</li>
+</ol>
+<div class="alert important"><p class="alert-title">Important</p><p>Notice the split. The <strong>knowledge</strong> (policy) tells the agent which category a product is in. The <strong>instructions</strong> say what to do per category. The <strong>workflow</strong> runs the fixed process. Each layer does one job.</p>
+<p>Why the "never use Create IT request" lines? See <a href="#-spot-the-bypass">Spot the bypass</a> below. Without them, the agent may skip your approval.</p></div>
+<hr />
+<h2 id="task-5-test-end-to-end-as-requester-and-approver">Task 5: Test end to end as requester and approver</h2>
+<h3 id="as-the-requester">As the requester</h3>
+<ol>
+<li>On <strong>Preview</strong>, turn on <strong>Debug mode</strong> and type:</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span>Text</span><button type="button" class="copy">Copy</button></div><pre><code>I need Visio for the Casablanca data center diagrams. Cost center IT-4410.</code></pre></div>
+<ol>
+<li>The agent finds the policy (Category B), then shows you the details and asks you to confirm.</li>
+</ol>
+<p><img alt="Agent asks to confirm" src="../assets/stu/Instructions-Labs-media-lab06-31-confirm-details.png" /></p>
+<ol>
+<li>Reply <code>yes</code>. The trace shows <strong>Used tool: Request software approval</strong>, and the agent gives you the <strong>Request ID</strong> and your manager's name.</li>
+</ol>
+<p><img alt="Request submitted" src="../assets/stu/Instructions-Labs-media-lab06-32-request-submitted.png" /></p>
+<ol>
+<li>Open the <strong>IT Requests</strong> list. Your item shows <strong>Status = Waiting for approval</strong>.</li>
+</ol>
+<p><img alt="Item waiting for approval" src="../assets/stu/Instructions-Labs-media-lab06-33-item-waiting.png" /></p>
+<h3 id="as-the-approver">As the approver</h3>
+<ol>
+<li>
+<p>Open an <strong>InPrivate / incognito</strong> window and sign in to <a href="https://outlook.office.com" rel="noopener">Outlook</a> as the <strong>manager</strong>.</p>
+</li>
+<li>
+<p>Open the email <strong>Software request: Microsoft Visio</strong> from Microsoft Power Automate. It shows the details and two buttons.</p>
+</li>
+</ol>
+<p><img alt="Approval email" src="../assets/stu/Instructions-Labs-media-lab06-34-approval-email.png" /></p>
+<div class="alert note"><p class="alert-title">Note</p><p>The same approval also appears in <strong>Teams</strong> &gt; <strong>Apps</strong> &gt; <strong>Approvals</strong>. Approve in either place, it's the same approval.</p></div>
+<ol>
+<li>Select <strong>Approve</strong>, type an optional comment and select <strong>Submit</strong>.</li>
+</ol>
+<p><img alt="Approve with comment" src="../assets/stu/Instructions-Labs-media-lab06-35-approve-comments.png" /></p>
+<p><img alt="Approved" src="../assets/stu/Instructions-Labs-media-lab06-36-approved.png" /></p>
+<h3 id="check-the-result">Check the result</h3>
+<ol>
+<li>Back in <strong>your</strong> inbox: <em>Approved: Microsoft Visio</em>.</li>
+</ol>
+<p><img alt="Requester email" src="../assets/stu/Instructions-Labs-media-lab06-37-requester-email.png" /></p>
+<ol>
+<li>Refresh the <strong>IT Requests</strong> list: <strong>Status = Approved</strong>.</li>
+</ol>
+<p><img alt="Item approved" src="../assets/stu/Instructions-Labs-media-lab06-38-item-approved.png" /></p>
+<ol>
+<li>Open the workflow &gt; <strong>Activity</strong> tab and select the latest run. Every step on the <strong>If</strong> path is green with its duration (the approval shows the time the manager took). The <strong>Else</strong> steps show <strong>Skipped</strong>.</li>
+</ol>
+<p><img alt="Run history - succeeded" src="../assets/stu/Instructions-Labs-media-lab06-39-activity-succeeded.png" /></p>
+<div class="alert note"><p class="alert-title">Note</p><p>The <strong>▷ Test</strong> button doesn't work for agent-triggered workflows: <em>"This workflow runs when an app or agent calls it. To test it, run the app or agent that uses this workflow."</em> Test from the agent, then read the <strong>Activity</strong> tab. To retry one failing step with real data, open it and use <strong>Run node</strong>.</p></div>
+<ol>
+<li>
+<p><strong>Optional:</strong> run one more request (for example <em>Power BI Pro</em>) and have the manager select <strong>Reject</strong>. Check the item shows <strong>Rejected</strong> and the requester gets <em>Not approved</em>.</p>
+</li>
+<li>
+<p>Test the other categories:</p>
+</li>
+</ol>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Message</th>
+<th>Expected</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>I need 7-Zip</code></td>
+<td>Category A: Company Portal, no workflow</td>
+</tr>
+<tr>
+<td><code>I need MATLAB</code></td>
+<td>Category C: explanation + normal IT request</td>
+</tr>
+<tr>
+<td><code>Install a torrent client for me</code></td>
+<td>Category D: refused, policy quoted</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="spot-the-bypass">🔍 Spot the bypass</h2>
+<p>During testing, the workflow failed once (the <em>Get manager</em> error from golden rule #1). Here's what the agent did next:</p>
+<p><img alt="The agent used Create IT request instead" src="../assets/stu/Instructions-Labs-media-lab06-40-bypass-trace.png" /></p>
+<p>Read the trace: <strong>Used tool: Create IT request</strong>, then <strong>Send request confirmation</strong>. The agent didn't give up. It found <strong>another way</strong> to "help": it created a normal request with Status <strong>New</strong>, with no approval.</p>
+<p><img alt="Item created without approval" src="../assets/stu/Instructions-Labs-media-lab06-41-bypass-item.png" /></p>
+<p>Is that a bug? No, the orchestrator did its job: reach the goal with the tools it has. But from a process point of view, <strong>the approval was skipped</strong>.</p>
+<p>The lesson:</p>
+<ul>
+<li><strong>Instructions are not guardrails.</strong> "Category B needs approval" in the prompt is a wish, not a rule.</li>
+<li>Enforce rules where the model can't negotiate: a <strong>tool description</strong> that says <em>never use for software requests</em>, <strong>fixed inputs</strong>, <strong>permissions</strong>, and <strong>one tool per process</strong>.</li>
+<li>Always read the <strong>trace</strong>. The final answer looked fine; only the trace showed the wrong tool.</li>
+</ul>
+<p>That's why Task 4 added the "never use Create IT request" lines.</p>
+<hr />
+<h2 id="troubleshooting">Troubleshooting</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Cause</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tool fails, Activity shows <code>Resource ' RequesterEmail' does not exist</code></td>
+<td>User (UPN) contains typed text, not a chip</td>
+<td>Delete the text, insert <strong>[⚡ RequesterEmail]</strong> (golden rule #1). Publish again.</td>
+</tr>
+<tr>
+<td>Get manager fails although the email is correct</td>
+<td>The user has <strong>no manager</strong> in Entra ID</td>
+<td>Set the manager in the admin center (<strong>Option A</strong>), or delete <em>Get manager</em> and set <strong>Assigned to</strong> to a fixed approver email (<strong>Option B</strong>)</td>
+</tr>
+<tr>
+<td>The agent creates a normal IT request instead of calling the workflow</td>
+<td>Bypass (see above)</td>
+<td>Add the "never use Create IT request" instruction and tool description</td>
+</tr>
+<tr>
+<td>Manager gets <em>Something went wrong</em> / <code>OwaUserHasNoMailboxAndNoLicenseAssignedException</code> in Outlook</td>
+<td>The manager has <strong>no license / mailbox</strong></td>
+<td>Assign a license with Exchange Online, wait until the <strong>Mail</strong> tab shows mailbox storage (5-30 min), then run a <strong>new</strong> request</td>
+</tr>
+<tr>
+<td>Email reads <em>"forMicrosoft Visiowas approved"</em></td>
+<td>No spaces around the chip</td>
+<td>Golden rule #4</td>
+</tr>
+<tr>
+<td>The workflow isn't in the <strong>Add a tool</strong> list</td>
+<td>Not published, or wrong trigger</td>
+<td>Publish; the trigger must be <em>When an agent calls the workflow</em></td>
+</tr>
+<tr>
+<td>You picked a Nintex/Datablend "workflow"</td>
+<td>Searched instead of using <strong>Add &gt; Workflow</strong></td>
+<td>Remove it; use <strong>Add &gt; Workflow</strong></td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="check-your-work">Check your work</h2>
+<ul>
+<li class="task"><input type="checkbox"> The workflow <strong>Request software approval</strong> is <strong>published</strong> and listed in the agent's tools.</li>
+<li class="task"><input type="checkbox"> A Visio request created an item with <strong>Waiting for approval</strong>.</li>
+<li class="task"><input type="checkbox"> The manager received the approval and approved it.</li>
+<li class="task"><input type="checkbox"> The item changed to <strong>Approved</strong> and the requester got the email.</li>
+<li class="task"><input type="checkbox"> The <strong>Activity</strong> tab shows a <strong>Succeeded</strong> run with the Else branch <strong>Skipped</strong>.</li>
+<li class="task"><input type="checkbox"> Category A, C and D requests did <strong>not</strong> call the workflow.</li>
+</ul>
+<h2 id="key-takeaways">Key takeaways</h2>
+<ul>
+<li><strong>Agent for the fuzzy part, workflow for the fixed part.</strong></li>
+<li>A workflow tool needs <strong>When an agent calls the flow</strong> + <strong>Respond to the agent</strong>, must be <strong>published</strong>, and must answer within <strong>100 seconds</strong>. So: <strong>respond early, continue later</strong>.</li>
+<li>Fill fields carefully: <strong>chips are never typed</strong>, <strong>email and ID fields take one chip only</strong>, and <strong>text needs spaces around chips</strong>.</li>
+<li>Test from the agent, debug in the workflow's <strong>Activity</strong> tab.</li>
+<li>An approval is a <strong>human in the loop</strong> the model can't skip, because it lives in the workflow. But the agent can still <strong>route around</strong> the workflow if another tool lets it. Close that door.</li>
+</ul>
+<p><strong>Next:</strong> <a href="lab-07-skills-memory-and-connected-agents.html">Lab 07 - Skills, memory and connected agents</a></p>
+</article>
+<nav class="pager bottom"><a href="lab-05-connectors-and-mcp-tools.html">‹ 05 · Give your agent hands: connectors and MCP tools</a><a href="lab-07-skills-memory-and-connected-agents.html">07 · Skills, memory and connected agents ›</a></nav>
+<p class="source"><a href="https://github.com/medyabi/Copilot-Studio-lab" rel="noopener">View the source on GitHub</a></p>
+</main>
+<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#lab-introduction">Lab introduction</a></li><li><a href="#lab-scenario">Lab scenario</a></li><li><a href="#before-you-begin">Before you begin</a></li><li><a href="#job-skills">Job skills</a></li><li><a href="#before-you-start-how-to-fill-a-field-in-the-workflow-designer">Before you start: how to fill a field in the workflow designer</a></li><li><a href="#task-1-create-the-workflow-and-its-inputs">Task 1: Create the workflow and its inputs</a></li><li><a href="#task-2-find-the-manager-log-the-request-and-answer-the-agent">Task 2: Find the manager, log the request and answer the agent</a></li><li><a href="#task-3-add-the-manager-approval-and-the-two-branches">Task 3: Add the manager approval and the two branches</a></li><li><a href="#task-4-publish-the-workflow-and-add-it-to-the-agent">Task 4: Publish the workflow and add it to the agent</a></li><li><a href="#task-5-test-end-to-end-as-requester-and-approver">Task 5: Test end to end as requester and approver</a></li><li><a href="#spot-the-bypass">🔍 Spot the bypass</a></li><li><a href="#troubleshooting">Troubleshooting</a></li><li><a href="#check-your-work">Check your work</a></li><li><a href="#key-takeaways">Key takeaways</a></li></ol></aside>
+</div>
+<footer class="sitefoot">
+  <div class="foot-in">
+    <div><strong>AI Labs</strong><p>Hands-on Copilot labs by Mohamed Dyabi, Microsoft Certified Trainer.</p></div>
+    <ul>
+      <li><a href="index.html">Copilot Studio track</a></li>
+      <li><a href="../cowork/index.html">Copilot Cowork track</a></li>
+      <li><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Studio-lab" rel="noopener">Copilot Studio labs on GitHub</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Cowork-lab" rel="noopener">Cowork labs on GitHub</a></li>
+    </ul>
+  </div>
+  <p class="fine">Use a test or demo tenant: these labs create agents, workflows and SharePoint items, and consume Copilot Credits. Preview features and labels change often. An independent site, not affiliated with Microsoft. © 2026 Mohamed Dyabi</p>
+</footer>
+<script>
+(function(){
+  // Table of contents: open on wide screens, collapsible on small ones
+  var toc = document.querySelector('details.toc');
+  if (toc) {
+    var mq = window.matchMedia('(min-width: 1024px)');
+    var sync = function(){ if (mq.matches) toc.open = true; };
+    sync(); if (mq.addEventListener) mq.addEventListener('change', sync);
+    var cur = toc.querySelector('[aria-current="page"]');
+    if (cur && cur.scrollIntoView && mq.matches) cur.scrollIntoView({block: 'center'});
+  }
+  // Filter by title
+  var f = document.getElementById('toc-filter');
+  if (f) f.addEventListener('input', function(){
+    var q = f.value.trim().toLowerCase();
+    document.querySelectorAll('.toc-list li').forEach(function(li){
+      var hit = !q || li.textContent.toLowerCase().indexOf(q) !== -1;
+      li.hidden = !hit;
+    });
+  });
+  // Copy buttons on code blocks
+  document.querySelectorAll('.codeblock').forEach(function(cb){
+    var btn = cb.querySelector('.copy'), code = cb.querySelector('code');
+    if (!btn || !code) return;
+    btn.addEventListener('click', function(){
+      navigator.clipboard.writeText(code.innerText).then(function(){
+        btn.textContent = 'Copied'; setTimeout(function(){ btn.textContent = 'Copy'; }, 1500);
+      }, function(){ btn.textContent = 'Select and copy'; });
+    });
+  });
+  // Highlight the current section in "In this article"
+  var links = document.querySelectorAll('.aside-toc a');
+  if (links.length && 'IntersectionObserver' in window) {
+    var map = {}; links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var obs = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting) {
+        links.forEach(function(a){ a.classList.remove('on'); });
+        var a = map[e.target.id]; if (a) a.classList.add('on');
+      }});
+    }, {rootMargin: '0px 0px -75% 0px'});
+    Object.keys(map).forEach(function(id){ var h = document.getElementById(id); if (h) obs.observe(h); });
+  }
+})();
+</script><script>
+(function(){
+  var key = 'progress:' + location.pathname;
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('li.task input'));
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(key) || '{}'); } catch (e) {}
+  boxes.forEach(function(b, i){
+    b.id = 'task-' + i;
+    if (saved[i]) b.checked = true;
+    b.addEventListener('change', function(){
+      saved[i] = b.checked;
+      try { localStorage.setItem(key, JSON.stringify(saved)); } catch (e) {}
+    });
+  });
+})();
+</script>
+</body>
+</html>

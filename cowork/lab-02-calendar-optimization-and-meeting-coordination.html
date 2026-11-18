@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2: AI-Powered Calendar Optimization and Executive Meeting Coordination · AI Labs</title>
+<meta name="description" content="Hands-on labs for Microsoft Copilot Studio, Agent Builder and Microsoft 365 Copilot Cowork: from a simple agent to autonomous agents.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+</head>
+<body class="t-cowork">
+<a class="skip" href="#content">Skip to main content</a>
+<header class="masthead">
+  <a class="brand" href="../index.html"><img src="../assets/favicon.svg" alt="" width="24" height="24"><span>AI Labs</span></a>
+  <span class="divider" aria-hidden="true"></span>
+  <nav class="mainnav" aria-label="Main"><a href="../copilot-studio/index.html">Copilot Studio</a><a href="index.html" aria-current="true">Copilot Cowork</a><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></nav>
+  <a class="gh" href="https://github.com/medyabi" rel="noopener">GitHub</a>
+</header>
+<div class="doc has-toc">
+<details class="toc"><summary>Table of contents</summary><nav aria-label="AI automation with Copilot Cowork"><p class="toc-title">AI automation with Copilot Cowork</p><input id="toc-filter" class="toc-filter" type="search" placeholder="Filter by title" aria-label="Filter by title"><ol class="toc-list"><li><a href="index.html">Overview</a></li><li><a href="lab-01-getting-started-with-copilot-cowork.html">1 · Getting Started with Copilot Cowork</a></li><li><a href="lab-02-calendar-optimization-and-meeting-coordination.html" aria-current="page">2 · AI-Powered Calendar Optimization and Executive Meeting Coordination</a></li><li><a href="lab-03-intelligent-file-organizer.html">3 · Intelligent File Organizer</a></li><li><a href="lab-04-building-custom-cowork-skills.html">4 · Building Custom Cowork Skills (Read-only)</a></li><li><a href="lab-05-personal-work-dashboard.html">5 · Building a Personal Work Dashboard with Copilot Cowork (Read-only)</a></li><li><a href="lab-06-build-and-publish-a-cowork-plugin.html">6 · Building and Publishing a Custom Copilot Cowork Plugin (Read-only)</a></li><li class="group"><details><summary>Teaching editions</summary><ol><li><a href="teaching/lab-01-getting-started-with-copilot-cowork-teaching.html">1 · Getting Started with Copilot Cowork</a></li><li><a href="teaching/lab-02-calendar-optimization-and-meeting-coordination-teaching.html">2 · Calendar Optimization and Meeting Coordination</a></li><li><a href="teaching/lab-03-intelligent-file-organizer-teaching.html">3 · Intelligent File Organizer</a></li><li><a href="teaching/lab-04-building-custom-cowork-skills-teaching.html">4 · Building Custom Cowork Skills</a></li><li><a href="teaching/lab-05-personal-work-dashboard-teaching.html">5 · Personal Work Dashboard</a></li><li><a href="teaching/lab-06-build-and-publish-a-cowork-plugin-teaching.html">6 · Build and Publish a Cowork Plugin</a></li></ol></details></li><li><a href="trainer-guide.html">Trainer guide</a></li></ol></nav></details>
+<main id="content" class="article">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">AI Labs</a></li><li><a href="index.html">Cowork track</a></li></ol></nav>
+<article class="prose">
+<h1 id="lab-2-ai-powered-calendar-optimization-and-executive-meeting-coordination">Lab 2: AI-Powered Calendar Optimization and Executive Meeting Coordination</h1><p class="meta"><span>Lab</span><span>10 min read</span><span>Lab time: 40 min</span></p>
+<h2 id="overview">Overview</h2>
+<p>In this lab, you use <strong>Copilot Cowork</strong> as an AI-powered executive assistant. It manages your calendar and coordinates your meetings across Outlook Calendar, Outlook mail, Microsoft Teams and OneDrive. Instead of protecting focus time, finding meeting slots or checking for clashes yourself, you give Cowork instructions in plain language and let it do the work.</p>
+<p>You will apply executive-style standing rules across a full week, schedule new meetings and generate a one-page prep brief for an executive meeting. Finally, you will run a discovery pass that finds conflicts with your upcoming time away and resolves them through an approved handoff.</p>
+<p>Throughout the lab, keep an eye on two things:</p>
+<ul>
+<li>The <strong>Workspace</strong> panel on the right, which tracks the steps of Cowork's plan and the plugins it uses.</li>
+<li>The <strong>approval cards</strong> in the conversation. Cowork waits for you to approve each card before it changes your calendar or mailbox. This human-in-the-loop design matters most for bulk changes.</li>
+</ul>
+<div class="alert note"><p class="alert-title">Note</p><p><strong>Prerequisite:</strong> Complete Lab 1 first. This lab uses the emails, calendar events, OneDrive folders and Teams team you created there.</p>
+<p><strong>Disclaimer:</strong> Cowork is AI-powered, so your output may differ from the screenshots. Dates, times, event titles, task names and the number of items found will vary. Follow the workflow and check the expected outcome.</p></div>
+<h2 id="objectives">Objectives</h2>
+<ul>
+<li>Task 1: Executive calendar management</li>
+<li>Task 2: Intelligent meeting scheduling</li>
+<li>Task 3: Conflict detection and resolution</li>
+</ul>
+<h2 id="task-1-executive-calendar-management">Task 1: Executive calendar management</h2>
+<p>In this task, you set standing rules for Cowork to apply across next week: protect focus time, decline meetings that have no agenda, and keep Friday afternoon free. Cowork proposes every change as one batch for your review before it adds anything to your calendar.</p>
+<ol>
+<li>In Copilot, select <strong>Home (1)</strong> in the left pane. Enter the following prompt in the task box <strong>(2)</strong>, make sure <strong>Cowork (3)</strong> is selected, then select <strong>Send (4)</strong>.</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span></span><button type="button" class="copy">Copy</button></div><pre><code>Act as my executive assistant. Apply these standing rules to next week: block two 90-minute focus blocks before noon; decline meetings with no agenda after asking the organizer for one; keep Friday afternoons free; and summarize every change you make for my approval before applying it.</code></pre></div>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab2-01.png" /></p>
+<ol start="2">
+<li>Review the proposed changes. Cowork checks next week's calendar, confirms your mailbox time zone and working hours, and lists each proposed change in a numbered table with its date, time and <strong>Shows as</strong> status. Notice that Cowork states that <strong>nothing has been applied yet</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab2-02.png" /></p>
+<div class="alert note"><p class="alert-title">Note</p><p><strong>Note:</strong> Cowork may behave a little differently. It may first ask a few clarifying questions: answer them (or pick the recommended option) and click <strong>Next</strong> or <strong>Send</strong>. It may also show the <strong>Create calendar event?</strong> approval cards straight away: if so, skip step 3 and continue with step 4.</p></div>
+<ol start="3">
+<li>Scroll down to review the rest of the proposal, including the Friday afternoon <strong>Keep free</strong> hold and Cowork's notes on how it read your rules. Then type <strong>Approve all (1)</strong> in the <strong>Message Cowork</strong> box and click <strong>Send (2)</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab2-03.png" /></p>
+<ol start="4">
+<li>Cowork shows a <strong>Create calendar event?</strong> card (marked <strong>Medium risk</strong>) for each item: the two focus-block series that repeat Monday to Friday, and the Friday afternoon hold. On each card, check the date, time, repeat pattern and title, then click <strong>Save</strong>. Repeat until you have saved every card.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab2-04.png" /></p>
+<ol start="5">
+<li>Review the confirmation summary. Cowork shows the number of approved actions and a day-by-day table for next week: both focus blocks on every weekday and the <strong>Keep free</strong> hold on Friday afternoon, all shown as <strong>Busy</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab2-05.png" /></p>
+<h2 id="task-2-intelligent-meeting-scheduling">Task 2: Intelligent meeting scheduling</h2>
+<p>In this task, you ask Cowork to add two meetings to next week's calendar and confirm their final times. You then have it prepare you for the <strong>Steering Committee Review</strong> (created in Lab 1) by building a one-page prep brief in Word from your calendar, email and OneDrive, and saving it to OneDrive.</p>
+<h3 id="schedule-new-meetings">Schedule new meetings</h3>
+<ol>
+<li>Stay in the <strong>same Cowork conversation</strong> you used in Task 1. Cowork names it for you, for example <em>Executive Assistant Calendar Rules</em> or <em>Calendar Rules for Next Week</em>. Enter the following prompt in the <strong>Message Cowork</strong> box <strong>(1)</strong> and click <strong>Send (2)</strong>:</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span></span><button type="button" class="copy">Copy</button></div><pre><code>Add these 2 meetings to my Outlook calendar, covering next Monday and Thursday. I am the only attendee/organizer on both — do not invite anyone else, use only my own email if an attendee field is required. Add a Teams meeting link to each.
+
+- Monday: "Client Status Call – Northwind Account" — 10:00–10:30 AM
+- Thursday: "Budget Review – Phase 3 Sign-off" — 2:00–2:30 PM
+
+Confirm each one's final date/time in a summary table.</code></pre></div>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab2-06.png" /></p>
+<ol start="2">
+<li>Cowork shows a <strong>Create calendar event?</strong> card for each meeting. Check the date, time and title on both cards and click <strong>Save</strong> on each one.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab2-07.png" /></p>
+<ol start="3">
+<li>Review the summary table. Cowork confirms both meetings with you as the only attendee: <strong>Client Status Call – Northwind Account</strong> on Monday, 10:00–10:30 AM, and <strong>Budget Review – Phase 3 Sign-off</strong> on Thursday, 2:00–2:30 PM.</li>
+</ol>
+<div class="alert note"><p class="alert-title">Note</p><p><strong>Known issue:</strong> As in Lab 1, some lab tenants can't create Teams meeting links. Cowork then marks the link as <strong>Not added</strong> and explains why. This is an environment limitation, not an error on your part.</p></div>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab2-08.png" /></p>
+<div class="alert note"><p class="alert-title">Note</p><p><strong>Note:</strong> Because you scheduled these meetings in the same conversation, Cowork checks them against the focus blocks from Task 1. It flags that the Monday call overlaps a focus block and offers to shorten the block or move the call. Cowork only <em>proposes</em> this change and won't move anything unless you approve it, so you can continue without replying.</p></div>
+<h3 id="generate-an-executive-meeting-prep-brief">Generate an executive meeting prep brief</h3>
+<ol start="4">
+<li>In the left pane, select <strong>Home (1)</strong> and then <strong>New (2)</strong>. Make sure <strong>Cowork (3)</strong> is selected, enter the following prompt <strong>(4)</strong> and select <strong>Send (5)</strong>:</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span></span><button type="button" class="copy">Copy</button></div><pre><code>Prepare me for my Steering Committee Review meeting for Project Orion.
+
+Gather from these three sources only:
+- My calendar: that meeting's details and attendees
+- My email: Project Orion messages from the last 7 days
+- My OneDrive "Project Orion Files" folder
+
+Produce a one-page prep brief as a Word document containing: attendee list with my last interaction with each, the stated agenda and purpose, related email threads and files, open action items, and the decisions needed. Save it to my OneDrive "Lab Files" folder.
+
+Keep your final confirmation to one line.</code></pre></div>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab2-09.png" /></p>
+<ol start="5">
+<li>Watch Cowork work. It names the task (for example, <em>Steering Committee Prep Brief for Orion</em>), and the <strong>Working on it</strong> section shows each action as it runs, such as listing the contents of the <strong>Project Orion Files</strong> folder. In the Workspace panel, <strong>Steps</strong> tracks the plan (find the meeting, review Project Orion emails and files, write the brief, save it to Lab Files) and <strong>Plugins</strong> shows the sources in use, such as <strong>Calendar</strong>, <strong>SharePoint</strong> and <strong>Outlook</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab2-10.png" /></p>
+<ol start="6">
+<li>When Cowork is ready to save the brief, it shows an <strong>Approve action?</strong> card. Confirm that the <strong>Parent path</strong> is <strong>Lab Files</strong>, review the <strong>File name</strong> and click <strong>Approve</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab2-11.png" /></p>
+<ol start="7">
+<li>Review Cowork's confirmation that the brief is saved in your OneDrive <strong>Lab Files</strong> folder, then click the Word document card to open it.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab2-12.png" /></p>
+<ol start="8">
+<li>Review the prep brief. Check that it includes the meeting purpose and agenda, the attendee list with your last interaction with each attendee, the related email threads and files, the open action items and the decisions needed.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab2-13.png" /></p>
+<h2 id="task-3-conflict-detection-and-resolution">Task 3: Conflict detection and resolution</h2>
+<p>In this task, you prepare for a vacation <strong>next Monday through Friday</strong>, the same week you just filled with focus blocks and meetings. You ask Cowork to scan your email, calendar, To Do tasks and Teams, find the meetings and commitments that clash with your time away, and propose an action for each item. After you approve the plan, Cowork carries out the handoff.</p>
+<ol>
+<li>In the left pane, select <strong>New (1)</strong>. Enter the following prompt <strong>(2)</strong>, make sure <strong>Cowork (3)</strong> is selected, then select <strong>Send (4)</strong>:</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span></span><button type="button" class="copy">Copy</button></div><pre><code>I'm on vacation next Monday through Friday and returning to work the Monday after. Before I leave, scan the following and flag anything at risk while I'm away:
+
+- Email: unanswered threads and unsent drafts that need action before I leave
+- Calendar: meetings during my vacation week that conflict with my time away
+- To Do tasks: anything due during my time away or right after I return
+- Teams: unanswered questions directed at me
+
+Sort findings into 🔴 Must Handle, 🟡 Needs Delegation, and 🟢 Can Wait, with a proposed action for each item.
+
+Take no action yet - just show me the plan.</code></pre></div>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab2-14.png" /></p>
+<ol start="2">
+<li>Wait for Cowork to finish scanning, then review its response. Cowork first lists any <strong>coverage gaps</strong>, such as sources it couldn't access, so you know what to check yourself. It then sorts its findings into <strong>Must Handle</strong>, <strong>Needs Delegation</strong> and <strong>Can Wait</strong>, with a proposed action for each item. Scroll through all three sections.</li>
+</ol>
+<div class="alert note"><p class="alert-title">Note</p><p><strong>Note:</strong> In some lab tenants Cowork reports that <strong>Planner and To Do aren't accessible</strong>. That's expected; it tells you to check those tasks manually. The number of findings also depends on how much data is in your mailbox and calendar, so you may see fewer items than in the screenshots.</p></div>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab2-15.png" /></p>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab2-16.png" /></p>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab2-17.png" /></p>
+<ol start="3">
+<li>In the <strong>Message Cowork</strong> box, enter the following follow-up prompt <strong>(1)</strong> and click <strong>Send (2)</strong>:</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span></span><button type="button" class="copy">Copy</button></div><pre><code>That looks right. Go ahead and handle everything. Show me anything before it goes out, and get my approval before sending or posting anything.</code></pre></div>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab2-19.png" /></p>
+<ol start="4">
+<li>Cowork asks a few questions to plan the handoff, such as who should cover for you, how to handle the meetings you organize during your time away, and what to do with unsent drafts. For each question, select the option that suits you <strong>(1)</strong> and click <strong>Next (2)</strong>. On the last question, click <strong>Submit</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab2-20.png" /></p>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab2-21.png" /></p>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab2-22.png" /></p>
+<div class="alert note"><p class="alert-title">Note</p><p><strong>Note:</strong> The number and type of questions may differ from the screenshots. If Cowork shows approval cards directly after your answers, skip steps 5 and 6 and continue with step 7.</p></div>
+<ol start="5">
+<li>Review the plan Cowork builds from your answers, such as a meeting reschedule plan that moves each meeting to your return week and a list of items held until you return. Notice that Cowork has <strong>not</strong> sent, moved or cancelled anything yet.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab2-23.png" /></p>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab2-24.png" /></p>
+<ol start="6">
+<li>Enter the following follow-up prompt <strong>(1)</strong> and click <strong>Send (2)</strong>:</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span></span><button type="button" class="copy">Copy</button></div><pre><code>Confirm the proposed actions and execute them.</code></pre></div>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab2-26.png" /></p>
+<ol start="7">
+<li>Cowork shows an approval card for each action. Review each card and approve it: click <strong>Update</strong> for meeting changes, <strong>Send cancellation</strong> for meetings to cancel and <strong>Reply</strong> for email replies. When several cards are queued, use the arrows at the top of the card to move between them. You can also use <strong>Approve All</strong> once you've reviewed them.</li>
+</ol>
+<div class="alert tip"><p class="alert-title">Tip</p><p><strong>Tip:</strong> Read every draft before you approve it. Cowork may sign an email with a placeholder name or include details you want to change. You can edit the text directly in the card before clicking <strong>Reply</strong>.</p></div>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab2-27.png" /></p>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab2-28.png" /></p>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab2-29.png" /></p>
+<ol start="8">
+<li>Review Cowork's completion summary. It confirms that every approved action was carried out, including the new time for each rescheduled meeting.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab2-30.png" /></p>
+<h2 id="review">Review</h2>
+<p>In this lab, you:</p>
+<ul>
+<li>Applied executive-style standing rules across a full week and reviewed every proposed change before it was applied</li>
+<li>Scheduled new meetings with Cowork and confirmed their final dates and times in a summary table</li>
+<li>Built an AI-generated executive meeting prep brief in Word, combining calendar, email and OneDrive data</li>
+<li>Ran a discovery pass across email, calendar, tasks and Teams to find conflicts with your time away, then approved Cowork's resolution and handoff actions</li>
+</ul>
+</article>
+<nav class="pager bottom"><a href="lab-01-getting-started-with-copilot-cowork.html">‹ 1 · Getting Started with Copilot Cowork</a><a href="lab-03-intelligent-file-organizer.html">3 · Intelligent File Organizer ›</a></nav>
+<p class="source"><a href="https://github.com/medyabi/Copilot-Cowork-lab" rel="noopener">View the source on GitHub</a></p>
+</main>
+<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#overview">Overview</a></li><li><a href="#objectives">Objectives</a></li><li><a href="#task-1-executive-calendar-management">Task 1: Executive calendar management</a></li><li><a href="#task-2-intelligent-meeting-scheduling">Task 2: Intelligent meeting scheduling</a></li><li><a href="#task-3-conflict-detection-and-resolution">Task 3: Conflict detection and resolution</a></li><li><a href="#review">Review</a></li></ol></aside>
+</div>
+<footer class="sitefoot">
+  <div class="foot-in">
+    <div><strong>AI Labs</strong><p>Hands-on Copilot labs by Mohamed Dyabi, Microsoft Certified Trainer.</p></div>
+    <ul>
+      <li><a href="../copilot-studio/index.html">Copilot Studio track</a></li>
+      <li><a href="index.html">Copilot Cowork track</a></li>
+      <li><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Studio-lab" rel="noopener">Copilot Studio labs on GitHub</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Cowork-lab" rel="noopener">Cowork labs on GitHub</a></li>
+    </ul>
+  </div>
+  <p class="fine">Use a test or demo tenant: these labs create agents, workflows and SharePoint items, and consume Copilot Credits. Preview features and labels change often. An independent site, not affiliated with Microsoft. © 2026 Mohamed Dyabi</p>
+</footer>
+<script>
+(function(){
+  // Table of contents: open on wide screens, collapsible on small ones
+  var toc = document.querySelector('details.toc');
+  if (toc) {
+    var mq = window.matchMedia('(min-width: 1024px)');
+    var sync = function(){ if (mq.matches) toc.open = true; };
+    sync(); if (mq.addEventListener) mq.addEventListener('change', sync);
+    var cur = toc.querySelector('[aria-current="page"]');
+    if (cur && cur.scrollIntoView && mq.matches) cur.scrollIntoView({block: 'center'});
+  }
+  // Filter by title
+  var f = document.getElementById('toc-filter');
+  if (f) f.addEventListener('input', function(){
+    var q = f.value.trim().toLowerCase();
+    document.querySelectorAll('.toc-list li').forEach(function(li){
+      var hit = !q || li.textContent.toLowerCase().indexOf(q) !== -1;
+      li.hidden = !hit;
+    });
+  });
+  // Copy buttons on code blocks
+  document.querySelectorAll('.codeblock').forEach(function(cb){
+    var btn = cb.querySelector('.copy'), code = cb.querySelector('code');
+    if (!btn || !code) return;
+    btn.addEventListener('click', function(){
+      navigator.clipboard.writeText(code.innerText).then(function(){
+        btn.textContent = 'Copied'; setTimeout(function(){ btn.textContent = 'Copy'; }, 1500);
+      }, function(){ btn.textContent = 'Select and copy'; });
+    });
+  });
+  // Highlight the current section in "In this article"
+  var links = document.querySelectorAll('.aside-toc a');
+  if (links.length && 'IntersectionObserver' in window) {
+    var map = {}; links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var obs = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting) {
+        links.forEach(function(a){ a.classList.remove('on'); });
+        var a = map[e.target.id]; if (a) a.classList.add('on');
+      }});
+    }, {rootMargin: '0px 0px -75% 0px'});
+    Object.keys(map).forEach(function(id){ var h = document.getElementById(id); if (h) obs.observe(h); });
+  }
+})();
+</script>
+</body>
+</html>

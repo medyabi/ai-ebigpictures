@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>5: Building a Personal Work Dashboard with Copilot Cowork (Read-only) · AI Labs</title>
+<meta name="description" content="Hands-on labs for Microsoft Copilot Studio, Agent Builder and Microsoft 365 Copilot Cowork: from a simple agent to autonomous agents.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+</head>
+<body class="t-cowork">
+<a class="skip" href="#content">Skip to main content</a>
+<header class="masthead">
+  <a class="brand" href="../index.html"><img src="../assets/favicon.svg" alt="" width="24" height="24"><span>AI Labs</span></a>
+  <span class="divider" aria-hidden="true"></span>
+  <nav class="mainnav" aria-label="Main"><a href="../copilot-studio/index.html">Copilot Studio</a><a href="index.html" aria-current="true">Copilot Cowork</a><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></nav>
+  <a class="gh" href="https://github.com/medyabi" rel="noopener">GitHub</a>
+</header>
+<div class="doc has-toc">
+<details class="toc"><summary>Table of contents</summary><nav aria-label="AI automation with Copilot Cowork"><p class="toc-title">AI automation with Copilot Cowork</p><input id="toc-filter" class="toc-filter" type="search" placeholder="Filter by title" aria-label="Filter by title"><ol class="toc-list"><li><a href="index.html">Overview</a></li><li><a href="lab-01-getting-started-with-copilot-cowork.html">1 · Getting Started with Copilot Cowork</a></li><li><a href="lab-02-calendar-optimization-and-meeting-coordination.html">2 · AI-Powered Calendar Optimization and Executive Meeting Coordination</a></li><li><a href="lab-03-intelligent-file-organizer.html">3 · Intelligent File Organizer</a></li><li><a href="lab-04-building-custom-cowork-skills.html">4 · Building Custom Cowork Skills (Read-only)</a></li><li><a href="lab-05-personal-work-dashboard.html" aria-current="page">5 · Building a Personal Work Dashboard with Copilot Cowork (Read-only)</a></li><li><a href="lab-06-build-and-publish-a-cowork-plugin.html">6 · Building and Publishing a Custom Copilot Cowork Plugin (Read-only)</a></li><li class="group"><details><summary>Teaching editions</summary><ol><li><a href="teaching/lab-01-getting-started-with-copilot-cowork-teaching.html">1 · Getting Started with Copilot Cowork</a></li><li><a href="teaching/lab-02-calendar-optimization-and-meeting-coordination-teaching.html">2 · Calendar Optimization and Meeting Coordination</a></li><li><a href="teaching/lab-03-intelligent-file-organizer-teaching.html">3 · Intelligent File Organizer</a></li><li><a href="teaching/lab-04-building-custom-cowork-skills-teaching.html">4 · Building Custom Cowork Skills</a></li><li><a href="teaching/lab-05-personal-work-dashboard-teaching.html">5 · Personal Work Dashboard</a></li><li><a href="teaching/lab-06-build-and-publish-a-cowork-plugin-teaching.html">6 · Build and Publish a Cowork Plugin</a></li></ol></details></li><li><a href="trainer-guide.html">Trainer guide</a></li></ol></nav></details>
+<main id="content" class="article">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">AI Labs</a></li><li><a href="index.html">Cowork track</a></li></ol></nav>
+<article class="prose">
+<h1 id="lab-5-building-a-personal-work-dashboard-with-copilot-cowork-read-only">Lab 5: Building a Personal Work Dashboard with Copilot Cowork (Read-only)</h1><p class="meta"><span>Lab</span><span>12 min read</span><span>Lab time: 30 min</span></p>
+<h2 id="overview">Overview</h2>
+<p>Knowledge workers spend a lot of time switching between Outlook, Teams, Calendar and OneDrive to work out what matters today. Copilot Cowork can automate that: it pulls data from Microsoft Graph, builds a personalized output and runs it on a schedule so it stays fresh.</p>
+<p>In this lab, you see how Cowork builds a personal <strong>HTML work dashboard</strong> that brings your meetings, emails, chats, files and projects into one interactive page. You will see how it gathers the data, how the dashboard is scheduled to refresh automatically, how it is customized and locked in as a standard format, and how the scheduled task is managed.</p>
+<div class="alert important"><p class="alert-title">Important</p><p><strong>Read-only lab:</strong> To manage Copilot credit consumption, <strong>this whole lab is a guided walkthrough</strong>. Read each step and its screenshot (your trainer may demonstrate them live), but don't run them in your own environment.</p>
+<p><strong>Trainer note:</strong> The scheduled refresh in Task 3 runs <strong>12 times every weekday</strong> and consumes credits on every run. If you demo it live, <strong>pause or delete the task</strong> at the end of the session.</p>
+<p><strong>Disclaimer:</strong> Cowork is AI-powered, so the dashboard content, layout details and timings differ between runs.</p></div>
+<h2 id="objectives">Objectives</h2>
+<ul>
+<li>Task 1: Sign in and open Copilot Cowork</li>
+<li>Task 2: Build the dashboard with Cowork</li>
+<li>Task 3: Schedule the hourly refresh</li>
+<li>Task 4: Explore and customize the dashboard</li>
+<li>Task 5: Manage the scheduled task</li>
+</ul>
+<h2 id="task-1-sign-in-and-open-copilot-cowork">Task 1: Sign in and open Copilot Cowork</h2>
+<p>In this task, you sign in to Microsoft 365 Copilot and open Cowork.</p>
+<ol>
+<li>Open your browser and go to <code>https://m365.cloud.microsoft</code>, then click <strong>Sign in</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab5-01.png" /></p>
+<ol start="2">
+<li>Enter your lab username and click <strong>Next</strong>, then complete sign-in with your Temporary Access Pass.<ul>
+<li><strong>Username:</strong> <code>&lt;your lab username&gt;</code></li>
+<li><strong>Temporary Access Pass:</strong> <code>&lt;your Temporary Access Pass&gt;</code></li>
+</ul>
+</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab5-02.png" /></p>
+<ol start="3">
+<li>Select <strong>New</strong> in the left pane and make sure <strong>Cowork</strong> is selected in the task box.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab5-03.png" /></p>
+<h2 id="task-2-build-the-dashboard-with-cowork">Task 2: Build the dashboard with Cowork</h2>
+<p>In this task, Cowork generates a personalized HTML dashboard from your Outlook, Teams, Calendar, OneDrive and Microsoft Search data.</p>
+<ol>
+<li>Enter the following prompt in the task box <strong>(1)</strong> and select <strong>Send (2)</strong>:</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span></span><button type="button" class="copy">Copy</button></div><pre><code>Build me a personal work dashboard as a single HTML file at output/dashboard.html.
+
+Gather fresh data in parallel from across my Microsoft Graph:
+1. Calendar - today's remaining events and the next 7 days, including response status, organizer, and online-meeting status
+2. Inbox - unread, flagged, and high-importance messages from the last few days
+3. Teams - unread chats with last-message previews
+4. OneDrive - recently modified folders in my personal drive
+5. Search M365 for any action-required emails (access renewals, expense reminders, training notices)
+
+Infer my top 5-8 active projects by clustering recurring meetings, email threads, and customer names. Surface a "Next" action for each.
+
+Render a single-page HTML dashboard with this layout:
+- Header: greeting with today's date, last-refresh timestamp (Pacific time), "Click any item to open it" hint
+- KPI strip (6 tiles): overdue actions, unread emails, meetings tomorrow, Teams unread, active projects, OOF this week. Color the urgent ones red, warnings amber, healthy ones green.
+- Urgent banner (red-bordered): items that need attention today
+- Tomorrow's Schedule card: every event with time chip, title, response badge, organizer, conflict markers
+- Prep Notes card: short crib sheets for meetings that need prep
+- Top Projects card: inferred projects with a "Next" line each
+- Week Calendar Load: pure CSS bar chart of meeting counts per day for the upcoming week (flex-aligned &lt;div&gt; bars with linear-gradient fills and inline style="height: NN%")
+- Time Allocation: pure CSS doughnut chart splitting the week by category (&lt;div&gt; with conic-gradient background and a ::after hole, paired with a static legend)
+- Emails Needing a Reply card: the few messages that actually want a response - filter out newsletters, alerts, external pitches
+- Long-Term Action Items card: overdue tasks, weekly deadlines, upcoming milestones
+- Training &amp; Learning card: upcoming training sessions
+- OOF Radar card: teammates out this week &amp; next, with a heads-up if any organize a meeting I'm attending
+- People to Follow Up With card: name + one-line context
+- Unread Teams Chats card: top chats with one-line previews
+- Recent Files in Flight card: most recently modified OneDrive folders
+- Footer: refresh schedule note
+
+Visual style: soft blue gradient background (#f5f7fa to #e8edf3), rounded white cards with subtle shadow, 'Segoe UI' font, Microsoft accent #0078d4, color-coded badges (green #dcfce7/166534 = accepted, amber #fef3c7/92400e = tentative, red #fee2e2/991b1b = no response or overdue, purple #ede9fe/5b21b6 = organizer). Use a 2-column grid for the main sections, 3-column for the smaller cards, collapsing to single column under 1024px.
+
+PORTABILITY REQUIREMENT - the file must render correctly with zero external network requests and zero JavaScript executing. No &lt;script src="..."&gt; to any CDN. No Chart.js, D3, or other charting libraries. No external fonts (use the system 'Segoe UI' stack). All charts must be built from HTML + CSS only: bar chart = flex-aligned gradient &lt;div&gt; bars; doughnut = conic-gradient background with a ::after pseudo-element hole. All KPI tiles must render their final value directly in the HTML - never start at 0 and rely on JS to fill in the number. Any animation or interactivity (slide-up entry, pulse dot, dark mode toggle) is allowed but must be additive: CSS-driven where possible, and any inline script must gracefully no-op if blocked (e.g. wrap localStorage access in try/catch). The dashboard will be opened in sandboxed previews, email-attachment viewers, and locked-down browsers where scripts and CDNs frequently do not run.
+
+Premium touches to include (all must work without JavaScript or external requests):
+- Dark mode toggle in the header (pill button with sun/moon icon, CSS-variable theming). Persist preference via localStorage wrapped in try/catch so it gracefully no-ops where storage is blocked. The page must render correctly in light mode by default even if the toggle script never runs.
+- KPI tiles render their final value directly in the HTML (e.g. &lt;div class="kpi-value"&gt;22&lt;/div&gt;). Optional polish: a CSS-only entry animation (e.g. @keyframes opacity/translate). Do not start the tile text at 0 and rely on JS to count it up - that breaks in any context where scripts don't execute.
+- Slide-up entrance animation on KPI tiles and cards via pure CSS @keyframes.
+- 3-color header gradient (#0078d4 → #00bcf2 → #5e60ce) with radial-gradient overlay highlights.
+- Pulse dot animation on the "Last refreshed" timestamp via pure CSS @keyframes.
+- CSS bar chart for Week Calendar Load - &lt;div&gt; columns whose heights are inline style="height: NN%" percentages. Fill classes: .heavy (red linear-gradient when count ≥ 7), .light (gray when = 2), .normal (blue otherwise). Number labels sit at the top of each bar in white text.
+- CSS doughnut for Time Allocation - &lt;div class="donut"&gt; with conic-gradient(...) background, segment angles computed at build time from the percentages, and a ::after pseudo-element using the card background color to punch out the center hole. Render the legend as static HTML next to it.
+- Project health dots next to each project name - red (hot), green (active), amber (watch), with a soft box-shadow glow.
+- Avatar initials circles on the People card (avatar-1 through avatar-5 with gradient backgrounds).
+- Decorative ⚠ watermark in the urgent banner using a ::before pseudo-element.
+
+CRITICAL - every item must be clickable. Wrap every event, email, chat, file, project card, training item, action item, and person in an &lt;a href="https://github.com/medyabi/Copilot-Cowork-lab/blob/main/Instructions/Labs/..." target="_blank"&gt; anchor tag:
+- Calendar events → fetch via QueryGraph on /me/calendarView with $select including webLink; use the event's webLink
+- Emails → fetch via QueryGraph on /me/messages with $select including webLink; use the message's webLink
+- Teams chats → fetch via QueryGraph on /me/chats with $select including webUrl; use the chat's webUrl
+- OneDrive folders → use the item's webUrl
+- People → mailto:&lt;email&gt; for email follow-ups, or the 1:1 chat webUrl for Teams follow-ups
+- Project cards / training items without a canonical link → use an Outlook inbox search URL like https://outlook.office.com/mail/inbox?searchquery=&lt;keyword&gt;
+
+Style anchors with class names so they look like regular cards (color: inherit; text-decoration: none; display: block or flex; subtle hover background).
+
+Save to output/dashboard.html. After writing, confirm the file exists in output/.</code></pre></div>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab5-04.png" /></p>
+<ol start="2">
+<li>Cowork starts processing the request and gathers data from your calendar, inbox, Teams and OneDrive in parallel. Progress appears in the <strong>Workspace</strong> panel on the right.</li>
+</ol>
+<div class="alert note"><p class="alert-title">Note</p><p><strong>Note:</strong> Cowork can take <strong>5–10 minutes</strong> to complete this task.</p></div>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab5-05.png" /></p>
+<ol start="3">
+<li>When all steps are complete, <strong>dashboard.html</strong> appears under <strong>Output</strong> in the Workspace panel and as a card in the conversation. Click it to open the dashboard.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab5-06.png" /></p>
+<ol start="4">
+<li>The dashboard opens with a greeting and the last-refreshed time, six KPI tiles (<strong>Overdue actions</strong>, <strong>Unread emails</strong>, <strong>Meetings tomorrow</strong>, <strong>Teams unread</strong>, <strong>Active projects</strong>, <strong>OOF this week</strong>) and a <strong>Needs your attention today</strong> banner.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab5-07.png" /></p>
+<ol start="5">
+<li>Under <strong>Output</strong>, click the <strong>more options (...)</strong> icon next to <strong>dashboard.html</strong> and review the options: <strong>Open in OneDrive</strong>, <strong>Download</strong>, <strong>Open location</strong> and <strong>Copy link</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab5-08.png" /></p>
+<h2 id="task-3-schedule-the-hourly-refresh">Task 3: Schedule the hourly refresh</h2>
+<p>In this task, Cowork creates a recurring task that refreshes the dashboard throughout the workday, and the task is run once to check it works.</p>
+<ol>
+<li>In the same conversation, enter the following prompt and select <strong>Send</strong>:</li>
+</ol>
+<div class="alert note"><p class="alert-title">Note</p><p><strong>Note:</strong> Replace <code>&lt;your lab email address&gt;</code> with your own lab account. The time zone settings reflect the environment used to build this lab (Pacific time, account set to IST). Adapt them to your own region if needed.</p></div>
+<div class="codeblock"><div class="code-head"><span></span><button type="button" class="copy">Copy</button></div><pre><code>Set up a scheduled task that refreshes output/dashboard.html every weekday at :55 past the hour, from 6:55 AM through 5:55 PM Pacific time - auto-detect this from the device/browser's local timezone rather than the account's configured IST setting, and don't ask me to confirm it. If the device timezone can't be detected, default to America/Los_Angeles and proceed without asking.
+
+Use the same data-gathering and rendering instructions from the dashboard we just built - capture webLink/webUrl for every item so links stay clickable on every refresh.
+
+At the 9 AM Pacific run only (and no other hour), also send me an email:
+To: &lt;your lab email address&gt;
+Subject: "Your Daily Work Dashboard - [today's date in M/D format]"
+Body: brief greeting noting the dashboard is attached, every item is clickable, and the in-session version refreshes hourly
+Attachment: output/dashboard.html
+
+For all other hours, refresh the file silently - no email.
+
+Handle daylight saving automatically by re-deriving the Pacific offset at each run rather than hardcoding it, so the :55 anchor never drifts.
+
+Name the task "Refresh work dashboard (hourly at 9 AM, email at 9 AM)"</code></pre></div>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab5-09.png" /></p>
+<ol start="2">
+<li>On the <strong>Create recurring task?</strong> card, review the name, schedule, run location and instructions, then click <strong>Next</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab5-10.png" /></p>
+<ol start="3">
+<li>On the <strong>Review permissions</strong> page, check the permissions the task needs (for example, <strong>Outlook</strong> to email the 9 AM dashboard to yourself), make sure <strong>Run once now</strong> is selected and click <strong>Schedule</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab5-11.png" /></p>
+<ol start="4">
+<li>Cowork confirms <strong>Done — your scheduled task is now active</strong> and summarizes the schedule, the time zone handling, what happens on every run and what happens at the 9 AM run.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab5-12.png" /></p>
+<ol start="5">
+<li>In the Workspace panel, under <strong>Scheduled task</strong>, find the <strong>Refresh work dashboard</strong> task (running every weekday) and click it.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab5-13.png" /></p>
+<ol start="6">
+<li>On the task page, check that the status is <strong>Active</strong> and review the schedule and instructions.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab5-14.png" /></p>
+<ol start="7">
+<li>Click <strong>Run now</strong> to run the task immediately.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab5-15.png" /></p>
+<ol start="8">
+<li>Check the result: Cowork reports a <strong>silent refresh, no email</strong>, because the run happened outside the 9 AM window, and <strong>dashboard.html</strong> has a new <strong>Last refreshed</strong> timestamp.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab5-16.png" /></p>
+<ol start="9">
+<li>Under <strong>Output</strong>, click <strong>dashboard.html</strong> to open the refreshed dashboard.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab5-17.png" /></p>
+<ol start="10">
+<li>Check that the <strong>Last refreshed (1)</strong> timestamp shows the new time.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab5-18.png" /></p>
+<h2 id="task-4-explore-and-customize-the-dashboard">Task 4: Explore and customize the dashboard</h2>
+<p>In this task, the dashboard's sections are reviewed, the theme is switched, the layout is locked in as the standard for future dashboards and one card is removed.</p>
+<ol>
+<li>Scroll through the dashboard and review its sections, such as <strong>Tomorrow's Schedule</strong>, <strong>Prep Notes</strong>, <strong>Week Calendar Load</strong> and <strong>Time Allocation</strong>. Click any item to open it in Outlook, Teams or OneDrive.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab5-19.png" /></p>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab5-20.png" /></p>
+<ol start="2">
+<li>Click the <strong>Light/Dark</strong> theme button in the header.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab5-21.png" /></p>
+<ol start="3">
+<li>Check that the dashboard switches to dark mode.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab5-22.png" /></p>
+<ol start="4">
+<li>Go back to the Cowork conversation, enter the following <strong>(1)</strong> and select <strong>Send (2)</strong>:</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span></span><button type="button" class="copy">Copy</button></div><pre><code>Lock this dashboard format in for all future ones.</code></pre></div>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab5-23.png" /></p>
+<ol start="5">
+<li>On the <strong>Copy file</strong> card, select <strong>Always allow Copy artifact</strong> so future scheduled runs don't need approval for this step.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab5-24.png" /></p>
+<ol start="6">
+<li>On the <strong>Edit scheduled task</strong> card, review the new instructions and click <strong>Approve</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab5-25.png" /></p>
+<ol start="7">
+<li>Check Cowork's confirmation that the format is <strong>locked in</strong> as the standard: it saved a reference copy and the build code to <code>Documents/Cowork/dashboard-format</code>, updated the scheduled task to follow it and saved it as a lasting preference.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab5-26.png" /></p>
+<ol start="8">
+<li>Enter the following <strong>(1)</strong> and select <strong>Send (2)</strong>:</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span></span><button type="button" class="copy">Copy</button></div><pre><code>Remove the training and learning card.</code></pre></div>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab5-27.png" /></p>
+<ol start="9">
+<li>On the <strong>Edit scheduled task</strong> card, click <strong>Approve</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab5-28.png" /></p>
+<ol start="10">
+<li>Check the confirmation that the <strong>Training &amp; Learning</strong> card was removed from both the live dashboard and the locked-in standard, and how the remaining cards were rearranged.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab5-29.png" /></p>
+<ol start="11">
+<li>Click <strong>dashboard.html</strong> under <strong>Output</strong> to review the changes.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab5-30.png" /></p>
+<h2 id="task-5-manage-the-scheduled-task">Task 5: Manage the scheduled task</h2>
+<p>In this task, the scheduled dashboard automation is reviewed along with its management options.</p>
+<ol>
+<li>Select <strong>Automations</strong> in the left pane, then the <strong>Scheduled</strong> filter. Find the <strong>Refresh work dashboard</strong> task, check that it's active and click its <strong>ellipsis (...)</strong> to see the options: <strong>Edit</strong>, <strong>Run now</strong>, <strong>Pause</strong> and <strong>Delete</strong>.</li>
+</ol>
+<div class="alert warning"><p class="alert-title">Cost</p><p><strong>Note:</strong> If a task appears twice (as in the screenshot), the schedule was created twice. Delete the duplicate so the dashboard isn't refreshed, and credits aren't used, twice.</p></div>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab5-31.png" /></p>
+<h2 id="review">Review</h2>
+<p>In this lab, you saw how to:</p>
+<ul>
+<li>Build a personalized HTML work dashboard from Outlook, Teams, Calendar, OneDrive and Microsoft Search data, with clickable items and charts that work without JavaScript</li>
+<li>Schedule an hourly weekday refresh with a daily email at 9 AM, and test it with <strong>Run now</strong></li>
+<li>Customize the dashboard, switch its theme, lock its format in as a standard and remove a card</li>
+<li>Manage the scheduled task with <strong>Edit</strong>, <strong>Run now</strong>, <strong>Pause</strong> and <strong>Delete</strong></li>
+</ul>
+</article>
+<nav class="pager bottom"><a href="lab-04-building-custom-cowork-skills.html">‹ 4 · Building Custom Cowork Skills (Read-only)</a><a href="lab-06-build-and-publish-a-cowork-plugin.html">6 · Building and Publishing a Custom Copilot Cowork Plugin (Read-only) ›</a></nav>
+<p class="source"><a href="https://github.com/medyabi/Copilot-Cowork-lab" rel="noopener">View the source on GitHub</a></p>
+</main>
+<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#overview">Overview</a></li><li><a href="#objectives">Objectives</a></li><li><a href="#task-1-sign-in-and-open-copilot-cowork">Task 1: Sign in and open Copilot Cowork</a></li><li><a href="#task-2-build-the-dashboard-with-cowork">Task 2: Build the dashboard with Cowork</a></li><li><a href="#task-3-schedule-the-hourly-refresh">Task 3: Schedule the hourly refresh</a></li><li><a href="#task-4-explore-and-customize-the-dashboard">Task 4: Explore and customize the dashboard</a></li><li><a href="#task-5-manage-the-scheduled-task">Task 5: Manage the scheduled task</a></li><li><a href="#review">Review</a></li></ol></aside>
+</div>
+<footer class="sitefoot">
+  <div class="foot-in">
+    <div><strong>AI Labs</strong><p>Hands-on Copilot labs by Mohamed Dyabi, Microsoft Certified Trainer.</p></div>
+    <ul>
+      <li><a href="../copilot-studio/index.html">Copilot Studio track</a></li>
+      <li><a href="index.html">Copilot Cowork track</a></li>
+      <li><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Studio-lab" rel="noopener">Copilot Studio labs on GitHub</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Cowork-lab" rel="noopener">Cowork labs on GitHub</a></li>
+    </ul>
+  </div>
+  <p class="fine">Use a test or demo tenant: these labs create agents, workflows and SharePoint items, and consume Copilot Credits. Preview features and labels change often. An independent site, not affiliated with Microsoft. © 2026 Mohamed Dyabi</p>
+</footer>
+<script>
+(function(){
+  // Table of contents: open on wide screens, collapsible on small ones
+  var toc = document.querySelector('details.toc');
+  if (toc) {
+    var mq = window.matchMedia('(min-width: 1024px)');
+    var sync = function(){ if (mq.matches) toc.open = true; };
+    sync(); if (mq.addEventListener) mq.addEventListener('change', sync);
+    var cur = toc.querySelector('[aria-current="page"]');
+    if (cur && cur.scrollIntoView && mq.matches) cur.scrollIntoView({block: 'center'});
+  }
+  // Filter by title
+  var f = document.getElementById('toc-filter');
+  if (f) f.addEventListener('input', function(){
+    var q = f.value.trim().toLowerCase();
+    document.querySelectorAll('.toc-list li').forEach(function(li){
+      var hit = !q || li.textContent.toLowerCase().indexOf(q) !== -1;
+      li.hidden = !hit;
+    });
+  });
+  // Copy buttons on code blocks
+  document.querySelectorAll('.codeblock').forEach(function(cb){
+    var btn = cb.querySelector('.copy'), code = cb.querySelector('code');
+    if (!btn || !code) return;
+    btn.addEventListener('click', function(){
+      navigator.clipboard.writeText(code.innerText).then(function(){
+        btn.textContent = 'Copied'; setTimeout(function(){ btn.textContent = 'Copy'; }, 1500);
+      }, function(){ btn.textContent = 'Select and copy'; });
+    });
+  });
+  // Highlight the current section in "In this article"
+  var links = document.querySelectorAll('.aside-toc a');
+  if (links.length && 'IntersectionObserver' in window) {
+    var map = {}; links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var obs = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting) {
+        links.forEach(function(a){ a.classList.remove('on'); });
+        var a = map[e.target.id]; if (a) a.classList.add('on');
+      }});
+    }, {rootMargin: '0px 0px -75% 0px'});
+    Object.keys(map).forEach(function(id){ var h = document.getElementById(id); if (h) obs.observe(h); });
+  }
+})();
+</script>
+</body>
+</html>

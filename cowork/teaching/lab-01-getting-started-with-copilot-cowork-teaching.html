@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1: Getting Started with Copilot Cowork · AI Labs</title>
+<meta name="description" content="Hands-on labs for Microsoft Copilot Studio, Agent Builder and Microsoft 365 Copilot Cowork: from a simple agent to autonomous agents.">
+<link rel="stylesheet" href="../../assets/site.css">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../../assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
+</head>
+<body class="t-cowork">
+<a class="skip" href="#content">Skip to main content</a>
+<header class="masthead">
+  <a class="brand" href="../../index.html"><img src="../../assets/favicon.svg" alt="" width="24" height="24"><span>AI Labs</span></a>
+  <span class="divider" aria-hidden="true"></span>
+  <nav class="mainnav" aria-label="Main"><a href="../../copilot-studio/index.html">Copilot Studio</a><a href="../index.html" aria-current="true">Copilot Cowork</a><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></nav>
+  <a class="gh" href="https://github.com/medyabi" rel="noopener">GitHub</a>
+</header>
+<div class="doc has-toc">
+<details class="toc"><summary>Table of contents</summary><nav aria-label="AI automation with Copilot Cowork"><p class="toc-title">AI automation with Copilot Cowork</p><input id="toc-filter" class="toc-filter" type="search" placeholder="Filter by title" aria-label="Filter by title"><ol class="toc-list"><li><a href="../index.html">Overview</a></li><li><a href="../lab-01-getting-started-with-copilot-cowork.html">1 · Getting Started with Copilot Cowork</a></li><li><a href="../lab-02-calendar-optimization-and-meeting-coordination.html">2 · AI-Powered Calendar Optimization and Executive Meeting Coordination</a></li><li><a href="../lab-03-intelligent-file-organizer.html">3 · Intelligent File Organizer</a></li><li><a href="../lab-04-building-custom-cowork-skills.html">4 · Building Custom Cowork Skills (Read-only)</a></li><li><a href="../lab-05-personal-work-dashboard.html">5 · Building a Personal Work Dashboard with Copilot Cowork (Read-only)</a></li><li><a href="../lab-06-build-and-publish-a-cowork-plugin.html">6 · Building and Publishing a Custom Copilot Cowork Plugin (Read-only)</a></li><li class="group"><details open><summary>Teaching editions</summary><ol><li><a href="lab-01-getting-started-with-copilot-cowork-teaching.html" aria-current="page">1 · Getting Started with Copilot Cowork</a></li><li><a href="lab-02-calendar-optimization-and-meeting-coordination-teaching.html">2 · Calendar Optimization and Meeting Coordination</a></li><li><a href="lab-03-intelligent-file-organizer-teaching.html">3 · Intelligent File Organizer</a></li><li><a href="lab-04-building-custom-cowork-skills-teaching.html">4 · Building Custom Cowork Skills</a></li><li><a href="lab-05-personal-work-dashboard-teaching.html">5 · Personal Work Dashboard</a></li><li><a href="lab-06-build-and-publish-a-cowork-plugin-teaching.html">6 · Build and Publish a Cowork Plugin</a></li></ol></details></li><li><a href="../trainer-guide.html">Trainer guide</a></li></ol></nav></details>
+<main id="content" class="article">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../../index.html">AI Labs</a></li><li><a href="../index.html">Cowork track</a></li></ol></nav>
+<article class="prose">
+<h1 id="lab-1-getting-started-with-copilot-cowork-teaching-edition">Lab 1: Getting Started with Copilot Cowork (Teaching edition)</h1><p class="meta"><span>Teaching edition</span><span>10 min read</span><span>Lab time: 40 min</span></p>
+<p><strong>Time:</strong> about 40 minutes. The screenshots for every step are in the <a href="../lab-01-getting-started-with-copilot-cowork.html">lab instructions</a>.</p>
+<h2 id="before-we-start-what-is-cowork-really">Before we start: what is Cowork, really?</h2>
+<p>You've probably used <strong>Copilot Chat</strong>. You ask a question and get an answer. Then you ask the next question, and the next. You do the driving.</p>
+<p><strong>Copilot Cowork</strong> is different. You don't ask questions. You hand over a <em>job</em>.</p>
+<p>Think of the difference between asking a colleague "what time is my next meeting?" and asking an assistant to "get me ready for my next meeting." The first needs one lookup. The second needs a plan: check the calendar, read the related emails, find the files, write a summary. Cowork builds that plan, runs it step by step, and shows you its progress.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th></th>
+<th>Copilot Chat</th>
+<th>Copilot Cowork</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>How you work</td>
+<td>One question, one answer</td>
+<td>One instruction, many steps</td>
+</tr>
+<tr>
+<td>Who drives</td>
+<td>You guide each step</td>
+<td>Cowork plans and runs the steps</td>
+</tr>
+<tr>
+<td>Best for</td>
+<td>Quick lookups</td>
+<td>Complex, repeatable workflows</td>
+</tr>
+<tr>
+<td>History</td>
+<td>No task history</td>
+<td>Every task is saved and searchable</td>
+</tr>
+</tbody>
+</table></div>
+<p>So is Cowork going to send emails behind your back? <strong>No.</strong> Anything that changes something, like sending a mail or booking a meeting, appears first as an <strong>approval card</strong>. You read it and click <strong>Send</strong> or <strong>Save</strong>. Remember that idea. It comes back in every lab.</p>
+<h2 id="task-1-sign-in-and-look-around">Task 1: Sign in and look around</h2>
+<h3 id="sign-in">Sign in</h3>
+<p>Open <strong>Edge</strong> and go to <code>www.office.com</code>. Click <strong>Sign in</strong>.</p>
+<p>Enter your lab username, click <strong>Next</strong>, then enter your <strong>Temporary Access Pass</strong> and click <strong>Sign in</strong>. You'll find both on your lab environment's details page. When asked <em>Stay signed in?</em>, choose <strong>No</strong>. It's a shared lab machine, so don't leave the door open.</p>
+<h3 id="start-a-cowork-task">Start a Cowork task</h3>
+<p>On the <strong>Home</strong> tab, click <strong>New</strong>. Look at the task box: there's a switch with <strong>Chat</strong> and <strong>Cowork</strong>. Pick <strong>Cowork</strong>.</p>
+<p>That switch is the whole difference we just talked about. Same box, two very different engines.</p>
+<h3 id="borrow-a-ready-made-prompt">Borrow a ready-made prompt</h3>
+<p>What if you don't know what to ask? Under <strong>Try these next</strong>, click <strong>Show more</strong>. This opens <strong>Task ideas</strong>, a library of ready-to-run prompts grouped into <strong>Triage</strong>, <strong>Research</strong>, <strong>Create</strong>, <strong>Meetings</strong> and <strong>Automate</strong>.</p>
+<p>Search for <strong>Prep for a meeting</strong>, open it, and click <strong>Use this task</strong>.</p>
+<p>Now read the prompt Cowork drops into the task box. Notice something? It's not one question. It's a full brief: find my next meeting, read the related emails and Teams messages, ask me a few questions, then write a prep summary. That's what a good Cowork prompt looks like.</p>
+<p>Clear the box <strong>without sending it</strong>. We'll run real tasks soon.</p>
+<h3 id="meet-the-plugins-page">Meet the Plugins page</h3>
+<p>Click <strong>Plugins</strong> in the left menu. This is where Cowork gets new abilities.</p>
+<p>Two words to learn here:</p>
+<ul>
+<li>A <strong>skill</strong> is a set of instructions that teaches Cowork <em>how</em> to do a job your way.</li>
+<li>A <strong>plugin</strong> is a package. It can hold skills, <strong>connectors</strong> to outside systems, or both.</li>
+</ul>
+<p>Click the <strong>Filter</strong> icon next to <strong>Discover</strong> and pick <strong>Collaboration</strong> to narrow the list. Then click <strong>Add</strong> at the top. You'll see <strong>New skill</strong> and <strong>Upload</strong>. You'll build skills in Lab 5 and a full plugin in Lab 7. For now, just know where the door is.</p>
+<h2 id="task-2-fill-your-inbox">Task 2: Fill your inbox</h2>
+<p>Here's a problem. A fresh lab account has an empty mailbox. Cowork works on <em>your</em> data, so with no data it has nothing to work with.</p>
+<p>The fix? We let Cowork create the data itself.</p>
+<p>Click <strong>New</strong>, make sure <strong>Cowork</strong> is selected, paste the Task 2 prompt from the <a href="../lab-01-getting-started-with-copilot-cowork.html">lab instructions</a> and click <strong>Send</strong>.</p>
+<p>Now watch the <strong>Workspace</strong> panel on the right. It has three parts:</p>
+<ul>
+<li><strong>Steps</strong>: Cowork's plan, ticked off one by one (<em>Send email 1 — Northwind Retail</em>, and so on)</li>
+<li><strong>Tools</strong> / <strong>Plugins</strong>: the apps it's using, here <strong>Outlook</strong></li>
+<li><strong>Output</strong>: what it produced, here five sent emails</li>
+</ul>
+<p>This panel is your window into the agent's head. Get used to glancing at it.</p>
+<h3 id="will-you-see-approval-cards">Will you see approval cards?</h3>
+<p>Maybe, maybe not. The prompt says <em>"You have my approval to send all 5"</em>, so Cowork often just sends them and replies <strong>Done.</strong> Sometimes it still stops and shows a <strong>Send email?</strong> card for each one. If you get cards, read each email and click <strong>Send</strong>. Five cards, five clicks.</p>
+<p>Either way is correct. Why the difference? Cowork weighs the risk of each action. Sending mail outside the company is a bigger deal than mailing yourself.</p>
+<h3 id="check-the-result">Check the result</h3>
+<p>Open the <strong>app launcher</strong> (the nine dots, top left) and choose <strong>Outlook</strong>. If <em>Your privacy matters</em> pops up, click <strong>Continue</strong>. Open <strong>Inbox</strong>. You should see 5 new emails, each starting with its tag: <strong>[Northwind Retail]</strong>, <strong>[Fabrikam Industries]</strong>, <strong>[Tailspin Toys]</strong>, <strong>[PMO]</strong>, <strong>[PMO – Risk Management]</strong>.</p>
+<p>The Tailspin one has a red <strong>!</strong> for high importance. Cowork picked up the word <em>URGENT</em> on its own.</p>
+<h2 id="task-3-fill-your-calendar">Task 3: Fill your calendar</h2>
+<p>Same trick, different app. Go back to your Cowork conversation and send the Task 3 prompt in the <strong>same</strong> conversation.</p>
+<p>Look at the <strong>Steps</strong> panel. The counter might say <em>7/11</em> instead of starting from zero. Did something break? No. You're in the same conversation, so the email steps are still on the list.</p>
+<p>Notice the first thing Cowork does: <strong>Check calendar for conflicts</strong>. You asked for that rule, and it checks <em>before</em> it acts. That's planning, not just typing.</p>
+<p>If a <strong>Create calendar event?</strong> card appears, check the date and time and click <strong>Save</strong>. Note the <strong>Medium risk</strong> badge: creating events counts as a real change.</p>
+<h3 id="what-about-the-teams-link">What about the Teams link?</h3>
+<p>In some lab tenants Cowork tells you it <strong>couldn't add a Teams meeting link</strong>. That's the environment, not you. Cowork still creates the events, and it tells you honestly what it couldn't do. That honesty is exactly what you want from an agent. If you need a link, open the event in Outlook and switch on <strong>Teams meeting</strong>.</p>
+<h3 id="check-the-result_1">Check the result</h3>
+<p>In Outlook, click the <strong>Calendar</strong> icon on the left and choose <strong>Work week</strong>. You should see three events on the next three business days: <strong>Steering Committee Review</strong>, <strong>Security Assessment Meeting</strong> and <strong>Go-Live Readiness Review</strong>. Your dates will differ from your neighbor's if you didn't start on the same day.</p>
+<h2 id="task-4-upload-files-and-create-a-team">Task 4: Upload files and create a team</h2>
+<p>This one is old-fashioned clicking, no AI. Why? Later labs ask Cowork to classify, rename and govern files, and to post in Teams, so the files and the team must exist first.</p>
+<h3 id="onedrive">OneDrive</h3>
+<p>Open the app launcher and choose <strong>OneDrive</strong>. Dismiss <em>Work smarter with Copilot</em> with <strong>Not now</strong>. Go to <strong>My files</strong>.</p>
+<ol>
+<li>Click <strong>Create or upload &gt; Folder</strong>, name it <strong>Lab Files</strong>, click <strong>Create</strong>, then open it.</li>
+<li>Click <strong>Create or upload &gt; Folder upload</strong>, browse to <code>C:\LabFiles\lab file</code>, select <strong>Archivecandidates</strong> and click <strong>Upload</strong>. Confirm the <em>Upload 4 files to this site?</em> prompt with <strong>Upload</strong>.</li>
+<li>Repeat for <strong>Healthcare</strong>, <strong>Retail</strong> and <strong>Shared files</strong>. Skip <strong>Project Orion Files</strong> for now.</li>
+<li>Click <strong>Create or upload &gt; Files upload</strong>, select the four files (<code>access-control-policy</code>, <code>data-retention-policy</code>, <code>zava-audit-checklist</code>, <code>zava-risk-register</code>) and click <strong>Open</strong>.</li>
+</ol>
+<p>Check: <strong>Lab Files</strong> now holds 4 folders and 4 files, so <strong>8 items</strong>.</p>
+<ol start="5">
+<li>Go back to <strong>My files</strong>. Click <strong>Create or upload &gt; Folder upload</strong>, select <strong>Project Orion Files</strong> and click <strong>Upload</strong>.</li>
+</ol>
+<p>Check: <strong>Project Orion Files</strong> sits in <strong>My files</strong>, next to Lab Files, with <strong>8 items</strong>.</p>
+<p>Why does Project Orion Files go somewhere else? Because Lab 4 asks Cowork to find and govern it as a separate project area.</p>
+<h3 id="teams">Teams</h3>
+<p>Open the app launcher and choose <strong>Teams</strong>. Click <strong>Get Started</strong> on the welcome screen and close the QR-code tab.</p>
+<p>Under <strong>Teams and channels</strong>, click <strong>See all your teams</strong>, then <strong>Create team</strong>. Name the team <strong>Retail</strong>, keep the first channel as <strong>General</strong> and click <strong>Create</strong>. Click <strong>Skip</strong> when asked to add members.</p>
+<p>Check: <strong>Retail &gt; General</strong> appears in the left list with <em>Welcome to your new team!</em></p>
+<h2 id="task-5-context-history-and-automations">Task 5: Context, history and automations</h2>
+<p>Your environment is full of data now. Let's see how Cowork <em>uses</em> it.</p>
+<h3 id="work-context-the-button">Work context: the + button</h3>
+<p>In Cowork, click <strong>New</strong>, then the <strong>+</strong> in the task box, then <strong>Add content</strong>. A picker opens with tabs: <strong>All, Skills, People, Files, Meetings, Emails, Chats, Copilot, Channels, Sites, Fabric</strong>.</p>
+<p>Click through them. Recognize anything? Your <strong>[Tailspin Toys]</strong> email is there. So are your files.</p>
+<p>Why does this matter? Cowork already searches your data on its own. But when <em>you</em> attach the exact email or file, you remove the guesswork. It's like handing a colleague the folder instead of saying "it's somewhere on the drive."</p>
+<p>Press <strong>Esc</strong> to close the picker.</p>
+<h3 id="task-history">Task history</h3>
+<p>Every Cowork task is saved. Look at <strong>Recent</strong> in the left menu: <em>Seeding Outlook Inbox with Training Emails</em> is already there. Click <strong>Search</strong> in the left menu, type <strong>Seeding</strong>, and open the task. You land right back in the conversation, with its steps and output.</p>
+<p>Chat forgets. Cowork keeps a record.</p>
+<h3 id="your-first-automation">Your first automation</h3>
+<p>So far, Cowork only worked when you asked. What if it could start on its own every morning?</p>
+<p>Click <strong>Automations</strong>, then <strong>Add &gt; Create with Cowork</strong>. In the task box, send:</p>
+<div class="codeblock"><div class="code-head"><span></span><button type="button" class="copy">Copy</button></div><pre><code>I want to set up a scheduled task. Briefly explain how scheduled tasks work in Cowork, then ask me a few questions to figure out what I'd like Cowork to do and when it should run.</code></pre></div>
+<p>Cowork explains, then interviews you with quick question cards:</p>
+<ol>
+<li><em>What would you like Cowork to do on each run?</em> Pick <strong>Morning briefing</strong>, then <strong>Next</strong>.</li>
+<li><em>How often should it run?</em> Pick <strong>Every weekday</strong>, then <strong>Next</strong>.</li>
+<li>Pick a run time, then <strong>Next</strong>.</li>
+<li><em>How should you get the results?</em> Pick <strong>Email to me</strong>, then <strong>Submit</strong>.</li>
+</ol>
+<p>Cowork shows a summary card with the name, schedule and description. Leave <strong>Run once now</strong> ticked and click <strong>Schedule</strong>.</p>
+<p>Because <em>Run once now</em> is ticked, a <strong>Send email?</strong> card appears for the first briefing. Look at the button: <strong>Always allow: Only to \&lt;your address&gt;</strong>. Click it. You're telling Cowork: "for this automation, you may email <em>me</em> without asking." Only you, nobody else. That's a tight, safe permission.</p>
+<p>Now click <strong>Automations</strong>. Under <strong>All &gt; Active</strong> you'll see your briefing, with something like <em>Every weekday at 08:00 · Next run: in 15 hours</em>. The name might be <em>Weekday Morning Briefing</em> or close to it. That's fine.</p>
+<h3 id="one-more-look-at-task-ideas">One more look at Task ideas</h3>
+<p>Click <strong>New &gt; Show more</strong>. Browse the ideas: <strong>OOO handover pack</strong>, <strong>Calendar audit</strong>, <strong>Unread email triage</strong>... Sound familiar? Several of them are exactly what you'll build in the next labs.</p>
+<p>Search <strong>Meeting briefing</strong>, click <strong>Use this task</strong>, read the prompt, then clear the box without running it.</p>
+<h2 id="what-did-we-learn">What did we learn?</h2>
+<ul>
+<li><strong>Cowork takes jobs, not questions.</strong> It plans the steps and shows them in the <strong>Workspace</strong> panel.</li>
+<li><strong>You stay in control.</strong> Changes go through <strong>approval cards</strong>, and "Always allow" can be scoped tightly.</li>
+<li><strong>Your data is the fuel.</strong> You seeded emails, events, files and a team, and every later lab runs on them.</li>
+<li><strong>Work context</strong> (the + button) lets you point Cowork at the exact item.</li>
+<li><strong>Task history</strong> keeps every task searchable.</li>
+<li><strong>Automations</strong> let Cowork run on a schedule, without you starting it.</li>
+</ul>
+<p>Next up, Lab 2: we put Cowork in charge of your calendar.</p>
+</article>
+
+<p class="source"><a href="https://github.com/medyabi/Copilot-Cowork-lab" rel="noopener">View the source on GitHub</a></p>
+</main>
+<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#before-we-start-what-is-cowork-really">Before we start: what is Cowork, really?</a></li><li><a href="#task-1-sign-in-and-look-around">Task 1: Sign in and look around</a></li><li><a href="#task-2-fill-your-inbox">Task 2: Fill your inbox</a></li><li><a href="#task-3-fill-your-calendar">Task 3: Fill your calendar</a></li><li><a href="#task-4-upload-files-and-create-a-team">Task 4: Upload files and create a team</a></li><li><a href="#task-5-context-history-and-automations">Task 5: Context, history and automations</a></li><li><a href="#what-did-we-learn">What did we learn?</a></li></ol></aside>
+</div>
+<footer class="sitefoot">
+  <div class="foot-in">
+    <div><strong>AI Labs</strong><p>Hands-on Copilot labs by Mohamed Dyabi, Microsoft Certified Trainer.</p></div>
+    <ul>
+      <li><a href="../../copilot-studio/index.html">Copilot Studio track</a></li>
+      <li><a href="../index.html">Copilot Cowork track</a></li>
+      <li><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Studio-lab" rel="noopener">Copilot Studio labs on GitHub</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Cowork-lab" rel="noopener">Cowork labs on GitHub</a></li>
+    </ul>
+  </div>
+  <p class="fine">Use a test or demo tenant: these labs create agents, workflows and SharePoint items, and consume Copilot Credits. Preview features and labels change often. An independent site, not affiliated with Microsoft. © 2026 Mohamed Dyabi</p>
+</footer>
+<script>
+(function(){
+  // Table of contents: open on wide screens, collapsible on small ones
+  var toc = document.querySelector('details.toc');
+  if (toc) {
+    var mq = window.matchMedia('(min-width: 1024px)');
+    var sync = function(){ if (mq.matches) toc.open = true; };
+    sync(); if (mq.addEventListener) mq.addEventListener('change', sync);
+    var cur = toc.querySelector('[aria-current="page"]');
+    if (cur && cur.scrollIntoView && mq.matches) cur.scrollIntoView({block: 'center'});
+  }
+  // Filter by title
+  var f = document.getElementById('toc-filter');
+  if (f) f.addEventListener('input', function(){
+    var q = f.value.trim().toLowerCase();
+    document.querySelectorAll('.toc-list li').forEach(function(li){
+      var hit = !q || li.textContent.toLowerCase().indexOf(q) !== -1;
+      li.hidden = !hit;
+    });
+  });
+  // Copy buttons on code blocks
+  document.querySelectorAll('.codeblock').forEach(function(cb){
+    var btn = cb.querySelector('.copy'), code = cb.querySelector('code');
+    if (!btn || !code) return;
+    btn.addEventListener('click', function(){
+      navigator.clipboard.writeText(code.innerText).then(function(){
+        btn.textContent = 'Copied'; setTimeout(function(){ btn.textContent = 'Copy'; }, 1500);
+      }, function(){ btn.textContent = 'Select and copy'; });
+    });
+  });
+  // Highlight the current section in "In this article"
+  var links = document.querySelectorAll('.aside-toc a');
+  if (links.length && 'IntersectionObserver' in window) {
+    var map = {}; links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var obs = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting) {
+        links.forEach(function(a){ a.classList.remove('on'); });
+        var a = map[e.target.id]; if (a) a.classList.add('on');
+      }});
+    }, {rootMargin: '0px 0px -75% 0px'});
+    Object.keys(map).forEach(function(id){ var h = document.getElementById(id); if (h) obs.observe(h); });
+  }
+})();
+</script>
+</body>
+</html>

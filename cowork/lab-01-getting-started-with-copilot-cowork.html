@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1: Getting Started with Copilot Cowork · AI Labs</title>
+<meta name="description" content="Hands-on labs for Microsoft Copilot Studio, Agent Builder and Microsoft 365 Copilot Cowork: from a simple agent to autonomous agents.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+</head>
+<body class="t-cowork">
+<a class="skip" href="#content">Skip to main content</a>
+<header class="masthead">
+  <a class="brand" href="../index.html"><img src="../assets/favicon.svg" alt="" width="24" height="24"><span>AI Labs</span></a>
+  <span class="divider" aria-hidden="true"></span>
+  <nav class="mainnav" aria-label="Main"><a href="../copilot-studio/index.html">Copilot Studio</a><a href="index.html" aria-current="true">Copilot Cowork</a><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></nav>
+  <a class="gh" href="https://github.com/medyabi" rel="noopener">GitHub</a>
+</header>
+<div class="doc has-toc">
+<details class="toc"><summary>Table of contents</summary><nav aria-label="AI automation with Copilot Cowork"><p class="toc-title">AI automation with Copilot Cowork</p><input id="toc-filter" class="toc-filter" type="search" placeholder="Filter by title" aria-label="Filter by title"><ol class="toc-list"><li><a href="index.html">Overview</a></li><li><a href="lab-01-getting-started-with-copilot-cowork.html" aria-current="page">1 · Getting Started with Copilot Cowork</a></li><li><a href="lab-02-calendar-optimization-and-meeting-coordination.html">2 · AI-Powered Calendar Optimization and Executive Meeting Coordination</a></li><li><a href="lab-03-intelligent-file-organizer.html">3 · Intelligent File Organizer</a></li><li><a href="lab-04-building-custom-cowork-skills.html">4 · Building Custom Cowork Skills (Read-only)</a></li><li><a href="lab-05-personal-work-dashboard.html">5 · Building a Personal Work Dashboard with Copilot Cowork (Read-only)</a></li><li><a href="lab-06-build-and-publish-a-cowork-plugin.html">6 · Building and Publishing a Custom Copilot Cowork Plugin (Read-only)</a></li><li class="group"><details><summary>Teaching editions</summary><ol><li><a href="teaching/lab-01-getting-started-with-copilot-cowork-teaching.html">1 · Getting Started with Copilot Cowork</a></li><li><a href="teaching/lab-02-calendar-optimization-and-meeting-coordination-teaching.html">2 · Calendar Optimization and Meeting Coordination</a></li><li><a href="teaching/lab-03-intelligent-file-organizer-teaching.html">3 · Intelligent File Organizer</a></li><li><a href="teaching/lab-04-building-custom-cowork-skills-teaching.html">4 · Building Custom Cowork Skills</a></li><li><a href="teaching/lab-05-personal-work-dashboard-teaching.html">5 · Personal Work Dashboard</a></li><li><a href="teaching/lab-06-build-and-publish-a-cowork-plugin-teaching.html">6 · Build and Publish a Cowork Plugin</a></li></ol></details></li><li><a href="trainer-guide.html">Trainer guide</a></li></ol></nav></details>
+<main id="content" class="article">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">AI Labs</a></li><li><a href="index.html">Cowork track</a></li></ol></nav>
+<article class="prose">
+<h1 id="lab-1-getting-started-with-copilot-cowork">Lab 1: Getting Started with Copilot Cowork</h1><p class="meta"><span>Lab</span><span>13 min read</span><span>Lab time: 40 min</span></p>
+<h2 id="overview">Overview</h2>
+<p>In this lab you get oriented in <strong>Copilot Cowork</strong>, the agentic workspace inside Microsoft 365 Copilot. Copilot Chat answers one question at a time. Cowork works differently: it plans and carries out multi-step tasks for you, such as reading email, checking your calendar and working with files, and then delivers a finished result.</p>
+<p>You will sign in, tour the Cowork home screen, see how task ideas pre-fill ready-to-run prompts, and review the <strong>Plugins</strong> page. Next you will seed your environment with sample emails, calendar events, OneDrive files and a Teams team. Finally, you will return to Cowork to explore work context, task history and scheduled tasks.</p>
+<div class="alert note"><p class="alert-title">Note</p><p><strong>Note:</strong> Tasks 2, 3 and 4 are prerequisite setup steps. Cowork acts on real data in your mailbox, calendar, files and Teams, so these tasks create the data that this lab and every later lab depend on. Complete them in order before Task 5.</p>
+<p><strong>Disclaimer:</strong> Cowork is AI-powered, so your output may differ from the screenshots. Follow the workflow and check the expected outcome.</p></div>
+<h2 id="objectives">Objectives</h2>
+<ul>
+<li>Task 1: Sign in and explore the Cowork interface</li>
+<li>Task 2: Generate sample emails in Outlook</li>
+<li>Task 3: Generate sample calendar events in Outlook</li>
+<li>Task 4: Upload sample files to OneDrive and create a team in Microsoft Teams</li>
+<li>Task 5: Explore work context, task history and scheduled tasks</li>
+</ul>
+<h2 id="task-1-sign-in-and-explore-the-cowork-interface">Task 1: Sign in and explore the Cowork interface</h2>
+<p>In this task, you sign in to Microsoft 365, compare Copilot Cowork with Copilot Chat, explore the Cowork home screen and see how task ideas pre-fill ready-to-run prompts. You also review the <strong>Plugins</strong> page, where plugins and skills extend what Cowork can do.</p>
+<ol>
+<li>Review how Copilot Cowork compares to Copilot Chat.</li>
+</ol>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Copilot Chat</th>
+<th>Copilot Cowork</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>One question, one answer</td>
+<td>Multi-step tasks from a single instruction</td>
+</tr>
+<tr>
+<td>You guide each step</td>
+<td>Cowork plans and executes the steps itself</td>
+</tr>
+<tr>
+<td>Great for quick lookups</td>
+<td>Great for complex, repeatable workflows</td>
+</tr>
+<tr>
+<td>No task history</td>
+<td>All tasks are saved and searchable</td>
+</tr>
+</tbody>
+</table></div>
+<ol start="2">
+<li>Open <strong>Edge</strong>, go to <code>www.office.com</code> and click <strong>Sign in</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-A1.png" /></p>
+<ol start="3">
+<li>On the sign-in page, enter your lab username and click <strong>Next</strong>.<ul>
+<li><strong>Username:</strong> <code>&lt;your lab username&gt;</code> (from the lab environment details page)</li>
+</ul>
+</li>
+<li>Enter your Temporary Access Pass and click <strong>Sign in</strong>.<ul>
+<li><strong>Temporary Access Pass:</strong> <code>&lt;your Temporary Access Pass&gt;</code></li>
+</ul>
+</li>
+<li>When the <strong>Stay signed in?</strong> dialog appears, select <strong>No</strong>.</li>
+<li>To start a new Cowork session, on the <strong>Home (1)</strong> tab, select <strong>New (2)</strong>, then select <strong>Cowork (3)</strong> in the task box.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-A2.png" /></p>
+<ol start="7">
+<li>To see more suggested tasks, select <strong>Show more</strong> next to <strong>Try these next</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-A3.png" /></p>
+<ol start="8">
+<li>On the <strong>Task ideas</strong> page, enter <strong>Prep for a meeting (1)</strong> in the search box, then select the <strong>Prep for a meeting (2)</strong> task.</li>
+</ol>
+<div class="alert tip"><p class="alert-title">Tip</p><p><strong>Tip:</strong> Task ideas are grouped into <strong>Triage</strong>, <strong>Research</strong>, <strong>Create</strong>, <strong>Meetings</strong> and <strong>Automate</strong>.</p></div>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-A4.png" /></p>
+<ol start="9">
+<li>Review the task instructions and click <strong>Use this task</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-B1.png" /></p>
+<ol start="10">
+<li>Review the prompt that Cowork has pre-filled in the task box. In one instruction it gathers the meeting details, attendee context, related files and open action items. Clear the task box <strong>without sending it</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-B2.png" /></p>
+<ol start="11">
+<li>To filter plugins by category, select <strong>Home (1) &gt; Plugins (2)</strong>, select the <strong>Filter (3)</strong> icon next to <strong>Discover</strong>, then select <strong>Collaboration (4)</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-B3.png" /></p>
+<ol start="12">
+<li>On the <strong>Plugins</strong> page, select <strong>Add</strong> to see the two ways to add a skill: <strong>New skill</strong> creates a skill through a guided conversation, and <strong>Upload</strong> imports an existing skill file.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-B4.png" /></p>
+<h2 id="task-2-generate-sample-emails-in-outlook">Task 2: Generate sample emails in Outlook</h2>
+<p>In this task, you use Cowork to send 5 sample training emails to your own inbox for use in later labs.</p>
+<ol>
+<li>Select <strong>New (1)</strong>, make sure <strong>Cowork (2)</strong> is selected, paste the following prompt in the task box <strong>(3)</strong>, then select <strong>Send (4)</strong>.</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span></span><button type="button" class="copy">Copy</button></div><pre><code>I need you to seed my Outlook inbox with 5 sample training emails for a Copilot Cowork demo environment (Contoso Electronics / Project Orion ERP modernization scenario). Send each individually to my own email address so it lands as a received message in my Inbox. You have my approval to send all 5 without pausing for individual confirmation - send them one after another, then give me a final summary list (subject + time sent).
+
+For every email: proper business email (greeting, 2–3 short paragraphs or bullets, professional sign-off with sender name/title/company). Prefix the Subject line with the source tag in brackets. Do not literally attach files - mention any referenced attachment in the body text only.
+
+Send these 5, in order:
+
+1. [Northwind Retail] Subject: "Final Contract Review - Payment Milestone Clarification." From: Priya Desai, Procurement Lead, Northwind Retail. Reviewing the ERP contract, needs clarification on the payment milestone schedule before signing. Polite, slightly urgent - wants this resolved this week.
+
+2. [Fabrikam Industries] Subject: "Feature Request - Barcode Scanning &amp; Warehouse Integration." From: Marcus Webb, IT Director, Fabrikam Industries. Requests barcode scanning and warehouse-management integration be added to the ERP build; needed for their distribution centers. Leave this request open/unresolved in tone.
+
+3. [Tailspin Toys] Subject: "URGENT: Production Issue Affecting Order Processing." From: David Chen, IT Support Lead, Tailspin Toys. Urgent tone - a production issue is blocking order processing right now, needs immediate attention, asks for a callback ASAP. Leave this issue open/unresolved in tone.
+
+4. [PMO] Subject: "Invitation – Steering Committee Meeting." Short agenda (3–4 bullet points covering Project Orion milestones, budget status, go/no-go checkpoints), a list of expected attendees (by role, not real people — e.g., Steering Committee members, Project Sponsor, PMO), a placeholder Teams link, and a note that a deck is attached.
+
+5. [PMO – Risk Management] Subject: "Risk Review Meeting – Follow-Up Notes." Summarizes 3 decisions made in a recent risk review, each with an owner name and a due date.
+
+Once all 5 are sent, reply with only the word "Done."</code></pre></div>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-B5.png" /></p>
+<ol start="2">
+<li>Cowork starts processing the request. Its plan appears under <strong>Steps</strong> in the <strong>Workspace</strong> panel on the right.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-B6.png" /></p>
+<ol start="3">
+<li>Cowork may send all 5 emails without showing approval cards, because the prompt grants upfront approval. In that case it completes all steps (<strong>5/5</strong>) and replies <strong>Done.</strong> Go straight to step 5.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-B7.png" /></p>
+<ol start="4">
+<li><strong>Only if approval cards appear:</strong> review each <strong>Send email?</strong> card and click <strong>Send</strong>. Repeat for all 5 emails.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-B8.png" /></p>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-B9.png" /></p>
+<ol start="5">
+<li>Review the output. The <strong>Output</strong> section of the Workspace panel lists all 5 sent emails.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-B10.png" /></p>
+<ol start="6">
+<li>To verify the emails, open the Microsoft 365 <strong>app launcher (1)</strong> and select <strong>Outlook (2)</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-B11.png" /></p>
+<ol start="7">
+<li>If the <strong>Your privacy matters</strong> dialog appears, click <strong>Continue</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-B12.png" /></p>
+<ol start="8">
+<li>Go to <strong>Inbox (1)</strong> and confirm that all 5 sample emails <strong>(2)</strong> are present: <strong>[Northwind Retail]</strong>, <strong>[Fabrikam Industries]</strong>, <strong>[Tailspin Toys]</strong> (marked high importance), <strong>[PMO]</strong> and <strong>[PMO – Risk Management]</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-B13.png" /></p>
+<h2 id="task-3-generate-sample-calendar-events-in-outlook">Task 3: Generate sample calendar events in Outlook</h2>
+<p>In this task, you use Cowork to create 3 sample events that build out a realistic project calendar.</p>
+<ol>
+<li>Go back to the Microsoft 365 Copilot portal. In the <strong>same</strong> Cowork conversation, paste the following prompt <strong>(1)</strong> and click <strong>Send (2)</strong>:</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span></span><button type="button" class="copy">Copy</button></div><pre><code>I need you to create 3 sample calendar events on my Outlook calendar for a Copilot Cowork demo environment (Contoso Electronics / Project Orion ERP modernization scenario). Create all 3 without pausing for individual confirmation, then give me a summary table at the end (event title, date, time) once done.
+
+## Rules for every event
+
+- I am the only attendee/organizer — do NOT invite or add any other person's email address, even if a name or company is mentioned. Any names/companies mentioned should appear as plain text in the description only.
+- Add a Microsoft Teams meeting link to each event.
+- Schedule them on the next 3 consecutive business days starting tomorrow (skip weekends), one per business day, in the order below.
+- If any time conflicts with something already on my calendar, shift only that one event by 30 minutes and note it in your summary.
+
+## The 3 events
+
+Business day 1 — 2:00–3:00 PM
+Title: Steering Committee Review
+Description: Agenda: review of Project Orion milestones, budget status, and go/no-go checkpoints.
+Attendees (for reference only, do not invite): Steering Committee members, Project Sponsor, PMO.
+
+Business day 2 — 10:00–11:00 AM
+Title: Security Assessment Meeting
+Description: Agenda: review of vulnerability assessment findings (high-risk and medium findings) and required remediation plan.
+Attendees (reference only): Security Team, Compliance Officer, IT Director.
+
+Business day 3 — 10:00–11:30 AM
+Title: Go-Live Readiness Review
+Description: Agenda: walkthrough of the deployment readiness checklist (servers, backup, disaster recovery, monitoring), outstanding approval items, and the go-live decision.
+Attendees (reference only): Executive Sponsor, Infrastructure Lead, PMO, QA Lead.
+
+Once all 3 are created, reply with only the word "Done."</code></pre></div>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-B14.png" /></p>
+<ol start="2">
+<li>Cowork checks your calendar for conflicts, then creates the events.</li>
+</ol>
+<div class="alert note"><p class="alert-title">Note</p><p><strong>Note:</strong> Because this runs in the same conversation as Task 2, the <strong>Steps</strong> counter continues from the earlier steps (for example, 7/11). This is expected.</p></div>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-B15.png" /></p>
+<ol start="3">
+<li>Cowork may create all 3 events without showing approval cards. If no cards appear and Cowork replies <strong>Done.</strong>, go straight to step 5.</li>
+<li><strong>Only if approval cards appear:</strong> review each <strong>Create calendar event?</strong> card (marked <strong>Medium risk</strong>) and click <strong>Save</strong>. Repeat for the remaining 2 events.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-B16.png" /></p>
+<ol start="5">
+<li>Review the summary table with the 3 events, their dates and times.</li>
+</ol>
+<div class="alert note"><p class="alert-title">Note</p><p><strong>Known issue:</strong> In some lab tenants Cowork reports that it <strong>could not add a Teams meeting link</strong>. The events are still created correctly, so this is an environment limitation, not an error on your part. If you need a link, open the event in Outlook and switch on <strong>Teams meeting</strong>.</p></div>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-C1.png" /></p>
+<ol start="6">
+<li>Go back to Outlook and select the <strong>Calendar (1)</strong> icon on the left.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-C2.png" /></p>
+<ol start="7">
+<li>Select <strong>Work week</strong> and confirm that the 3 events appear on the next 3 business days: <strong>Steering Committee Review</strong>, <strong>Security Assessment Meeting</strong> and <strong>Go-Live Readiness Review</strong>. Your dates depend on the day you run the lab.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-C3.png" /></p>
+<h2 id="task-4-upload-sample-files-to-onedrive-and-create-a-team-in-microsoft-teams">Task 4: Upload sample files to OneDrive and create a team in Microsoft Teams</h2>
+<p>In this task, you upload sample folders and files to OneDrive, then create a team and channel in Microsoft Teams for use in later labs.</p>
+<div class="alert note"><p class="alert-title">Note</p><p><strong>Not on the lab VM?</strong> The same files are in this repository under <a href="https://github.com/medyabi/Copilot-Cowork-lab/tree/main/Allfiles/LabFiles/lab%20file" rel="noopener"><code>Allfiles/LabFiles/lab file</code></a>. Download the repository as a ZIP from the <a href="https://github.com/medyabi/Copilot-Cowork-lab" rel="noopener">home page</a>, extract it, and browse to that folder wherever this lab says <code>C:\LabFiles\lab file</code>.</p></div>
+<ol>
+<li>In the Microsoft 365 Copilot portal, open the <strong>app launcher (1)</strong> and select <strong>OneDrive (2)</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-C4.png" /></p>
+<ol start="2">
+<li>If the <strong>Work smarter with Copilot</strong> dialog appears, click <strong>Not now</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-D1.png" /></p>
+<ol start="3">
+<li>Select <strong>My files</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-D2.png" /></p>
+<ol start="4">
+<li>Click <strong>Create or upload (1)</strong> and select <strong>Folder (2)</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-D3.png" /></p>
+<ol start="5">
+<li>Name the folder <strong>Lab Files (1)</strong> and click <strong>Create (2)</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-D4.png" /></p>
+<ol start="6">
+<li>Verify that the <strong>Lab Files</strong> folder is created, then open it.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-D5.png" /></p>
+<ol start="7">
+<li>Inside <strong>Lab Files</strong>, click <strong>Create or upload (1)</strong> and select <strong>Folder upload (2)</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-D6.png" /></p>
+<ol start="8">
+<li>Browse to <code>C:\LabFiles\lab file</code> <strong>(1)</strong>, select <strong>Archivecandidates (2)</strong> and click <strong>Upload (3)</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-D7.png" /></p>
+<ol start="9">
+<li>When the browser asks <strong>Upload 4 files to this site?</strong>, click <strong>Upload</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-D8.png" /></p>
+<ol start="10">
+<li>Repeat steps 7–9 for the <strong>Healthcare</strong>, <strong>Retail</strong> and <strong>Shared files</strong> folders.</li>
+</ol>
+<div class="alert important"><p class="alert-title">Important</p><p><strong>Note:</strong> Do <strong>not</strong> upload <strong>Project Orion Files</strong> here. It goes in <strong>My files</strong> (step 14).</p></div>
+<ol start="11">
+<li>Verify that the 4 folders <strong>Archivecandidates</strong>, <strong>Healthcare</strong>, <strong>Retail</strong> and <strong>Shared files</strong> are visible. Then click <strong>Create or upload (1)</strong> and select <strong>Files upload (2)</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-D9.png" /></p>
+<ol start="12">
+<li>Browse to <code>C:\LabFiles\lab file</code> <strong>(1)</strong>, select the 4 files <strong>(2)</strong> (<code>access-control-policy</code>, <code>data-retention-policy</code>, <code>zava-audit-checklist</code>, <code>zava-risk-register</code>) and click <strong>Open (3)</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-D10.png" /></p>
+<ol start="13">
+<li>Verify that <strong>Lab Files</strong> contains 4 folders and 4 files, then select <strong>My files</strong> to go back.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-D11.png" /></p>
+<ol start="14">
+<li>In <strong>My files</strong>, click <strong>Create or upload (1)</strong> and select <strong>Folder upload (2)</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-D12.png" /></p>
+<ol start="15">
+<li>Browse to <code>C:\LabFiles\lab file</code> <strong>(1)</strong>, select <strong>Project Orion Files (2)</strong> and click <strong>Upload (3)</strong>. Confirm the upload prompt if it appears.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-D13.png" /></p>
+<ol start="16">
+<li>Verify that <strong>Project Orion Files</strong> appears in <strong>My files</strong> with <strong>8 items</strong>, and that <strong>Lab Files</strong> also shows <strong>8 items</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-D14.png" /></p>
+<ol start="17">
+<li>Go back to the Microsoft 365 Copilot portal, open the <strong>app launcher (1)</strong> and select <strong>Teams (2)</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-D15.png" /></p>
+<ol start="18">
+<li>On the <strong>Get to know Teams</strong> dialog, click <strong>Get Started</strong>. If a tab with a QR code opens, close it.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-D16.png" /></p>
+<ol start="19">
+<li>In Teams, under <strong>Teams and channels</strong>, click <strong>See all your teams (1)</strong>, then select <strong>Create team</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-E0.png" /></p>
+<ol start="20">
+<li>Enter <strong>Retail (1)</strong> as the team name, keep <strong>General (2)</strong> as the first channel name and click <strong>Create (3)</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-F1.png" /></p>
+<ol start="21">
+<li>On the <strong>Add members to Retail</strong> page, click <strong>Skip</strong>.</li>
+<li>Verify that the <strong>Retail</strong> team and its <strong>General</strong> channel appear in the left pane.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-F2.png" /></p>
+<h2 id="task-5-explore-work-context-task-history-and-scheduled-tasks">Task 5: Explore work context, task history and scheduled tasks</h2>
+<p>In this task, you see how Cowork surfaces your seeded data as work context, find a past task in your history, schedule a recurring task and browse task ideas.</p>
+<ol>
+<li>To add content to a task, select <strong>New (1)</strong>, then select the <strong>+ (2)</strong> icon in the task box and choose <strong>Add content (3)</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-F3.png" /></p>
+<ol start="2">
+<li>Click through each tab (<strong>All, Skills, People, Files, Meetings, Emails, Chats, Copilot, Channels, Sites, Fabric</strong>) and review what it shows. You should recognize the emails and files you seeded in Tasks 2–4. Press <strong>Esc</strong> to close the picker.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-F4.png" /></p>
+<ol start="3">
+<li>To search your task history, select <strong>Search</strong> in the left pane, type <strong>Seeding</strong>, and open the <strong>Seeding Outlook Inbox with Training Emails</strong> task. Confirm that the conversation, its steps and its output are all saved.</li>
+</ol>
+<div class="alert note"><p class="alert-title">Note</p><p><strong>Screenshot needed:</strong> Search pane showing the Seeding task result.</p></div>
+<ol start="4">
+<li>To create an automation, select <strong>Home (1) &gt; Automations (2)</strong>, then select <strong>Add (3) &gt; Create with Cowork (4)</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-F5.png" /></p>
+<ol start="5">
+<li>In the task box, enter the following prompt and click <strong>Send</strong>:</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span></span><button type="button" class="copy">Copy</button></div><pre><code>I want to set up a scheduled task. Briefly explain how scheduled tasks work in Cowork, then ask me a few questions to figure out what I'd like Cowork to do and when it should run.</code></pre></div>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-F6.png" /></p>
+<ol start="6">
+<li>Cowork explains scheduled tasks and asks questions. For <strong>What would you like Cowork to do on each run?</strong>, select <strong>Morning briefing (1)</strong> and click <strong>Next (2)</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-F7.png" /></p>
+<ol start="7">
+<li>For <strong>How often should it run?</strong>, select <strong>Every weekday (1)</strong> and click <strong>Next (2)</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-F8.png" /></p>
+<ol start="8">
+<li>Choose a run time and click <strong>Next</strong>.</li>
+<li>For <strong>How should you get the results?</strong>, select <strong>Email to me (1)</strong> and click <strong>Submit (2)</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-F9.png" /></p>
+<ol start="10">
+<li>Review the scheduled task card (name, schedule, description). Leave <strong>Run once now</strong> selected and click <strong>Schedule</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-F10.png" /></p>
+<ol start="11">
+<li>Because <strong>Run once now</strong> is selected, Cowork prepares the first briefing email. On the <strong>Send email?</strong> card, click <strong>Always allow: Only to \&lt;your address&gt;</strong>. This lets the automation email you, and only you, without asking each time.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-F11.png" /></p>
+<ol start="12">
+<li>Verify that Cowork processed the request and generated the briefing.</li>
+<li>Select <strong>Automations (1)</strong>. Under <strong>All &gt; Active</strong>, verify that your weekday briefing task <strong>(2)</strong> is scheduled and enabled.</li>
+</ol>
+<div class="alert note"><p class="alert-title">Note</p><p><strong>Note:</strong> Cowork names the task itself, so you may see <em>Weekday Morning Briefing</em>, <em>Weekday Morning Day-Ahead Briefing</em> or something similar. Check the schedule (every weekday) rather than the exact name.</p></div>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-F12.png" /></p>
+<ol start="14">
+<li>Select <strong>New (1)</strong>, then select <strong>Show more (2)</strong> next to <strong>Try these next</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-F13.png" /></p>
+<ol start="15">
+<li>Browse the task ideas, such as <strong>OOO handover pack</strong>, <strong>Calendar audit</strong> and <strong>Unread email triage</strong>. Several of them preview what you will build in the next labs.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-F14.png" /></p>
+<ol start="16">
+<li>Search for <strong>Meeting briefing (1)</strong> and select the <strong>Meeting briefing (2)</strong> task.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-F15.png" /></p>
+<ol start="17">
+<li>Click <strong>Use this task</strong>, read the prompt, then clear the task box (or press <strong>Esc</strong> twice) without running it.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab1-F16.png" /></p>
+<h2 id="review">Review</h2>
+<p>In this lab, you:</p>
+<ul>
+<li>Signed in to Microsoft 365, explored the Copilot Cowork home screen and saw how task ideas pre-fill ready-to-run prompts</li>
+<li>Explored the Plugins page and the options for adding skills</li>
+<li>Generated sample emails and calendar events in Outlook using Cowork</li>
+<li>Uploaded sample files to OneDrive and created a team and channel in Microsoft Teams</li>
+<li>Explored the + menu and the work-context sources available to a task</li>
+<li>Searched your task history, created a recurring scheduled task and browsed task ideas</li>
+</ul>
+</article>
+<nav class="pager bottom"><a href="index.html">‹ Overview</a><a href="lab-02-calendar-optimization-and-meeting-coordination.html">2 · AI-Powered Calendar Optimization and Executive Meeting Coordination ›</a></nav>
+<p class="source"><a href="https://github.com/medyabi/Copilot-Cowork-lab" rel="noopener">View the source on GitHub</a></p>
+</main>
+<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#overview">Overview</a></li><li><a href="#objectives">Objectives</a></li><li><a href="#task-1-sign-in-and-explore-the-cowork-interface">Task 1: Sign in and explore the Cowork interface</a></li><li><a href="#task-2-generate-sample-emails-in-outlook">Task 2: Generate sample emails in Outlook</a></li><li><a href="#task-3-generate-sample-calendar-events-in-outlook">Task 3: Generate sample calendar events in Outlook</a></li><li><a href="#task-4-upload-sample-files-to-onedrive-and-create-a-team-in-microsoft-teams">Task 4: Upload sample files to OneDrive and create a team in Microsoft Teams</a></li><li><a href="#task-5-explore-work-context-task-history-and-scheduled-tasks">Task 5: Explore work context, task history and scheduled tasks</a></li><li><a href="#review">Review</a></li></ol></aside>
+</div>
+<footer class="sitefoot">
+  <div class="foot-in">
+    <div><strong>AI Labs</strong><p>Hands-on Copilot labs by Mohamed Dyabi, Microsoft Certified Trainer.</p></div>
+    <ul>
+      <li><a href="../copilot-studio/index.html">Copilot Studio track</a></li>
+      <li><a href="index.html">Copilot Cowork track</a></li>
+      <li><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Studio-lab" rel="noopener">Copilot Studio labs on GitHub</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Cowork-lab" rel="noopener">Cowork labs on GitHub</a></li>
+    </ul>
+  </div>
+  <p class="fine">Use a test or demo tenant: these labs create agents, workflows and SharePoint items, and consume Copilot Credits. Preview features and labels change often. An independent site, not affiliated with Microsoft. © 2026 Mohamed Dyabi</p>
+</footer>
+<script>
+(function(){
+  // Table of contents: open on wide screens, collapsible on small ones
+  var toc = document.querySelector('details.toc');
+  if (toc) {
+    var mq = window.matchMedia('(min-width: 1024px)');
+    var sync = function(){ if (mq.matches) toc.open = true; };
+    sync(); if (mq.addEventListener) mq.addEventListener('change', sync);
+    var cur = toc.querySelector('[aria-current="page"]');
+    if (cur && cur.scrollIntoView && mq.matches) cur.scrollIntoView({block: 'center'});
+  }
+  // Filter by title
+  var f = document.getElementById('toc-filter');
+  if (f) f.addEventListener('input', function(){
+    var q = f.value.trim().toLowerCase();
+    document.querySelectorAll('.toc-list li').forEach(function(li){
+      var hit = !q || li.textContent.toLowerCase().indexOf(q) !== -1;
+      li.hidden = !hit;
+    });
+  });
+  // Copy buttons on code blocks
+  document.querySelectorAll('.codeblock').forEach(function(cb){
+    var btn = cb.querySelector('.copy'), code = cb.querySelector('code');
+    if (!btn || !code) return;
+    btn.addEventListener('click', function(){
+      navigator.clipboard.writeText(code.innerText).then(function(){
+        btn.textContent = 'Copied'; setTimeout(function(){ btn.textContent = 'Copy'; }, 1500);
+      }, function(){ btn.textContent = 'Select and copy'; });
+    });
+  });
+  // Highlight the current section in "In this article"
+  var links = document.querySelectorAll('.aside-toc a');
+  if (links.length && 'IntersectionObserver' in window) {
+    var map = {}; links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var obs = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting) {
+        links.forEach(function(a){ a.classList.remove('on'); });
+        var a = map[e.target.id]; if (a) a.classList.add('on');
+      }});
+    }, {rootMargin: '0px 0px -75% 0px'});
+    Object.keys(map).forEach(function(id){ var h = document.getElementById(id); if (h) obs.observe(h); });
+  }
+})();
+</script>
+</body>
+</html>

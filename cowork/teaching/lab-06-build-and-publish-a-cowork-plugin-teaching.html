@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>6: Build and Publish a Cowork Plugin · AI Labs</title>
+<meta name="description" content="Hands-on labs for Microsoft Copilot Studio, Agent Builder and Microsoft 365 Copilot Cowork: from a simple agent to autonomous agents.">
+<link rel="stylesheet" href="../../assets/site.css">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../../assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
+</head>
+<body class="t-cowork">
+<a class="skip" href="#content">Skip to main content</a>
+<header class="masthead">
+  <a class="brand" href="../../index.html"><img src="../../assets/favicon.svg" alt="" width="24" height="24"><span>AI Labs</span></a>
+  <span class="divider" aria-hidden="true"></span>
+  <nav class="mainnav" aria-label="Main"><a href="../../copilot-studio/index.html">Copilot Studio</a><a href="../index.html" aria-current="true">Copilot Cowork</a><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></nav>
+  <a class="gh" href="https://github.com/medyabi" rel="noopener">GitHub</a>
+</header>
+<div class="doc has-toc">
+<details class="toc"><summary>Table of contents</summary><nav aria-label="AI automation with Copilot Cowork"><p class="toc-title">AI automation with Copilot Cowork</p><input id="toc-filter" class="toc-filter" type="search" placeholder="Filter by title" aria-label="Filter by title"><ol class="toc-list"><li><a href="../index.html">Overview</a></li><li><a href="../lab-01-getting-started-with-copilot-cowork.html">1 · Getting Started with Copilot Cowork</a></li><li><a href="../lab-02-calendar-optimization-and-meeting-coordination.html">2 · AI-Powered Calendar Optimization and Executive Meeting Coordination</a></li><li><a href="../lab-03-intelligent-file-organizer.html">3 · Intelligent File Organizer</a></li><li><a href="../lab-04-building-custom-cowork-skills.html">4 · Building Custom Cowork Skills (Read-only)</a></li><li><a href="../lab-05-personal-work-dashboard.html">5 · Building a Personal Work Dashboard with Copilot Cowork (Read-only)</a></li><li><a href="../lab-06-build-and-publish-a-cowork-plugin.html">6 · Building and Publishing a Custom Copilot Cowork Plugin (Read-only)</a></li><li class="group"><details open><summary>Teaching editions</summary><ol><li><a href="lab-01-getting-started-with-copilot-cowork-teaching.html">1 · Getting Started with Copilot Cowork</a></li><li><a href="lab-02-calendar-optimization-and-meeting-coordination-teaching.html">2 · Calendar Optimization and Meeting Coordination</a></li><li><a href="lab-03-intelligent-file-organizer-teaching.html">3 · Intelligent File Organizer</a></li><li><a href="lab-04-building-custom-cowork-skills-teaching.html">4 · Building Custom Cowork Skills</a></li><li><a href="lab-05-personal-work-dashboard-teaching.html">5 · Personal Work Dashboard</a></li><li><a href="lab-06-build-and-publish-a-cowork-plugin-teaching.html" aria-current="page">6 · Build and Publish a Cowork Plugin</a></li></ol></details></li><li><a href="../trainer-guide.html">Trainer guide</a></li></ol></nav></details>
+<main id="content" class="article">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../../index.html">AI Labs</a></li><li><a href="../index.html">Cowork track</a></li></ol></nav>
+<article class="prose">
+<h1 id="lab-6-build-and-publish-a-cowork-plugin-teaching-edition">Lab 6: Build and Publish a Cowork Plugin (Teaching edition)</h1><p class="meta"><span>Teaching edition</span><span>5 min read</span><span>Lab time: 30 min</span></p>
+<p><strong>Time:</strong> about 30 minutes. The prompts and screenshots for every step are in the <a href="../lab-06-build-and-publish-a-cowork-plugin.html">lab instructions</a>. This whole lab is a walkthrough: publishing needs an admin role you don't have.</p>
+<h2 id="before-we-start-from-skill-to-plugin">Before we start: from skill to plugin</h2>
+<p>In Lab 4 you built a <strong>skill</strong>: one recipe that teaches Cowork how to do one job. Useful. But what if you need seven related recipes, plus live data from outside Microsoft 365, and you want to hand all of it to the whole company in one go?</p>
+<p>That's a <strong>plugin</strong>.</p>
+<p>Think of it like a toolbox. A skill is one tool. A plugin is the box: several tools, plus the <strong>connector</strong> that plugs them into the outside world, packed so anyone can pick it up.</p>
+<p>In this lab, Cowork builds a <strong>Financial Research</strong> plugin. It has:</p>
+<ul>
+<li><strong>Seven skills</strong>: company snapshot, financial trends, peer comparison, risk factors, earnings, executives and filing search.</li>
+<li><strong>One connector</strong> to <strong>SEC EDGAR</strong>, the public database of US company filings.</li>
+</ul>
+<p>Then an admin publishes it, and we ask it real questions.</p>
+<h2 id="whats-mcp">What's MCP?</h2>
+<p>The connector uses the <strong>Model Context Protocol</strong>, or <strong>MCP</strong>. What is that?</p>
+<p>Think of a power socket. Every appliance has the same plug, so any appliance works in any socket. MCP is that standard plug for AI. A service puts its data behind an <strong>MCP server</strong>. Any AI that speaks MCP can plug in and use its tools.</p>
+<p>Here, the SEC EDGAR MCP server offers tools like <strong>secedgar_company_search</strong> and <strong>secedgar_get_financials</strong>. Our skills tell Cowork <strong>when</strong> and <strong>how</strong> to use them.</p>
+<p>One warning. This MCP server is run by a community developer, not by Microsoft or the SEC, and it needs no sign-in. That's fine for public filings in a classroom. In your company, only plug in servers your security team has approved. Would you plug a stranger's charger into your laptop?</p>
+<h2 id="task-1-look-before-you-build">Task 1: Look before you build</h2>
+<p>Open <strong>Plugins</strong> and look around. What's already <strong>Added</strong>? Select <strong>Add</strong>: you get <strong>New skill</strong> and <strong>Upload</strong>. Filter on <strong>Skills</strong>: nothing custom yet.</p>
+<p>Why bother? Because you want a clean starting point. If a plugin with the same name is already there, you'll get confused later. (In the screenshots, the demo tenant already has a few copies of Financial Research. Yours won't.)</p>
+<h2 id="task-2-let-cowork-build-the-package">Task 2: Let Cowork build the package</h2>
+<h3 id="a-prompt-that-reads-like-a-spec">A prompt that reads like a spec</h3>
+<p>The Task 2 prompt is long. That's on purpose. It's not a question, it's a <strong>build specification</strong>. It tells Cowork:</p>
+<ol>
+<li><strong>What goes in the box</strong>: seven skills, one connector, two icons.</li>
+<li><strong>Where each file goes</strong>: the exact folder structure.</li>
+<li><strong>The manifest</strong>: the ID card of the plugin, given word for word.</li>
+<li><strong>The rules</strong>: what must be at the top level, what must never be nested.</li>
+<li><strong>How to check its work</strong>: a validation checklist.</li>
+</ol>
+<p>Why so strict? Because the admin center is strict. One property in the wrong place and the upload fails. When the target is picky, the prompt must be precise.</p>
+<h3 id="the-manifest-the-plugins-id-card">The manifest: the plugin's ID card</h3>
+<p><strong>manifest.json</strong> answers the questions the admin center asks: What's your name? Who made you? What's in the box? Where are your skills? Which servers do you talk to?</p>
+<p>Two lines matter most:</p>
+<ul>
+<li><strong>agentSkills</strong> lists the seven skill folders.</li>
+<li><strong>agentConnectors</strong> points to the SEC EDGAR MCP server.</li>
+</ul>
+<p>Both sit at the <strong>top level</strong> of the manifest. Not inside anything else. The prompt says it three times, because it's the most common mistake.</p>
+<h3 id="wait-then-check">Wait, then check</h3>
+<p>Cowork takes <strong>5 to 10 minutes</strong>. When it's done, look at <strong>Output</strong>: one ZIP, seven SKILL.md files, the manifest and two icons.</p>
+<p>Open the ZIP from OneDrive, download it, and look inside. Seven skill folders. Everything where the spec said. Trust, but verify.</p>
+<h2 id="task-3-publish-it">Task 3: Publish it</h2>
+<p>Now the admin takes over. In the <strong>Microsoft 365 admin center</strong>: <strong>Settings &gt; Integrated apps &gt; Upload custom apps</strong>.</p>
+<p>The flow is short:</p>
+<ol>
+<li>Choose <strong>Teams app</strong> and upload the ZIP.</li>
+<li>Wait for <strong>Manifest file validated</strong>. That's the admin center checking the ID card.</li>
+<li>Choose who gets it. We pick <strong>All users</strong>.</li>
+<li><strong>Finish deployment</strong>. Done.</li>
+</ol>
+<p>Why "Teams app" for a Copilot plugin? Because Microsoft 365 uses one app format, the <strong>unified app manifest</strong>, for Teams apps, agents and plugins. The package decides where it shows up, not the upload box.</p>
+<p>Notice that Cowork's summary pointed to a different path: <strong>Copilot &gt; Agents &gt; Upload agent</strong>. Both live in the Microsoft 365 admin center. What you must avoid is the <strong>Teams admin center</strong>: it may register the package as a Teams-only app.</p>
+<h3 id="plan-b">Plan B</h3>
+<p>Deployment didn't work? You can still add the plugin yourself: <strong>Plugins</strong>, search <strong>Financial Research</strong> under <strong>Discover</strong>, <strong>Install</strong>, then turn it on.</p>
+<h2 id="task-4-turn-it-on-and-ask-questions">Task 4: Turn it on and ask questions</h2>
+<p>Published doesn't mean active. Open <strong>Plugins</strong>, find <strong>Financial Research</strong> under <strong>Added</strong>, and look: the toggle is <strong>off</strong>. Turn it on.</p>
+<p>Now ask: <strong>"Give me a snapshot of Microsoft."</strong></p>
+<p>Watch the <strong>Workspace</strong> panel. You'll see <strong>Financial Research</strong> under Plugins, and steps like <strong>Secedgar get filing</strong>. That's the connector at work: Cowork is reading Microsoft's actual SEC filings, live.</p>
+<p>Then ask: <strong>"Show Microsoft's five-year revenue trend."</strong> This time Cowork calls <strong>Secedgar get financials</strong> and builds a five-year table with growth rates and margins.</p>
+<p>Notice what you <strong>didn't</strong> do. You didn't name a skill. You didn't name a tool. You just asked. The skill descriptions and trigger phrases did the matching for you. That's why we wrote them so carefully.</p>
+<p>One last reminder: these are AI-generated numbers from public data. Great for research. Not investment advice. Check the filing before you quote a figure.</p>
+<h2 id="what-did-we-learn">What did we learn?</h2>
+<ul>
+<li><strong>A plugin is a toolbox</strong>: several skills plus the connectors they need, in one package.</li>
+<li><strong>MCP is the standard plug</strong> between AI and outside services. Only plug in servers you trust.</li>
+<li><strong>A precise spec beats a vague prompt</strong> when the target, like the admin center, is strict.</li>
+<li><strong>The manifest is the plugin's ID card.</strong> Skills and connectors go at the top level.</li>
+<li><strong>Publish from the Microsoft 365 admin center</strong>, never the Teams admin center.</li>
+<li><strong>Published isn't enabled.</strong> Users still turn the plugin on, then just ask in plain language.</li>
+</ul>
+<p>Look how far you've come: from your first Cowork task in Lab 1 to building and shipping your own plugin. Well done.</p>
+</article>
+
+<p class="source"><a href="https://github.com/medyabi/Copilot-Cowork-lab" rel="noopener">View the source on GitHub</a></p>
+</main>
+<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#before-we-start-from-skill-to-plugin">Before we start: from skill to plugin</a></li><li><a href="#whats-mcp">What's MCP?</a></li><li><a href="#task-1-look-before-you-build">Task 1: Look before you build</a></li><li><a href="#task-2-let-cowork-build-the-package">Task 2: Let Cowork build the package</a></li><li><a href="#task-3-publish-it">Task 3: Publish it</a></li><li><a href="#task-4-turn-it-on-and-ask-questions">Task 4: Turn it on and ask questions</a></li><li><a href="#what-did-we-learn">What did we learn?</a></li></ol></aside>
+</div>
+<footer class="sitefoot">
+  <div class="foot-in">
+    <div><strong>AI Labs</strong><p>Hands-on Copilot labs by Mohamed Dyabi, Microsoft Certified Trainer.</p></div>
+    <ul>
+      <li><a href="../../copilot-studio/index.html">Copilot Studio track</a></li>
+      <li><a href="../index.html">Copilot Cowork track</a></li>
+      <li><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Studio-lab" rel="noopener">Copilot Studio labs on GitHub</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Cowork-lab" rel="noopener">Cowork labs on GitHub</a></li>
+    </ul>
+  </div>
+  <p class="fine">Use a test or demo tenant: these labs create agents, workflows and SharePoint items, and consume Copilot Credits. Preview features and labels change often. An independent site, not affiliated with Microsoft. © 2026 Mohamed Dyabi</p>
+</footer>
+<script>
+(function(){
+  // Table of contents: open on wide screens, collapsible on small ones
+  var toc = document.querySelector('details.toc');
+  if (toc) {
+    var mq = window.matchMedia('(min-width: 1024px)');
+    var sync = function(){ if (mq.matches) toc.open = true; };
+    sync(); if (mq.addEventListener) mq.addEventListener('change', sync);
+    var cur = toc.querySelector('[aria-current="page"]');
+    if (cur && cur.scrollIntoView && mq.matches) cur.scrollIntoView({block: 'center'});
+  }
+  // Filter by title
+  var f = document.getElementById('toc-filter');
+  if (f) f.addEventListener('input', function(){
+    var q = f.value.trim().toLowerCase();
+    document.querySelectorAll('.toc-list li').forEach(function(li){
+      var hit = !q || li.textContent.toLowerCase().indexOf(q) !== -1;
+      li.hidden = !hit;
+    });
+  });
+  // Copy buttons on code blocks
+  document.querySelectorAll('.codeblock').forEach(function(cb){
+    var btn = cb.querySelector('.copy'), code = cb.querySelector('code');
+    if (!btn || !code) return;
+    btn.addEventListener('click', function(){
+      navigator.clipboard.writeText(code.innerText).then(function(){
+        btn.textContent = 'Copied'; setTimeout(function(){ btn.textContent = 'Copy'; }, 1500);
+      }, function(){ btn.textContent = 'Select and copy'; });
+    });
+  });
+  // Highlight the current section in "In this article"
+  var links = document.querySelectorAll('.aside-toc a');
+  if (links.length && 'IntersectionObserver' in window) {
+    var map = {}; links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var obs = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting) {
+        links.forEach(function(a){ a.classList.remove('on'); });
+        var a = map[e.target.id]; if (a) a.classList.add('on');
+      }});
+    }, {rootMargin: '0px 0px -75% 0px'});
+    Object.keys(map).forEach(function(id){ var h = document.getElementById(id); if (h) obs.observe(h); });
+  }
+})();
+</script>
+</body>
+</html>

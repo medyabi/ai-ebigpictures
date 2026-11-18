@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trainer notes · AI Labs</title>
+<meta name="description" content="Hands-on labs for Microsoft Copilot Studio, Agent Builder and Microsoft 365 Copilot Cowork: from a simple agent to autonomous agents.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+</head>
+<body class="t-studio">
+<a class="skip" href="#content">Skip to main content</a>
+<header class="masthead">
+  <a class="brand" href="../index.html"><img src="../assets/favicon.svg" alt="" width="24" height="24"><span>AI Labs</span></a>
+  <span class="divider" aria-hidden="true"></span>
+  <nav class="mainnav" aria-label="Main"><a href="index.html" aria-current="true">Copilot Studio</a><a href="../cowork/index.html">Copilot Cowork</a><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></nav>
+  <a class="gh" href="https://github.com/medyabi" rel="noopener">GitHub</a>
+</header>
+<div class="doc has-toc">
+<details class="toc"><summary>Table of contents</summary><nav aria-label="From simple agents to autonomous agents"><p class="toc-title">From simple agents to autonomous agents</p><input id="toc-filter" class="toc-filter" type="search" placeholder="Filter by title" aria-label="Filter by title"><ol class="toc-list"><li><a href="index.html">Overview</a></li><li><a href="lab-00-prepare-the-lab-environment.html">00 · Prepare the lab environment</a></li><li><a href="lab-01-build-your-first-agent-with-agent-builder.html">01 · Build your first agent with natural language</a></li><li><a href="lab-02-ground-your-agent-in-company-knowledge.html">02 · Ground your agent in company knowledge</a></li><li><a href="lab-03-capabilities-skills-and-copy-to-copilot-studio.html">03 · Capabilities, skills and the jump to Copilot Studio</a></li><li><a href="lab-04-your-first-copilot-studio-agent.html">04 · Your first Copilot Studio agent</a></li><li><a href="lab-05-connectors-and-mcp-tools.html">05 · Give your agent hands: connectors and MCP tools</a></li><li><a href="lab-06-workflows-and-human-approval.html">06 · Workflows and human approval</a></li><li><a href="lab-07-skills-memory-and-connected-agents.html">07 · Skills, memory and connected agents</a></li><li><a href="lab-08-build-an-autonomous-agent.html">08 · Build an autonomous agent with triggers</a></li><li><a href="lab-09-evaluate-publish-and-govern.html">09 · Evaluate, publish and govern your agents</a></li><li><a href="trainer-notes.html" aria-current="page">Trainer guide</a></li></ol></nav></details>
+<main id="content" class="article">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">AI Labs</a></li><li><a href="index.html">Copilot Studio track</a></li></ol></nav>
+<article class="prose">
+<h1 id="trainer-notes">Trainer notes</h1><p class="meta"><span>Trainer guide</span><span>5 min read</span></p>
+<h2 id="suggested-agendas">Suggested agendas</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Format</th>
+<th>Labs</th>
+<th>Audience</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Half-day "business" track</td>
+<td>00 (pre-done by trainer), 01, 02, 03, demo of 08</td>
+<td>Business users, managers, pre-sales account teams</td>
+</tr>
+<tr>
+<td>One-day "maker" track</td>
+<td>00, 04, 05, 06, 07</td>
+<td>Makers, IT pros</td>
+</tr>
+<tr>
+<td>Two-day full path</td>
+<td>00-09</td>
+<td>Mixed workshop</td>
+</tr>
+<tr>
+<td>90-minute customer demo</td>
+<td>01 (live), 05 Task 5 (MCP), 08 Task 5-6 (trigger + injection)</td>
+<td>Customers, partners</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="before-the-session-do-this-48-hours-ahead">Before the session (do this 48 hours ahead)</h2>
+<ul>
+<li class="task"><input type="checkbox"> Assign <strong>Microsoft 365 Copilot</strong> licenses to every learner account (Labs 01-03).</li>
+<li class="task"><input type="checkbox"> Give every learner Copilot Studio access and a <strong>Dataverse environment</strong> (one shared "Agents-Lab" environment or one developer environment each). Check <strong>Copilot Credits</strong> capacity - building, testing, evaluating and autonomous runs all consume credits.</li>
+<li class="task"><input type="checkbox"> Set a <strong>manager</strong> in Entra ID for each learner account (Lab 06 approval). Simplest: make the trainer account everyone's manager.</li>
+<li class="task"><input type="checkbox"> Make sure that manager has a <strong>license with Exchange Online</strong> (a mailbox). An unlicensed manager receives the approval but Outlook fails with <code>OwaUserHasNoMailboxAndNoLicenseAssignedException</code>. A new mailbox takes 5-30 minutes to appear.</li>
+<li class="task"><input type="checkbox"> Check the Power Platform <strong>data policy</strong> of the lab environment allows: SharePoint, Office 365 Outlook, Office 365 Users, Approvals, Microsoft Teams, and custom MCP servers (Lab 05).</li>
+<li class="task"><input type="checkbox"> Check <strong>Knowledge sources for agents</strong> allows SharePoint and file upload.</li>
+<li class="task"><input type="checkbox"> Make sure Restricted SharePoint Search is <strong>off</strong> in the lab tenant (it blocks SharePoint knowledge in Agent Builder).</li>
+<li class="task"><input type="checkbox"> Optional: pre-create the Contoso IT Hub site and list for the half-day track.</li>
+</ul>
+<h2 id="verify-before-each-delivery-fast-moving-features">Verify before each delivery (fast-moving features)</h2>
+<p>These labs were written in <strong>November 2026</strong> against preview features of the Microsoft Copilot harness. Do a dry run and check:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Lab</th>
+<th>What to check</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>03</td>
+<td>Skills in Agent Builder: still under <strong>Configure &gt; Skills &gt; Add</strong>; zip limits (8 skills, 50 MB)</td>
+</tr>
+<tr>
+<td>03</td>
+<td><strong>Copy to Copilot Studio</strong> lands in the classic designer (standard harness) - confirmed Nov 2026; skills are not copied</td>
+</tr>
+<tr>
+<td>05</td>
+<td>MCP custom server dialog fields (Name / Description / Server URL / Authentication)</td>
+</tr>
+<tr>
+<td>06</td>
+<td>Actions placed <strong>after "Respond to the agent"</strong> keep running - confirmed Nov 2026 (Activity tab shows the approval step, 1m40s, then the If branch).</td>
+</tr>
+<tr>
+<td>06</td>
+<td>The <strong>▷ Test</strong> button is unavailable for agent-triggered workflows - test from the agent, debug in <strong>Activity</strong> / <strong>Run node</strong></td>
+</tr>
+<tr>
+<td>07</td>
+<td>Skills <strong>+</strong> menu: Upload a skill / Create from blank / Browse skills (preview) - confirmed Nov 2026; <code>.zip</code> upload works</td>
+</tr>
+<tr>
+<td>07</td>
+<td>Only agents built in the new experience can be connected; classic agents show <em>Classic agent connections are not supported</em></td>
+</tr>
+<tr>
+<td>07</td>
+<td><strong>Allow other agents to connect</strong> (Settings &gt; AI + behavior) is on by default - confirmed Nov 2026</td>
+</tr>
+<tr>
+<td>08</td>
+<td>Trigger list (SharePoint <strong>When an item is created</strong>, <strong>Recurrence</strong>), <strong>Start listening</strong> and <strong>Activate for myself</strong> flow</td>
+</tr>
+<tr>
+<td>09</td>
+<td>Evaluate CSV template columns; channel name for Teams + Microsoft 365 Copilot</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="common-problems">Common problems</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Likely cause</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Agent Builder ignores SharePoint files</td>
+<td>Source still <strong>Preparing</strong>, no permission, or Restricted SharePoint Search</td>
+<td>Wait, check access, check tenant setting</td>
+</tr>
+<tr>
+<td>"You can't use this environment" when copying</td>
+<td>No Dataverse or unsupported region</td>
+<td>Use the lab environment</td>
+</tr>
+<tr>
+<td>Tool greyed out in <strong>Add a tool</strong></td>
+<td>Blocked by data policy</td>
+<td>Adjust DLP for the lab environment</td>
+</tr>
+<tr>
+<td>Agent never calls the tool</td>
+<td>Vague tool name/description</td>
+<td>Rewrite description: <em>what, when, inputs</em></td>
+</tr>
+<tr>
+<td>Workflow not listed in Tools</td>
+<td>Not published, or missing trigger/response nodes</td>
+<td>Publish; check <strong>When an agent calls the flow</strong> + <strong>Respond to the agent</strong></td>
+</tr>
+<tr>
+<td>Workflow tool times out</td>
+<td>Approval placed before <strong>Respond to the agent</strong></td>
+<td>Respond first (100-second limit)</td>
+</tr>
+<tr>
+<td>Connected agent missing</td>
+<td>Not published, not allowed to connect, different environment</td>
+<td>Publish and enable connections</td>
+</tr>
+<tr>
+<td>Autonomous agent doesn't run</td>
+<td>Not published, or not activated in <strong>Agent management</strong></td>
+<td>Publish, then activate</td>
+</tr>
+<tr>
+<td>Workflow fails: <code>Resource ' RequesterEmail' does not exist</code></td>
+<td>Learner <strong>typed</strong> the input name instead of inserting the chip</td>
+<td>Golden rule #1 in Lab 06: delete the text, insert the ⚡ chip, publish again</td>
+</tr>
+<tr>
+<td>Approval never sent / invalid address</td>
+<td>Text in front of an email chip (<code>manager's Mail</code>, <code>Requester: RequesterEmail</code>)</td>
+<td>Email fields take <strong>one chip only</strong></td>
+</tr>
+<tr>
+<td>Agent created a normal IT request with Status New, no approval</td>
+<td><strong>Bypass</strong>: workflow failed, orchestrator used Create IT request</td>
+<td>Fix the workflow; add the "never use Create IT request for software" instruction + tool description. Great discussion point: instructions are not guardrails</td>
+</tr>
+<tr>
+<td>Learner picked a Nintex/Datablend "workflow"</td>
+<td>Searched "workflow" in Add a tool</td>
+<td>Use <strong>Add &gt; Workflow</strong></td>
+</tr>
+<tr>
+<td>Email reads "forMicrosoft Visiowas approved"</td>
+<td>No spaces around the chip in Body</td>
+<td>Add a space each side</td>
+</tr>
+<tr>
+<td>Closure skill not used, "no ticket found"</td>
+<td>The agent checked Find my IT requests first and the ticket doesn't exist</td>
+<td>Expected (grounded). Test with a real ticket number</td>
+</tr>
+<tr>
+<td>Memory test answers in English</td>
+<td>Memory off, not saved, or same conversation</td>
+<td>Save, then <strong>New chat</strong></td>
+</tr>
+<tr>
+<td>Trigger fires in a loop</td>
+<td>"Created <strong>or modified</strong>" trigger + agent updates the item</td>
+<td>Use "When an item is created"</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="discussion-questions-use-between-labs">Discussion questions (use between labs)</h2>
+<ol>
+<li>When is Agent Builder enough, and when do you need Copilot Studio? (Lab 03)</li>
+<li>User authentication vs. agent author authentication - which one for a Service Desk agent? For an autonomous agent? (Labs 05, 08)</li>
+<li>Which steps of your customer's process are <em>fuzzy</em> (agent) and which are <em>fixed</em> (workflow)? (Lab 06)</li>
+<li>Who should own the License Advisor - IT or the licensing team? Why? (Lab 07)</li>
+<li>Name three controls that stop an autonomous agent from doing damage that don't depend on the prompt. (Lab 08)</li>
+</ol>
+<h2 id="answer-key-expected-triage-for-lab-08-test-items">Answer key (expected triage for Lab 08 test items)</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Title</th>
+<th>Category</th>
+<th>Priority</th>
+<th>Team</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Laptop stolen from car</td>
+<td>Hardware</td>
+<td>High</td>
+<td>Endpoint</td>
+</tr>
+<tr>
+<td>Phishing - clicked link</td>
+<td>Security</td>
+<td>Critical</td>
+<td>SecOps</td>
+</tr>
+<tr>
+<td>Mouse not working (injection)</td>
+<td>Hardware, Normal - or "Needs human review"</td>
+<td></td>
+<td>Endpoint</td>
+</tr>
+<tr>
+<td>Docking station not detected (Lab 00 item)</td>
+<td>Hardware</td>
+<td>Normal</td>
+<td>Endpoint</td>
+</tr>
+</tbody>
+</table></div>
+</article>
+
+<p class="source"><a href="https://github.com/medyabi/Copilot-Studio-lab" rel="noopener">View the source on GitHub</a></p>
+</main>
+<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#suggested-agendas">Suggested agendas</a></li><li><a href="#before-the-session-do-this-48-hours-ahead">Before the session (do this 48 hours ahead)</a></li><li><a href="#verify-before-each-delivery-fast-moving-features">Verify before each delivery (fast-moving features)</a></li><li><a href="#common-problems">Common problems</a></li><li><a href="#discussion-questions-use-between-labs">Discussion questions (use between labs)</a></li><li><a href="#answer-key-expected-triage-for-lab-08-test-items">Answer key (expected triage for Lab 08 test items)</a></li></ol></aside>
+</div>
+<footer class="sitefoot">
+  <div class="foot-in">
+    <div><strong>AI Labs</strong><p>Hands-on Copilot labs by Mohamed Dyabi, Microsoft Certified Trainer.</p></div>
+    <ul>
+      <li><a href="index.html">Copilot Studio track</a></li>
+      <li><a href="../cowork/index.html">Copilot Cowork track</a></li>
+      <li><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Studio-lab" rel="noopener">Copilot Studio labs on GitHub</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Cowork-lab" rel="noopener">Cowork labs on GitHub</a></li>
+    </ul>
+  </div>
+  <p class="fine">Use a test or demo tenant: these labs create agents, workflows and SharePoint items, and consume Copilot Credits. Preview features and labels change often. An independent site, not affiliated with Microsoft. © 2026 Mohamed Dyabi</p>
+</footer>
+<script>
+(function(){
+  // Table of contents: open on wide screens, collapsible on small ones
+  var toc = document.querySelector('details.toc');
+  if (toc) {
+    var mq = window.matchMedia('(min-width: 1024px)');
+    var sync = function(){ if (mq.matches) toc.open = true; };
+    sync(); if (mq.addEventListener) mq.addEventListener('change', sync);
+    var cur = toc.querySelector('[aria-current="page"]');
+    if (cur && cur.scrollIntoView && mq.matches) cur.scrollIntoView({block: 'center'});
+  }
+  // Filter by title
+  var f = document.getElementById('toc-filter');
+  if (f) f.addEventListener('input', function(){
+    var q = f.value.trim().toLowerCase();
+    document.querySelectorAll('.toc-list li').forEach(function(li){
+      var hit = !q || li.textContent.toLowerCase().indexOf(q) !== -1;
+      li.hidden = !hit;
+    });
+  });
+  // Copy buttons on code blocks
+  document.querySelectorAll('.codeblock').forEach(function(cb){
+    var btn = cb.querySelector('.copy'), code = cb.querySelector('code');
+    if (!btn || !code) return;
+    btn.addEventListener('click', function(){
+      navigator.clipboard.writeText(code.innerText).then(function(){
+        btn.textContent = 'Copied'; setTimeout(function(){ btn.textContent = 'Copy'; }, 1500);
+      }, function(){ btn.textContent = 'Select and copy'; });
+    });
+  });
+  // Highlight the current section in "In this article"
+  var links = document.querySelectorAll('.aside-toc a');
+  if (links.length && 'IntersectionObserver' in window) {
+    var map = {}; links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var obs = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting) {
+        links.forEach(function(a){ a.classList.remove('on'); });
+        var a = map[e.target.id]; if (a) a.classList.add('on');
+      }});
+    }, {rootMargin: '0px 0px -75% 0px'});
+    Object.keys(map).forEach(function(id){ var h = document.getElementById(id); if (h) obs.observe(h); });
+  }
+})();
+</script><script>
+(function(){
+  var key = 'progress:' + location.pathname;
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('li.task input'));
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(key) || '{}'); } catch (e) {}
+  boxes.forEach(function(b, i){
+    b.id = 'task-' + i;
+    if (saved[i]) b.checked = true;
+    b.addEventListener('change', function(){
+      saved[i] = b.checked;
+      try { localStorage.setItem(key, JSON.stringify(saved)); } catch (e) {}
+    });
+  });
+})();
+</script>
+</body>
+</html>

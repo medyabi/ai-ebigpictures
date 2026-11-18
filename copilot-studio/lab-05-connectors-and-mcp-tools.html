@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>05: Give your agent hands: connectors and MCP tools · AI Labs</title>
+<meta name="description" content="Hands-on labs for Microsoft Copilot Studio, Agent Builder and Microsoft 365 Copilot Cowork: from a simple agent to autonomous agents.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+</head>
+<body class="t-studio">
+<a class="skip" href="#content">Skip to main content</a>
+<header class="masthead">
+  <a class="brand" href="../index.html"><img src="../assets/favicon.svg" alt="" width="24" height="24"><span>AI Labs</span></a>
+  <span class="divider" aria-hidden="true"></span>
+  <nav class="mainnav" aria-label="Main"><a href="index.html" aria-current="true">Copilot Studio</a><a href="../cowork/index.html">Copilot Cowork</a><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></nav>
+  <a class="gh" href="https://github.com/medyabi" rel="noopener">GitHub</a>
+</header>
+<div class="doc has-toc">
+<details class="toc"><summary>Table of contents</summary><nav aria-label="From simple agents to autonomous agents"><p class="toc-title">From simple agents to autonomous agents</p><input id="toc-filter" class="toc-filter" type="search" placeholder="Filter by title" aria-label="Filter by title"><ol class="toc-list"><li><a href="index.html">Overview</a></li><li><a href="lab-00-prepare-the-lab-environment.html">00 · Prepare the lab environment</a></li><li><a href="lab-01-build-your-first-agent-with-agent-builder.html">01 · Build your first agent with natural language</a></li><li><a href="lab-02-ground-your-agent-in-company-knowledge.html">02 · Ground your agent in company knowledge</a></li><li><a href="lab-03-capabilities-skills-and-copy-to-copilot-studio.html">03 · Capabilities, skills and the jump to Copilot Studio</a></li><li><a href="lab-04-your-first-copilot-studio-agent.html">04 · Your first Copilot Studio agent</a></li><li><a href="lab-05-connectors-and-mcp-tools.html" aria-current="page">05 · Give your agent hands: connectors and MCP tools</a></li><li><a href="lab-06-workflows-and-human-approval.html">06 · Workflows and human approval</a></li><li><a href="lab-07-skills-memory-and-connected-agents.html">07 · Skills, memory and connected agents</a></li><li><a href="lab-08-build-an-autonomous-agent.html">08 · Build an autonomous agent with triggers</a></li><li><a href="lab-09-evaluate-publish-and-govern.html">09 · Evaluate, publish and govern your agents</a></li><li><a href="trainer-notes.html">Trainer guide</a></li></ol></nav></details>
+<main id="content" class="article">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">AI Labs</a></li><li><a href="index.html">Copilot Studio track</a></li></ol></nav>
+<article class="prose">
+<h1 id="lab-05-give-your-agent-hands-connectors-and-mcp-tools">Lab 05 - Give your agent hands: connectors and MCP tools</h1><p class="meta"><span>Lab</span><span>11 min read</span><span>Lab time: 60 min</span></p>
+<h2 id="lab-introduction">Lab introduction</h2>
+<p>Until now our agents <strong>talk</strong>. From this lab they <strong>do</strong>.</p>
+<p>A <strong>tool</strong> is something the agent can call to perform an action or fetch live data. In Copilot Studio you have three families:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Tool type</th>
+<th>Best for</th>
+<th>Example in this lab</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Connectors</strong></td>
+<td>Well-known services with a ready-made Power Platform connector</td>
+<td>SharePoint <em>Create item</em> / <em>Get items</em>, Outlook <em>Send an email</em></td>
+</tr>
+<tr>
+<td><strong>MCP servers</strong></td>
+<td>Any service that speaks Model Context Protocol - custom or internal</td>
+<td>Microsoft Learn MCP server</td>
+</tr>
+<tr>
+<td><strong>Workflows</strong></td>
+<td>Multi-step, deterministic processes</td>
+<td>Lab 06</td>
+</tr>
+</tbody>
+</table></div>
+<p>Here's the key idea: <strong>you don't wire the tools together</strong>. You give each tool a clear <strong>name</strong> and <strong>description</strong>, and the runtime decides <em>when</em> to call it, <em>with which inputs</em>, and <em>in what order</em>. Good descriptions = good decisions.</p>
+<h2 id="lab-scenario">Lab scenario</h2>
+<p>Employees keep asking the Service Desk agent to "just open the ticket for me". The manager agrees, with rules: the agent creates the item in the <strong>IT Requests</strong> list only after the user confirms, sends the user a confirmation email, and can look up the status of existing requests. Engineers also want technical "how do I..." answers from <strong>official Microsoft documentation</strong>.</p>
+<h2 id="job-skills">Job skills</h2>
+<ul>
+<li>Task 1: Add the SharePoint "Create item" tool</li>
+<li>Task 2: Add the SharePoint "Get items" tool</li>
+<li>Task 3: Add the Outlook "Send an email" tool</li>
+<li>Task 4: Update the instructions to orchestrate the tools</li>
+<li>Task 5: Add the Microsoft Learn MCP server</li>
+<li>Task 6: Test end to end and debug with the trace</li>
+</ul>
+<hr />
+<h2 id="how-tools-work-in-this-designer">How tools work in this designer</h2>
+<p>Remember this pattern - you'll use it for every tool:</p>
+<ol>
+<li><strong>Tools +</strong> &gt; pick the tool &gt; <strong>Add</strong>. (No settings yet.)</li>
+<li>The tool appears as a <strong>chip</strong> under <strong>Tools</strong>.</li>
+<li><strong>Select the chip</strong> to open <strong>Tool details</strong> - that's where you rename it, describe it and set its inputs.</li>
+</ol>
+<p>In <strong>Tool details</strong>, every input has two modes:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>Meaning</th>
+<th>Use it for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Fill with AI</strong></td>
+<td>The agent decides the value from the conversation</td>
+<td>Title, description, email recipient...</td>
+</tr>
+<tr>
+<td><strong>Custom</strong></td>
+<td>A fixed value you set</td>
+<td>The SharePoint site, the list name - things the model must <strong>never</strong> choose</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="task-1-add-the-sharepoint-create-item-tool">Task 1: Add the SharePoint "Create item" tool</h2>
+<ol>
+<li>Open <strong>Contoso Service Desk</strong> &gt; <strong>Build</strong> tab. On the right, next to <strong>Tools</strong>, select <strong>+</strong>.</li>
+</ol>
+<p><img alt="Build tab - Tools section" src="../assets/stu/Instructions-Labs-media-lab05-01-build-panel.png" /></p>
+<ol>
+<li>The <strong>Add a tool</strong> dialog has four tabs: <strong>Featured, MCP, Connectors, Workflows</strong>.</li>
+</ol>
+<p><img alt="Add a tool dialog" src="../assets/stu/Instructions-Labs-media-lab05-02-add-a-tool.png" /></p>
+<ol>
+<li>Search <code>create item</code> and select <strong>SharePoint - Create item</strong>.</li>
+</ol>
+<p><img alt="Search results for create item" src="../assets/stu/Instructions-Labs-media-lab05-03-search-create-item.png" /></p>
+<ol>
+<li>Review the details (connector, connection) and select <strong>Add</strong>. If prompted, sign in to create the connection.</li>
+</ol>
+<p><img alt="Create item details with Add" src="../assets/stu/Instructions-Labs-media-lab05-04-create-item-add.png" /></p>
+<ol>
+<li>Close the dialog. Under <strong>Tools</strong>, select the new <strong>Create item</strong> chip. <strong>Tool details</strong> opens.</li>
+</ol>
+<p><img alt="Tool details for Create item" src="../assets/stu/Instructions-Labs-media-lab05-05-tool-details.png" /></p>
+<p>Look at the top card:
+   - <strong>Connection</strong> - the account used to create the connection.
+   - <strong>Authentication: End user account</strong> - the tool runs <strong>as the person chatting</strong>. The item is created by them, with their permissions. Keep it.</p>
+<ol>
+<li>
+<p>Rename the tool: select the ✏️ next to <strong>Create item</strong> and type <code>Create IT request</code>.</p>
+</li>
+<li>
+<p>Select the ✏️ next to <strong>Description for AI</strong> and paste:</p>
+</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span>Text</span><button type="button" class="copy">Copy</button></div><pre><code>Creates a new IT request in the Contoso IT Requests list. Use it only after the user has confirmed the ticket summary. Inputs: Title, Description, Category, Priority.</code></pre></div>
+<ol>
+<li>In <strong>Inputs</strong>, fix where the item goes:</li>
+</ol>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Input</th>
+<th>Mode</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Site Address</strong></td>
+<td><strong>Custom</strong></td>
+<td>Contoso IT Hub - <code>https://&lt;your-tenant&gt;.sharepoint.com/sites/ContosoITHub</code></td>
+</tr>
+<tr>
+<td><strong>List Name</strong></td>
+<td><strong>Custom</strong></td>
+<td><code>IT Requests</code> (pick it from the list)</td>
+</tr>
+</tbody>
+</table></div>
+<p><img alt="Site Address and List Name set to Custom" src="../assets/stu/Instructions-Labs-media-lab05-06-site-list-custom.png" /></p>
+<ol>
+<li>Once the site and list are set, <strong>Item</strong> loads your list columns. Leave <strong>Title, Description, Category, Priority</strong> on <strong>Fill with AI</strong>. Optionally use <strong>Improve AI fill</strong> on Category: <code>One of: Hardware, Software, Network, Account &amp; Access, Security</code>. Leave AssignedTeam and TriageNotes empty - an agent fills them in Lab 08.</li>
+</ol>
+<p><img alt="Create IT request fully configured" src="../assets/stu/Instructions-Labs-media-lab05-07-create-it-request-configured.png" /></p>
+<ol>
+<li>Select <strong>Done</strong>.</li>
+</ol>
+<div class="alert important"><p class="alert-title">Important</p><p><strong>Why Custom for the site and list?</strong> Because you never want the model to "choose" which SharePoint site to write to. <strong>Fix what must not change, let the agent fill only what it must.</strong> This is your first guardrail.</p></div>
+<hr />
+<h2 id="task-2-add-the-sharepoint-get-items-tool">Task 2: Add the SharePoint "Get items" tool</h2>
+<ol>
+<li><strong>Tools +</strong> &gt; search <code>get items</code> &gt; <strong>SharePoint - Get items</strong> &gt; <strong>Add</strong>.</li>
+</ol>
+<p><img alt="Search results for get items" src="../assets/stu/Instructions-Labs-media-lab05-09-search-get-items.png" /></p>
+<ol>
+<li>Select the <strong>Get items</strong> chip and configure:</li>
+</ol>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Name (✏️)</td>
+<td><code>Find my IT requests</code></td>
+</tr>
+<tr>
+<td>Description for AI (✏️)</td>
+<td><code>Returns existing IT requests from the Contoso IT Requests list. Use it when the user asks about the status of their requests. Return Title, Status, Priority and AssignedTeam only.</code></td>
+</tr>
+<tr>
+<td>Site Address</td>
+<td><strong>Custom</strong> - Contoso IT Hub</td>
+</tr>
+<tr>
+<td>List Name</td>
+<td><strong>Custom</strong> - <strong>IT Requests</strong></td>
+</tr>
+<tr>
+<td>Top Count (Advanced parameters)</td>
+<td><strong>Custom</strong> - <code>10</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><img alt="Get items with its description" src="../assets/stu/Instructions-Labs-media-lab05-10-get-items-description.png" /></p>
+<div class="alert important"><p class="alert-title">Important</p><p>⚠️ <strong>Classic mistake:</strong> typing the tool's name into <strong>List Name</strong>. "Find my IT requests" is the tool, <strong>IT Requests</strong> is the list. Use the <strong>dropdown</strong> to pick the list. You'll see what happens if you don't in Task 6.</p></div>
+<ol>
+<li>Select <strong>Done</strong>.</li>
+</ol>
+<hr />
+<h2 id="task-3-add-the-outlook-send-an-email-tool">Task 3: Add the Outlook "Send an email" tool</h2>
+<ol>
+<li><strong>Tools +</strong> &gt; search <code>send an email</code> &gt; <strong>Office 365 Outlook - Send an email (V2)</strong> &gt; <strong>Add</strong>.</li>
+</ol>
+<p><img alt="Send an email (V2) details" src="../assets/stu/Instructions-Labs-media-lab05-11-send-email-add.png" /></p>
+<ol>
+<li>Select the chip and configure the top card:
+   - Name (✏️): <code>Send request confirmation</code>
+   - Description for AI (✏️): <code>Sends the user a confirmation email after an IT request was created. Only send to the user who is chatting. Never send to external addresses.</code></li>
+</ol>
+<p><img alt="Send request confirmation renamed" src="../assets/stu/Instructions-Labs-media-lab05-12-send-email-renamed.png" /></p>
+<ol>
+<li>In <strong>Inputs</strong>, set <strong>To</strong> to <strong>Fill with AI</strong>, select <strong>Improve AI fill</strong>, type <code>Email address of the signed-in user. Never an external address.</code> and select <strong>Apply</strong>.</li>
+</ol>
+<p><img alt="Improve AI fill on To" src="../assets/stu/Instructions-Labs-media-lab05-13-to-improve-ai-fill.png" /></p>
+<ol>
+<li>Leave <strong>Subject</strong> and <strong>Body</strong> on <strong>Fill with AI</strong>. Select <strong>Done</strong>.</li>
+</ol>
+<p><img alt="To, Subject and Body on Fill with AI" src="../assets/stu/Instructions-Labs-media-lab05-14-to-fill-with-ai.png" /></p>
+<div class="alert note"><p class="alert-title">Note</p><p><strong>Why Fill with AI for "To" and not Custom?</strong> With Custom, every confirmation would go to one fixed address. We want it to go to <strong>whoever is chatting</strong> - so the agent fills it each time, guided by your hint.</p></div>
+<ol>
+<li><strong>Save</strong> the agent. Your Tools section now shows three renamed tools plus Work IQ.</li>
+</ol>
+<p><img alt="Tools panel with the three renamed tools" src="../assets/stu/Instructions-Labs-media-lab05-15-tools-panel.png" /></p>
+<hr />
+<h2 id="task-4-update-the-instructions-to-orchestrate-the-tools">Task 4: Update the instructions to orchestrate the tools</h2>
+<ol>
+<li>In <strong>Instructions</strong>, place your cursor after the <strong>How you work</strong> section and add a <strong>Tools</strong> section:</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span>Text</span><button type="button" class="copy">Copy</button></div><pre><code># Tools
+- Before calling "Create IT request", show the user the ticket summary (Title, Category, Priority, Description) and ask "Shall I create this request?". Only call the tool after a clear yes.
+- After the request is created, call "Send request confirmation" to the user with the title and the item ID, then tell the user the ID.
+- When the user asks "what's the status of my requests", call "Find my IT requests" and show a short table: Title | Status | Priority.
+- For technical "how do I configure..." questions about Microsoft 365, Intune, Entra or Windows, use the Microsoft Learn tools and include the article link. Contoso policies always win over generic Microsoft guidance.</code></pre></div>
+<div class="alert note"><p class="alert-title">Note</p><p>Pasted as plain text, <code># Tools</code> shows a literal <strong>#</strong>. Select the line and apply a heading style so it matches <strong>Role</strong>, <strong>How you work</strong> and <strong>Boundaries</strong>.</p></div>
+<p><img alt="Tools section in the instructions" src="../assets/stu/Instructions-Labs-media-lab05-16-tools-instructions.png" /></p>
+<ol>
+<li>
+<p>Notice that the quoted names - "Create IT request", "Send request confirmation", "Find my IT requests" - match your tool names <strong>exactly</strong>. That's how the instructions point at the right tool.</p>
+</li>
+<li>
+<p><strong>Save</strong>.</p>
+</li>
+</ol>
+<div class="alert note"><p class="alert-title">Check yourself</p><p><strong>Question:</strong> Why ask for confirmation in the instructions when the tool could just run?
+<strong>Answer:</strong> Because creating a record is a <strong>write action</strong>. A good rule: <em>read</em> tools can run freely, <em>write</em> tools need a confirmation. In Lab 06 we go further with a real approval, and in Lab 08 we discuss why instructions alone are not a security boundary.</p></div>
+<hr />
+<h2 id="task-5-add-the-microsoft-learn-mcp-server">Task 5: Add the Microsoft Learn MCP server</h2>
+<p>The Microsoft Learn MCP server is a free, public, no-authentication MCP server that lets agents search and read official Microsoft documentation. Perfect for learning MCP.</p>
+<ol>
+<li><strong>Tools +</strong> &gt; <strong>MCP</strong> tab. Browse the gallery: <strong>Work IQ</strong>, <strong>Fabric IQ Data MCP</strong>, <strong>Microsoft Dataverse MCP Server</strong>, <strong>Azure - Foundry IQ</strong>, Dynamics 365 servers... These are servers already published for your organization.</li>
+</ol>
+<p><img alt="MCP tab of Add a tool" src="../assets/stu/Instructions-Labs-media-lab05-17-mcp-tab.png" /></p>
+<ol>
+<li>Our server isn't in the gallery, so we add it by URL. Select <strong>+ Add</strong> (next to the search box) &gt; <strong>Model Context Protocol (MCP)</strong>.</li>
+</ol>
+<p><img alt="Add menu: Model Context Protocol (MCP) or Workflow" src="../assets/stu/Instructions-Labs-media-lab05-18-add-mcp-menu.png" /></p>
+<ol>
+<li>Fill in <strong>Add MCP server</strong>:</li>
+</ol>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Server name</td>
+<td><code>Microsoft Learn documentation</code></td>
+</tr>
+<tr>
+<td>Server description</td>
+<td><code>Searches and reads official Microsoft documentation on learn.microsoft.com. Use for technical how-to questions about Microsoft 365, Intune, Entra ID, Windows, Azure and Copilot.</code></td>
+</tr>
+<tr>
+<td>Server URL</td>
+<td><code>https://learn.microsoft.com/api/mcp</code></td>
+</tr>
+<tr>
+<td>Authentication</td>
+<td><strong>None</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p><img alt="Add MCP server form" src="../assets/stu/Instructions-Labs-media-lab05-19-add-mcp-server.png" /></p>
+<ol>
+<li>Select <strong>Add</strong>. <strong>Select a connection</strong> shows <em>Not connected</em>. Open the dropdown and create a new connection.</li>
+</ol>
+<p><img alt="Select a connection - not connected" src="../assets/stu/Instructions-Labs-media-lab05-20-select-connection.png" /></p>
+<ol>
+<li><strong>Creating a connection to use Microsoft Learn documentation</strong>: give it a display name (optional) and select <strong>Create</strong>.</li>
+</ol>
+<p><img alt="Create the MCP connection" src="../assets/stu/Instructions-Labs-media-lab05-21-create-connection.png" /></p>
+<ol>
+<li>The connection shows a green check. Select <strong>Add</strong>.</li>
+</ol>
+<p><img alt="Connection ready" src="../assets/stu/Instructions-Labs-media-lab05-22-connection-ready.png" /></p>
+<ol>
+<li><em>Microsoft Learn documentation added</em>. The chip appears under <strong>Tools</strong>. Select <strong>Review tool</strong> (or the chip) to see the tools the server exposes - for example <code>microsoft_docs_search</code>, <code>microsoft_docs_fetch</code>, <code>microsoft_code_sample_search</code>.</li>
+</ol>
+<p><img alt="Microsoft Learn documentation added" src="../assets/stu/Instructions-Labs-media-lab05-23-mcp-added.png" /></p>
+<ol>
+<li><strong>Save</strong>.</li>
+</ol>
+<div class="alert note"><p class="alert-title">Note</p><p><strong>What just happened?</strong> You didn't configure three tools - the <strong>server</strong> told Copilot Studio which tools it has. If Microsoft adds a tool to the server tomorrow, your agent sees it automatically. That's the power of MCP: one connection, a living catalog of tools.</p></div>
+<hr />
+<h2 id="task-6-test-end-to-end-and-debug-with-the-trace">Task 6: Test end to end and debug with the trace</h2>
+<h3 id="the-happy-path-troubleshoot-create-confirm">The happy path: troubleshoot, create, confirm</h3>
+<ol>
+<li>Select <strong>Preview</strong>, <strong>New chat</strong>, keep <strong>Debug mode</strong> on, and type:</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span>Text</span><button type="button" class="copy">Copy</button></div><pre><code>My second screen stays black since the Windows update this morning. Only me.</code></pre></div>
+<ol>
+<li>Watch the trace. The agent searched <strong>your policies</strong> first (<code>sharepoint_semantic_search</code>), found nothing about black screens, then called <strong>Microsoft Docs Search</strong> through MCP.</li>
+</ol>
+<p><img alt="Trace: SharePoint search then Microsoft Docs Search" src="../assets/stu/Instructions-Labs-media-lab05-24-preview-mcp-trace.png" /></p>
+<ol>
+<li>Scroll down. The agent gives troubleshooting steps with <strong>Sources</strong> from Microsoft Learn, asks three questions, and drafts a ticket.</li>
+</ol>
+<p><img alt="Steps with Microsoft sources and draft ticket" src="../assets/stu/Instructions-Labs-media-lab05-25-mcp-sources-ticket.png" /></p>
+<ol>
+<li>Look at the last line: <strong>"Shall I create this request once you reply?"</strong> That's your <strong>Tools</strong> instruction at work - no write without a yes.</li>
+</ol>
+<p><img alt="Shall I create this request?" src="../assets/stu/Instructions-Labs-media-lab05-26-confirm-question.png" /></p>
+<ol>
+<li>Reply:</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span>Text</span><button type="button" class="copy">Copy</button></div><pre><code>Dell Latitude, via the dock, no signal. I tried steps 1 to 3. Yes, create it.</code></pre></div>
+<ol>
+<li>The trace shows <strong>Used tool: Create IT request</strong> → <em>Create IT request completed</em>.</li>
+</ol>
+<p><img alt="Create IT request completed" src="../assets/stu/Instructions-Labs-media-lab05-27-create-completed.png" /></p>
+<ol>
+<li>Then <strong>Used tool: Send request confirmation</strong>, and the answer: <em>"I've created your request. Your ticket ID is 1"</em>, with a link to view the request.</li>
+</ol>
+<p><img alt="Request created and email sent" src="../assets/stu/Instructions-Labs-media-lab05-28-created-and-emailed.png" /></p>
+<ol>
+<li>Check SharePoint: the item is in <strong>IT Requests</strong> with Category <strong>Hardware</strong>, Priority <strong>Normal</strong>, Status <strong>New</strong> - and a clean description that includes your answers.</li>
+</ol>
+<p><img alt="The new item in the IT Requests list" src="../assets/stu/Instructions-Labs-media-lab05-29-sharepoint-item.png" /></p>
+<ol>
+<li>Check your inbox: <em>IT request #1 created: Second monitor black after Windows update</em>.</li>
+</ol>
+<p><img alt="Confirmation email" src="../assets/stu/Instructions-Labs-media-lab05-30-confirmation-email.png" /></p>
+<h3 id="when-a-tool-fails-read-the-trace">When a tool fails: read the trace</h3>
+<p>In our first run, <strong>Find my IT requests</strong> still had <strong>List Name = "Find my IT requests"</strong> (the tool name instead of the list). Here's what that looks like:</p>
+<ol>
+<li>Ask <code>What's the status of my IT requests?</code>. The trace shows <strong>Failed to use tool: Find my IT requests</strong> - <em>The requested resource wasn't found... 404</em>. The agent then fell back to another SharePoint action (<strong>Get item</strong>, by ID) to still answer.</li>
+</ol>
+<p><img alt="Failed to use tool: 404" src="../assets/stu/Instructions-Labs-media-lab05-31-find-failed-404.png" /></p>
+<ol>
+<li>Even better: the agent <strong>explains the error itself</strong> - <em>"It's set up to look for a list named 'Find my IT requests', but the only list on the IT Hub site is called 'IT Requests'."</em></li>
+</ol>
+<p><img alt="The agent explains the misconfiguration" src="../assets/stu/Instructions-Labs-media-lab05-32-agent-explains-error.png" /></p>
+<ol>
+<li><strong>The fix:</strong> <strong>Build</strong> &gt; select <strong>Find my IT requests</strong> &gt; <strong>List Name</strong> &gt; <strong>Custom</strong> &gt; pick <strong>IT Requests</strong> from the list &gt; <strong>Done</strong> &gt; <strong>Save</strong>.</li>
+</ol>
+<div class="alert tip"><p class="alert-title">Spot it</p><p><strong>🔍 Lesson:</strong> a red line in the trace + "404" almost always means a wrong <strong>fixed value</strong> (site, list, ID). Expand the failed step, read the error, fix the input. That's why we keep <strong>Debug mode</strong> on while building.</p></div>
+<h3 id="one-more-behavior-worth-noticing">One more behavior worth noticing</h3>
+<ol>
+<li>Start a <strong>New chat</strong> and report the same problem again (<code>My second screen stays black since the Windows update this morning. Only me.</code>). This time the agent looks up your existing requests and answers: <em>"You already have an open ticket for this problem... I won't open a second ticket for the same problem."</em></li>
+</ol>
+<p><img alt="Duplicate check: existing ticket found" src="../assets/stu/Instructions-Labs-media-lab05-34-duplicate-check.png" /></p>
+<p>Nobody wrote a "check for duplicates" rule. The runtime combined <strong>Find my IT requests</strong> with its own reasoning. That's orchestration - and it's also why you must <strong>test</strong> what the agent does, not just what you told it to do.</p>
+<ol>
+<li>Run the last tests:</li>
+</ol>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Message</th>
+<th>Expected tool</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>What's the status of my IT requests?</code></td>
+<td>Find my IT requests (green check)</td>
+</tr>
+<tr>
+<td><code>How do I configure Windows Hello for Business with Intune?</code></td>
+<td>Microsoft Learn documentation, with links</td>
+</tr>
+<tr>
+<td><code>What's our MFA policy?</code></td>
+<td><strong>Knowledge</strong> (Contoso policy), <strong>not</strong> MCP</td>
+</tr>
+</tbody>
+</table></div>
+<div class="alert warning"><p class="alert-title">Cost</p><p><strong>💰 Credits check:</strong> our full Task 6 conversation used about <strong>75 Copilot Credits</strong> - tools, MCP and knowledge searches all count. Keep that in mind when you plan a workshop with many learners.</p></div>
+<hr />
+<h2 id="check-your-work">Check your work</h2>
+<ul>
+<li class="task"><input type="checkbox"> Four tools under <strong>Tools</strong>: Create IT request, Find my IT requests, Send request confirmation, Microsoft Learn documentation (plus Work IQ).</li>
+<li class="task"><input type="checkbox"> The agent asked for confirmation, then created an item in <strong>IT Requests</strong> and sent you a confirmation email.</li>
+<li class="task"><input type="checkbox"> A technical question was answered with links from Microsoft Learn via MCP.</li>
+<li class="task"><input type="checkbox"> You can explain a failed tool call from the trace.</li>
+</ul>
+<h2 id="key-takeaways">Key takeaways</h2>
+<ul>
+<li>Tools turn an assistant into an agent. The runtime picks tools from their <strong>names and descriptions</strong> - rename every tool.</li>
+<li><strong>Custom</strong> for what must never change (site, list). <strong>Fill with AI</strong> for what depends on the conversation.</li>
+<li><strong>End user account</strong> authentication: the tool acts as the person chatting, with their permissions.</li>
+<li><strong>MCP</strong> = one connection, many tools, published by the server and kept up to date.</li>
+<li>Write actions need a confirmation. The <strong>trace</strong> shows every tool call, its inputs, and its errors.</li>
+</ul>
+<p><strong>Next:</strong> <a href="lab-06-workflows-and-human-approval.html">Lab 06 - Workflows and human approval</a></p>
+</article>
+<nav class="pager bottom"><a href="lab-04-your-first-copilot-studio-agent.html">‹ 04 · Your first Copilot Studio agent</a><a href="lab-06-workflows-and-human-approval.html">06 · Workflows and human approval ›</a></nav>
+<p class="source"><a href="https://github.com/medyabi/Copilot-Studio-lab" rel="noopener">View the source on GitHub</a></p>
+</main>
+<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#lab-introduction">Lab introduction</a></li><li><a href="#lab-scenario">Lab scenario</a></li><li><a href="#job-skills">Job skills</a></li><li><a href="#how-tools-work-in-this-designer">How tools work in this designer</a></li><li><a href="#task-1-add-the-sharepoint-create-item-tool">Task 1: Add the SharePoint "Create item" tool</a></li><li><a href="#task-2-add-the-sharepoint-get-items-tool">Task 2: Add the SharePoint "Get items" tool</a></li><li><a href="#task-3-add-the-outlook-send-an-email-tool">Task 3: Add the Outlook "Send an email" tool</a></li><li><a href="#task-4-update-the-instructions-to-orchestrate-the-tools">Task 4: Update the instructions to orchestrate the tools</a></li><li><a href="#task-5-add-the-microsoft-learn-mcp-server">Task 5: Add the Microsoft Learn MCP server</a></li><li><a href="#task-6-test-end-to-end-and-debug-with-the-trace">Task 6: Test end to end and debug with the trace</a></li><li><a href="#check-your-work">Check your work</a></li><li><a href="#key-takeaways">Key takeaways</a></li></ol></aside>
+</div>
+<footer class="sitefoot">
+  <div class="foot-in">
+    <div><strong>AI Labs</strong><p>Hands-on Copilot labs by Mohamed Dyabi, Microsoft Certified Trainer.</p></div>
+    <ul>
+      <li><a href="index.html">Copilot Studio track</a></li>
+      <li><a href="../cowork/index.html">Copilot Cowork track</a></li>
+      <li><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Studio-lab" rel="noopener">Copilot Studio labs on GitHub</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Cowork-lab" rel="noopener">Cowork labs on GitHub</a></li>
+    </ul>
+  </div>
+  <p class="fine">Use a test or demo tenant: these labs create agents, workflows and SharePoint items, and consume Copilot Credits. Preview features and labels change often. An independent site, not affiliated with Microsoft. © 2026 Mohamed Dyabi</p>
+</footer>
+<script>
+(function(){
+  // Table of contents: open on wide screens, collapsible on small ones
+  var toc = document.querySelector('details.toc');
+  if (toc) {
+    var mq = window.matchMedia('(min-width: 1024px)');
+    var sync = function(){ if (mq.matches) toc.open = true; };
+    sync(); if (mq.addEventListener) mq.addEventListener('change', sync);
+    var cur = toc.querySelector('[aria-current="page"]');
+    if (cur && cur.scrollIntoView && mq.matches) cur.scrollIntoView({block: 'center'});
+  }
+  // Filter by title
+  var f = document.getElementById('toc-filter');
+  if (f) f.addEventListener('input', function(){
+    var q = f.value.trim().toLowerCase();
+    document.querySelectorAll('.toc-list li').forEach(function(li){
+      var hit = !q || li.textContent.toLowerCase().indexOf(q) !== -1;
+      li.hidden = !hit;
+    });
+  });
+  // Copy buttons on code blocks
+  document.querySelectorAll('.codeblock').forEach(function(cb){
+    var btn = cb.querySelector('.copy'), code = cb.querySelector('code');
+    if (!btn || !code) return;
+    btn.addEventListener('click', function(){
+      navigator.clipboard.writeText(code.innerText).then(function(){
+        btn.textContent = 'Copied'; setTimeout(function(){ btn.textContent = 'Copy'; }, 1500);
+      }, function(){ btn.textContent = 'Select and copy'; });
+    });
+  });
+  // Highlight the current section in "In this article"
+  var links = document.querySelectorAll('.aside-toc a');
+  if (links.length && 'IntersectionObserver' in window) {
+    var map = {}; links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var obs = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting) {
+        links.forEach(function(a){ a.classList.remove('on'); });
+        var a = map[e.target.id]; if (a) a.classList.add('on');
+      }});
+    }, {rootMargin: '0px 0px -75% 0px'});
+    Object.keys(map).forEach(function(id){ var h = document.getElementById(id); if (h) obs.observe(h); });
+  }
+})();
+</script><script>
+(function(){
+  var key = 'progress:' + location.pathname;
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('li.task input'));
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(key) || '{}'); } catch (e) {}
+  boxes.forEach(function(b, i){
+    b.id = 'task-' + i;
+    if (saved[i]) b.checked = true;
+    b.addEventListener('change', function(){
+      saved[i] = b.checked;
+      try { localStorage.setItem(key, JSON.stringify(saved)); } catch (e) {}
+    });
+  });
+})();
+</script>
+</body>
+</html>

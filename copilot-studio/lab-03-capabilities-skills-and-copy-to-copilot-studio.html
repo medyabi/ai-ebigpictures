@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>03: Capabilities, skills and the jump to Copilot Studio · AI Labs</title>
+<meta name="description" content="Hands-on labs for Microsoft Copilot Studio, Agent Builder and Microsoft 365 Copilot Cowork: from a simple agent to autonomous agents.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+</head>
+<body class="t-studio">
+<a class="skip" href="#content">Skip to main content</a>
+<header class="masthead">
+  <a class="brand" href="../index.html"><img src="../assets/favicon.svg" alt="" width="24" height="24"><span>AI Labs</span></a>
+  <span class="divider" aria-hidden="true"></span>
+  <nav class="mainnav" aria-label="Main"><a href="index.html" aria-current="true">Copilot Studio</a><a href="../cowork/index.html">Copilot Cowork</a><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></nav>
+  <a class="gh" href="https://github.com/medyabi" rel="noopener">GitHub</a>
+</header>
+<div class="doc has-toc">
+<details class="toc"><summary>Table of contents</summary><nav aria-label="From simple agents to autonomous agents"><p class="toc-title">From simple agents to autonomous agents</p><input id="toc-filter" class="toc-filter" type="search" placeholder="Filter by title" aria-label="Filter by title"><ol class="toc-list"><li><a href="index.html">Overview</a></li><li><a href="lab-00-prepare-the-lab-environment.html">00 · Prepare the lab environment</a></li><li><a href="lab-01-build-your-first-agent-with-agent-builder.html">01 · Build your first agent with natural language</a></li><li><a href="lab-02-ground-your-agent-in-company-knowledge.html">02 · Ground your agent in company knowledge</a></li><li><a href="lab-03-capabilities-skills-and-copy-to-copilot-studio.html" aria-current="page">03 · Capabilities, skills and the jump to Copilot Studio</a></li><li><a href="lab-04-your-first-copilot-studio-agent.html">04 · Your first Copilot Studio agent</a></li><li><a href="lab-05-connectors-and-mcp-tools.html">05 · Give your agent hands: connectors and MCP tools</a></li><li><a href="lab-06-workflows-and-human-approval.html">06 · Workflows and human approval</a></li><li><a href="lab-07-skills-memory-and-connected-agents.html">07 · Skills, memory and connected agents</a></li><li><a href="lab-08-build-an-autonomous-agent.html">08 · Build an autonomous agent with triggers</a></li><li><a href="lab-09-evaluate-publish-and-govern.html">09 · Evaluate, publish and govern your agents</a></li><li><a href="trainer-notes.html">Trainer guide</a></li></ol></nav></details>
+<main id="content" class="article">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">AI Labs</a></li><li><a href="index.html">Copilot Studio track</a></li></ol></nav>
+<article class="prose">
+<h1 id="lab-03-capabilities-skills-and-the-jump-to-copilot-studio">Lab 03 - Capabilities, skills and the jump to Copilot Studio</h1><p class="meta"><span>Lab</span><span>10 min read</span><span>Lab time: 40 min</span></p>
+<h2 id="lab-introduction">Lab introduction</h2>
+<p>So far our agent can <strong>talk</strong> and <strong>read</strong>. Now we let it <strong>work</strong>.</p>
+<p>Agent Builder gives you three ways to add muscle without writing code:</p>
+<ul>
+<li><strong>Code interpreter</strong> ("Create documents, charts, and code") - the agent writes and runs Python in a sandbox to analyze data, build charts and create Word, Excel and PowerPoint files.</li>
+<li><strong>Image generator</strong> ("Create images") - the agent creates images from a prompt.</li>
+<li><strong>Skills</strong> - a packaged, repeatable procedure (a <code>SKILL.md</code> file plus optional scripts and resources) that the agent loads every time a matching task comes up.</li>
+</ul>
+<p>Then we hit the ceiling. Agent Builder <strong>can't call external systems</strong> - it can't create a SharePoint item, send an email or start an approval. For that we need Copilot Studio. So at the end of this lab we carry the agent across.</p>
+<h2 id="lab-scenario">Lab scenario</h2>
+<p>The Service Desk manager sends a CSV export of Q3 tickets every quarter and asks the same questions: which category is growing, where do we miss the SLA, which site is unhappy? She wants the IT Helper to answer these in seconds, the same way every time. She also wants every incoming request triaged with the same rules - category, priority, team.</p>
+<h2 id="job-skills">Job skills</h2>
+<ul>
+<li>Task 1: Analyze data with code interpreter</li>
+<li>Task 2: Create a skill from a description</li>
+<li>Task 3: Upload a skill package</li>
+<li>Task 4: Hit the ceiling</li>
+<li>Task 5: Copy the agent to Copilot Studio</li>
+</ul>
+<hr />
+<h2 id="task-1-analyze-data-with-code-interpreter">Task 1: Analyze data with code interpreter</h2>
+<ol>
+<li>Edit <strong>Contoso IT Helper</strong> (Agents &gt; <strong>...</strong> &gt; <strong>Edit</strong>). In the <strong>Knowledge</strong> section, select the ⚙️ <strong>gear</strong>. In <strong>Knowledge settings</strong>, check that <strong>Create documents, charts, and code</strong> is <strong>on</strong>. Close the dialog.</li>
+</ol>
+<p><img alt="Knowledge settings with Create documents, charts, and code on" src="../assets/stu/Instructions-Labs-media-lab03-01-knowledge-settings.png" /></p>
+<ol>
+<li>Download <code>Allfiles/Labs/03/Contoso-IT-Tickets-Q3-2026.csv</code> from this repository. It has 240 tickets with these columns: TicketID, OpenedDate, Site, Category, Priority, ResolutionHours, WithinSLA, SatisfactionScore.</li>
+</ol>
+<p><img alt="The ticket export in the GitHub repository" src="../assets/stu/Instructions-Labs-media-lab03-02-github-csv.png" /></p>
+<ol>
+<li>Open the <strong>Configure</strong> view menu at the top of Agent Builder. Notice the third option, <strong>Monitor</strong>, next to Configure and Preview - it shows how your agent is used after you share it. For this task, close Agent Builder and open the agent's own chat (<strong>Agents</strong> &gt; <strong>Contoso IT Helper</strong>), so the generated files open full size.</li>
+</ol>
+<p><img alt="View menu with Configure, Preview and Monitor" src="../assets/stu/Instructions-Labs-media-lab03-03-view-menu.png" /></p>
+<ol>
+<li>Select <strong>+</strong> in the message box and attach the CSV.</li>
+</ol>
+<p><img alt="CSV attached in the agent chat" src="../assets/stu/Instructions-Labs-media-lab03-04-csv-attached.png" /></p>
+<ol>
+<li>Type this prompt and send it:</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span>Text</span><button type="button" class="copy">Copy</button></div><pre><code>Using this ticket export, give me:
+1. the number of tickets per category, as a bar chart,
+2. the SLA compliance rate (WithinSLA = Yes) per priority,
+3. the site with the lowest average SatisfactionScore.
+Keep the commentary to five bullet points.</code></pre></div>
+<p><img alt="Analysis prompt with the CSV attached" src="../assets/stu/Instructions-Labs-media-lab03-05-analysis-prompt.png" /></p>
+<ol>
+<li>Watch the status: <strong>Contoso IT Helper: Coding and executing</strong>. Select the arrow to see the Python code it writes and runs.</li>
+</ol>
+<p><img alt="Coding and executing status" src="../assets/stu/Instructions-Labs-media-lab03-06-coding-executing.png" /></p>
+<ol>
+<li>
+<p>Review the result:
+   - a <strong>bar chart</strong> of tickets per category (Software 73, Hardware 61, Network 41, Account &amp; Access 40, Security 25),</p>
+<p><img alt="Tickets per category chart" src="../assets/stu/Instructions-Labs-media-lab03-07-bar-chart.png" /></p>
+</li>
+</ol>
+<ul>
+<li>
+<p>an <strong>SLA compliance table</strong> per priority, and five bullets citing the CSV as the data source.</p>
+<p><img alt="SLA compliance by priority" src="../assets/stu/Instructions-Labs-media-lab03-08-sla-table.png" /></p>
+</li>
+<li>
+<p>the site with the lowest satisfaction: <strong>Madrid, 3.38 out of 5</strong>.</p>
+</li>
+</ul>
+<ol>
+<li>Now ask for a file:</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span>Text</span><button type="button" class="copy">Copy</button></div><pre><code>Create an Excel file with one sheet per category and a summary sheet</code></pre></div>
+<p>The workbook opens next to the chat: a <strong>Summary</strong> sheet with the three tables and a chart, plus one sheet per category.</p>
+<p><img alt="Excel workbook with a Summary sheet and one sheet per category" src="../assets/stu/Instructions-Labs-media-lab03-09-excel-file.png" /></p>
+<div class="alert note"><p class="alert-title">Check yourself</p><p><strong>Question:</strong> Why use code interpreter instead of just asking the model to "count"?
+<strong>Answer:</strong> Language models are bad at arithmetic over 240 rows. Code is exact. When numbers matter, make the agent <strong>compute</strong>, not <strong>guess</strong>.</p></div>
+<hr />
+<h2 id="task-2-create-a-skill-from-a-description">Task 2: Create a skill from a description</h2>
+<p>Every quarter the manager asks for the same report. Typing the same five-line prompt each time is the definition of a skill.</p>
+<ol>
+<li>Edit the agent again. In the <strong>Agent Builder chat</strong> (left pane), paste:</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span>Text</span><button type="button" class="copy">Copy</button></div><pre><code>Add a reusable skill called "quarterly-sla-report".
+When the user uploads a Contoso ticket export (CSV with TicketID, OpenedDate, Site,
+Category, Priority, ResolutionHours, WithinSLA, SatisfactionScore), always:
+1. compute tickets per category and per site,
+2. compute SLA compliance per priority and flag any priority below 85%,
+3. find the 3 slowest categories by median ResolutionHours,
+4. produce a one-page Word report with a title, a 5-bullet executive summary,
+   the tables and one bar chart.
+Package it with clear instructions and the analysis script so the result looks the same every time.</code></pre></div>
+<ol>
+<li>Scroll to <strong>Skills</strong>. You should see <strong>quarterly-sla-report</strong>. In our run, Agent Builder <strong>also</strong> created a second skill, <strong>ticket-export-analysis</strong>, for the ad-hoc analysis you did in Task 1 - and added lines to the instructions saying when to invoke each one.</li>
+</ol>
+<p><img alt="Skills list with it-incident-intake, quarterly-sla-report and ticket-export-analysis" src="../assets/stu/Instructions-Labs-media-lab03-10-skills-created.png" /></p>
+<div class="alert important"><p class="alert-title">Important</p><p>Agent Builder may create extra skills on its own. That's fine - but <strong>read</strong> each one (select the <strong>&gt;</strong> arrow) and delete what you don't want. You own the agent, not the generator. A skill limit applies: <strong>eight skills</strong> per agent.</p></div>
+<ol>
+<li>
+<p>Select <strong>Update</strong>.</p>
+</li>
+<li>
+<p>Open the agent chat, attach the CSV again and type only:</p>
+</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span>Text</span><button type="button" class="copy">Copy</button></div><pre><code>Quarterly report please</code></pre></div>
+<p><img alt="Quarterly report please with the CSV attached" src="../assets/stu/Instructions-Labs-media-lab03-11-quarterly-report-prompt.png" /></p>
+<ol>
+<li>The agent builds <strong>Contoso-Q3-2026-Quarterly-SLA-Report.docx</strong>: title, 5-bullet executive summary, tickets by category and by site, SLA compliance by priority with a <strong>Flag</strong> column.</li>
+</ol>
+<p><img alt="The generated Word report" src="../assets/stu/Instructions-Labs-media-lab03-12-word-report.png" /></p>
+<ol>
+<li>Run it a second time in a <strong>new</strong> chat. Same structure? That's the point of a skill.</li>
+</ol>
+<div class="alert note"><p class="alert-title">Note</p><p><strong>Look at the Flag column.</strong> With our sample data, every priority is below the 85% target, so every row says "Below 85%". Correct - but is that useful? Discuss: should the skill also show <em>how far</em> below target each priority is? Edit the skill (Agent Builder chat: <em>"In quarterly-sla-report, add the gap to 85% for each priority"</em>) and run it again.</p></div>
+<hr />
+<h2 id="task-3-upload-a-skill-package">Task 3: Upload a skill package</h2>
+<p>Skills are <strong>portable</strong>. The same package works in Agent Builder, in Copilot Studio (Lab 07), and in other tools that support the open Agent Skills format. Let's prove it.</p>
+<ol>
+<li>
+<p>Open <code>Allfiles/Labs/03/it-ticket-triage/SKILL.md</code> in any text editor and read it. Notice the structure:
+   - a <strong>YAML front matter</strong> with <code>name</code> and <code>description</code> (the description tells the agent <em>when</em> to use the skill),
+   - the <strong>rules</strong> (category signals, priority rules, team mapping),
+   - a strict <strong>output format</strong> (Category / Priority / AssignedTeam / Reason).</p>
+</li>
+<li>
+<p>In Agent Builder, scroll to <strong>Skills</strong> and select <strong>+ Add</strong>. The <strong>Upload skill</strong> dialog accepts <strong>a <code>SKILL.md</code> file or a <code>.zip</code> package that includes a <code>SKILL.md</code></strong>. Upload <code>it-ticket-triage/SKILL.md</code> (or <code>it-ticket-triage.zip</code>) and select <strong>Upload</strong>.</p>
+</li>
+</ol>
+<p><img alt="Upload skill dialog with SKILL.md" src="../assets/stu/Instructions-Labs-media-lab03-13-upload-skill.png" /></p>
+<div class="alert note"><p class="alert-title">Note</p><p>Use the <strong>.zip</strong> when the skill has extra files (scripts, templates). A lone <code>SKILL.md</code> is enough for an instructions-only skill like this one.</p></div>
+<ol>
+<li>Keep the window open while the skill uploads.</li>
+</ol>
+<p><img alt="Uploading skill" src="../assets/stu/Instructions-Labs-media-lab03-14-uploading-skill.png" /></p>
+<ol>
+<li>Switch to <strong>Preview</strong>, select <strong>New chat</strong>, and test:</li>
+</ol>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Message</th>
+<th>Expected</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Triage this: "I clicked a link in an email and now my browser opens strange pages"</code></td>
+<td>Security issue - the urgent instruction (call ext. 4357), no ticket</td>
+</tr>
+<tr>
+<td><code>Triage this: "Need Power BI Pro for the sales dashboard, no rush"</code></td>
+<td>Software, Low, Apps</td>
+</tr>
+<tr>
+<td><code>Triage this: "Left my laptop in a taxi in Madrid 20 minutes ago"</code></td>
+<td>Urgent - report within 4 hours, Intune wipe</td>
+</tr>
+</tbody>
+</table></div>
+<ol>
+<li><strong>Test 1</strong> - notice that the <strong>Boundaries</strong> you wrote in Lab 01 win over the skill: for a security problem the agent gives the urgent instruction and stops, instead of producing a triage block.</li>
+</ol>
+<p><img alt="Phishing: security instruction, no ticket" src="../assets/stu/Instructions-Labs-media-lab03-15-triage-phishing.png" /></p>
+<ol>
+<li><strong>Test 2</strong> - the exact output format from the skill.</li>
+</ol>
+<p><img alt="Power BI triaged as Software, Low, Apps" src="../assets/stu/Instructions-Labs-media-lab03-16-triage-powerbi.png" /></p>
+<ol>
+<li><strong>Test 3</strong> - the agent treats the lost laptop as urgent and cites the Laptop and Device Policy.</li>
+</ol>
+<p><img alt="Lost laptop in a taxi handled as urgent" src="../assets/stu/Instructions-Labs-media-lab03-17-triage-taxi.png" /></p>
+<ol>
+<li>Select <strong>Update</strong> to save the agent.</li>
+</ol>
+<hr />
+<h2 id="task-4-hit-the-ceiling">Task 4: Hit the ceiling</h2>
+<ol>
+<li>In the same Preview chat, type:</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span>Text</span><button type="button" class="copy">Copy</button></div><pre><code>Please create the ticket in the IT Requests list for me</code></pre></div>
+<ol>
+<li>Read the answer: <em>"I couldn't create the item because no tool is available to write to the IT Requests list."</em> The agent writes the ticket content for you to copy - and still tells you to call the Service Desk now.</li>
+</ol>
+<p><img alt="The agent can't write to the IT Requests list" src="../assets/stu/Instructions-Labs-media-lab03-18-ceiling.png" /></p>
+<p>That's the ceiling. Agent Builder doesn't author actions that call external services.</p>
+<div class="alert tip"><p class="alert-title">Spot it</p><p><strong>🔍 Spot the mistake.</strong> Look at the ticket in the screenshot: <strong>Category: Security</strong>. Our triage skill says a lost or stolen device is <strong>Hardware, High</strong> - Security is for phishing, suspicious sign-ins and data leaks. Two instructions pulled in different directions (the lost-device urgency vs. the triage rules).
+<strong>Fix it:</strong> in the Agent Builder chat, type <em>"A lost or stolen device is always Category Hardware, Priority High. Security is only for phishing, suspicious sign-ins, malware or data leaks."</em> Select <strong>Update</strong>, then re-run test 3 and this test.
+This is exactly why we test: two good rules can still conflict.</p></div>
+<hr />
+<h2 id="task-5-copy-the-agent-to-copilot-studio">Task 5: Copy the agent to Copilot Studio</h2>
+<p>Time to move up.</p>
+<ol>
+<li>In Agent Builder, open <strong>...</strong> (top-right, next to <strong>Update</strong>). Look at the options:</li>
+</ol>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Option</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Share</strong></td>
+<td>Share with colleagues (Lab 02)</td>
+</tr>
+<tr>
+<td><strong>Agent details</strong></td>
+<td>Name, icon, description</td>
+</tr>
+<tr>
+<td><strong>Submit to org catalog</strong></td>
+<td>Ask the admin to publish the agent for the whole organization</td>
+</tr>
+<tr>
+<td><strong>Download .zip file</strong></td>
+<td>Export the agent package</td>
+</tr>
+<tr>
+<td><strong>Copy to Copilot Studio</strong></td>
+<td>Our next step</td>
+</tr>
+</tbody>
+</table></div>
+<p><img alt="More options menu with Copy to Copilot Studio" src="../assets/stu/Instructions-Labs-media-lab03-19-more-options-menu.png" /></p>
+<ol>
+<li>Select <strong>Copy to Copilot Studio</strong>. Read the dialog <strong>Copy to full version of Copilot Studio?</strong>:
+   - <strong>Comes over:</strong> name, icon, description, instructions, suggested prompts, enterprise knowledge, SharePoint and website sources.
+   - <strong>Not included:</strong> uploaded files, Teams and Outlook knowledge sources, sharing settings, image generation, and actions.</li>
+</ol>
+<p><img alt="Copy to full version of Copilot Studio dialog" src="../assets/stu/Instructions-Labs-media-lab03-20-copy-dialog.png" /></p>
+<div class="alert note"><p class="alert-title">Note</p><p><strong>Notice what's not listed:</strong> skills. Plan to re-add your skills in Copilot Studio (we do it in Lab 07).</p></div>
+<ol>
+<li>Select <strong>Get started</strong>. In <strong>Choose an environment</strong>, pick the environment you wrote down in Lab 00 (here <strong>MTS Team (default)</strong>) and select <strong>Continue</strong>.</li>
+</ol>
+<p><img alt="Choose an environment" src="../assets/stu/Instructions-Labs-media-lab03-21-choose-environment.png" /></p>
+<div class="alert note"><p class="alert-title">Note</p><p>The list shows every environment you can build in - your personal developer environment may appear too. Pick the one with Dataverse that your trainer chose for the course.</p></div>
+<ol>
+<li>Copilot Studio opens in a new tab on <strong>Start building your agent</strong>, with <strong>Contoso IT Helper (copy)</strong>: details, description, instructions and suggested prompts are already filled in. Notice the message <em>Knowledge is being prepared</em>. Select <strong>Create</strong>.</li>
+</ol>
+<p><img alt="Start building your agent with the copied configuration" src="../assets/stu/Instructions-Labs-media-lab03-22-copy-start-building.png" /></p>
+<ol>
+<li>The agent opens on its <strong>Overview</strong> page with status <strong>Setting up...</strong>. Wait until setup finishes before testing.</li>
+</ol>
+<p><img alt="Copied agent overview - setting up" src="../assets/stu/Instructions-Labs-media-lab03-23-copied-agent-overview.png" /></p>
+<ol>
+<li>Look at the tabs across the top: <strong>Overview, Knowledge, Tools, Agents, Topics, Activity, Evaluation...</strong> This is the <strong>classic Copilot Studio designer</strong> - the <strong>standard harness</strong>, with topics. In Lab 04 you create a new agent from the <strong>Agent</strong> tile on the Home page, which runs on the <strong>Microsoft Copilot harness</strong> with a single <strong>Build</strong> tab. Compare the two experiences.</li>
+</ol>
+<div class="alert note"><p class="alert-title">Note</p><p><strong>Important:</strong> a copy is a <strong>snapshot</strong>, not a sync. Changes you make to the Agent Builder version later won't reach the Copilot Studio version, and the other way round. Your original agent keeps working in Microsoft 365 Copilot.</p></div>
+<p>We keep this copy as a reference. In Lab 04 we build the "real" Service Desk agent in Copilot Studio from scratch, so you understand every piece.</p>
+<hr />
+<h2 id="check-your-work">Check your work</h2>
+<ul>
+<li class="task"><input type="checkbox"> The agent produced a bar chart and an Excel workbook from the CSV.</li>
+<li class="task"><input type="checkbox"> <strong>quarterly-sla-report</strong> produced a Word report, and <strong>it-ticket-triage</strong> returns Category / Priority / AssignedTeam / Reason.</li>
+<li class="task"><input type="checkbox"> A lost device is triaged as Hardware, not Security.</li>
+<li class="task"><input type="checkbox"> <strong>Contoso IT Helper (copy)</strong> exists in Copilot Studio.</li>
+</ul>
+<h2 id="key-takeaways">Key takeaways</h2>
+<ul>
+<li><strong>Code interpreter</strong> makes the agent compute instead of guess - and create real Excel and Word files.</li>
+<li>A <strong>skill</strong> = a repeatable procedure the agent loads only when the task matches its description. Agent Builder may generate skills for you: review them.</li>
+<li>Skills upload as a <code>SKILL.md</code> or a <code>.zip</code> - and travel between tools.</li>
+<li>Instructions and skills can conflict. Test, spot it, fix it.</li>
+<li>Agent Builder stops at <strong>actions</strong>. <strong>Copy to Copilot Studio</strong> brings the agent to the classic (standard harness) designer; uploaded files, Outlook/Teams knowledge, images and skills need to be re-done.</li>
+</ul>
+<p><strong>Next:</strong> <a href="lab-04-your-first-copilot-studio-agent.html">Lab 04 - Your first Copilot Studio agent</a></p>
+</article>
+<nav class="pager bottom"><a href="lab-02-ground-your-agent-in-company-knowledge.html">‹ 02 · Ground your agent in company knowledge</a><a href="lab-04-your-first-copilot-studio-agent.html">04 · Your first Copilot Studio agent ›</a></nav>
+<p class="source"><a href="https://github.com/medyabi/Copilot-Studio-lab" rel="noopener">View the source on GitHub</a></p>
+</main>
+<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#lab-introduction">Lab introduction</a></li><li><a href="#lab-scenario">Lab scenario</a></li><li><a href="#job-skills">Job skills</a></li><li><a href="#task-1-analyze-data-with-code-interpreter">Task 1: Analyze data with code interpreter</a></li><li><a href="#task-2-create-a-skill-from-a-description">Task 2: Create a skill from a description</a></li><li><a href="#task-3-upload-a-skill-package">Task 3: Upload a skill package</a></li><li><a href="#task-4-hit-the-ceiling">Task 4: Hit the ceiling</a></li><li><a href="#task-5-copy-the-agent-to-copilot-studio">Task 5: Copy the agent to Copilot Studio</a></li><li><a href="#check-your-work">Check your work</a></li><li><a href="#key-takeaways">Key takeaways</a></li></ol></aside>
+</div>
+<footer class="sitefoot">
+  <div class="foot-in">
+    <div><strong>AI Labs</strong><p>Hands-on Copilot labs by Mohamed Dyabi, Microsoft Certified Trainer.</p></div>
+    <ul>
+      <li><a href="index.html">Copilot Studio track</a></li>
+      <li><a href="../cowork/index.html">Copilot Cowork track</a></li>
+      <li><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Studio-lab" rel="noopener">Copilot Studio labs on GitHub</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Cowork-lab" rel="noopener">Cowork labs on GitHub</a></li>
+    </ul>
+  </div>
+  <p class="fine">Use a test or demo tenant: these labs create agents, workflows and SharePoint items, and consume Copilot Credits. Preview features and labels change often. An independent site, not affiliated with Microsoft. © 2026 Mohamed Dyabi</p>
+</footer>
+<script>
+(function(){
+  // Table of contents: open on wide screens, collapsible on small ones
+  var toc = document.querySelector('details.toc');
+  if (toc) {
+    var mq = window.matchMedia('(min-width: 1024px)');
+    var sync = function(){ if (mq.matches) toc.open = true; };
+    sync(); if (mq.addEventListener) mq.addEventListener('change', sync);
+    var cur = toc.querySelector('[aria-current="page"]');
+    if (cur && cur.scrollIntoView && mq.matches) cur.scrollIntoView({block: 'center'});
+  }
+  // Filter by title
+  var f = document.getElementById('toc-filter');
+  if (f) f.addEventListener('input', function(){
+    var q = f.value.trim().toLowerCase();
+    document.querySelectorAll('.toc-list li').forEach(function(li){
+      var hit = !q || li.textContent.toLowerCase().indexOf(q) !== -1;
+      li.hidden = !hit;
+    });
+  });
+  // Copy buttons on code blocks
+  document.querySelectorAll('.codeblock').forEach(function(cb){
+    var btn = cb.querySelector('.copy'), code = cb.querySelector('code');
+    if (!btn || !code) return;
+    btn.addEventListener('click', function(){
+      navigator.clipboard.writeText(code.innerText).then(function(){
+        btn.textContent = 'Copied'; setTimeout(function(){ btn.textContent = 'Copy'; }, 1500);
+      }, function(){ btn.textContent = 'Select and copy'; });
+    });
+  });
+  // Highlight the current section in "In this article"
+  var links = document.querySelectorAll('.aside-toc a');
+  if (links.length && 'IntersectionObserver' in window) {
+    var map = {}; links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var obs = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting) {
+        links.forEach(function(a){ a.classList.remove('on'); });
+        var a = map[e.target.id]; if (a) a.classList.add('on');
+      }});
+    }, {rootMargin: '0px 0px -75% 0px'});
+    Object.keys(map).forEach(function(id){ var h = document.getElementById(id); if (h) obs.observe(h); });
+  }
+})();
+</script><script>
+(function(){
+  var key = 'progress:' + location.pathname;
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('li.task input'));
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(key) || '{}'); } catch (e) {}
+  boxes.forEach(function(b, i){
+    b.id = 'task-' + i;
+    if (saved[i]) b.checked = true;
+    b.addEventListener('change', function(){
+      saved[i] = b.checked;
+      try { localStorage.setItem(key, JSON.stringify(saved)); } catch (e) {}
+    });
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>01: Build your first agent with natural language · AI Labs</title>
+<meta name="description" content="Hands-on labs for Microsoft Copilot Studio, Agent Builder and Microsoft 365 Copilot Cowork: from a simple agent to autonomous agents.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+</head>
+<body class="t-studio">
+<a class="skip" href="#content">Skip to main content</a>
+<header class="masthead">
+  <a class="brand" href="../index.html"><img src="../assets/favicon.svg" alt="" width="24" height="24"><span>AI Labs</span></a>
+  <span class="divider" aria-hidden="true"></span>
+  <nav class="mainnav" aria-label="Main"><a href="index.html" aria-current="true">Copilot Studio</a><a href="../cowork/index.html">Copilot Cowork</a><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></nav>
+  <a class="gh" href="https://github.com/medyabi" rel="noopener">GitHub</a>
+</header>
+<div class="doc has-toc">
+<details class="toc"><summary>Table of contents</summary><nav aria-label="From simple agents to autonomous agents"><p class="toc-title">From simple agents to autonomous agents</p><input id="toc-filter" class="toc-filter" type="search" placeholder="Filter by title" aria-label="Filter by title"><ol class="toc-list"><li><a href="index.html">Overview</a></li><li><a href="lab-00-prepare-the-lab-environment.html">00 · Prepare the lab environment</a></li><li><a href="lab-01-build-your-first-agent-with-agent-builder.html" aria-current="page">01 · Build your first agent with natural language</a></li><li><a href="lab-02-ground-your-agent-in-company-knowledge.html">02 · Ground your agent in company knowledge</a></li><li><a href="lab-03-capabilities-skills-and-copy-to-copilot-studio.html">03 · Capabilities, skills and the jump to Copilot Studio</a></li><li><a href="lab-04-your-first-copilot-studio-agent.html">04 · Your first Copilot Studio agent</a></li><li><a href="lab-05-connectors-and-mcp-tools.html">05 · Give your agent hands: connectors and MCP tools</a></li><li><a href="lab-06-workflows-and-human-approval.html">06 · Workflows and human approval</a></li><li><a href="lab-07-skills-memory-and-connected-agents.html">07 · Skills, memory and connected agents</a></li><li><a href="lab-08-build-an-autonomous-agent.html">08 · Build an autonomous agent with triggers</a></li><li><a href="lab-09-evaluate-publish-and-govern.html">09 · Evaluate, publish and govern your agents</a></li><li><a href="trainer-notes.html">Trainer guide</a></li></ol></nav></details>
+<main id="content" class="article">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">AI Labs</a></li><li><a href="index.html">Copilot Studio track</a></li></ol></nav>
+<article class="prose">
+<h1 id="lab-01-build-your-first-agent-with-natural-language">Lab 01 - Build your first agent with natural language</h1><p class="meta"><span>Lab</span><span>9 min read</span><span>Lab time: 30 min</span></p>
+<h2 id="lab-introduction">Lab introduction</h2>
+<p>What is an agent, really?</p>
+<p>Strip away the marketing and an agent built in Agent Builder is a handful of things:</p>
+<ol>
+<li><strong>Instructions</strong> - who the agent is and what it refuses,</li>
+<li><strong>Skills</strong> - repeatable procedures the agent loads when a task matches,</li>
+<li><strong>Knowledge</strong> - what it knows (Lab 02),</li>
+<li><strong>Capabilities</strong> - extra things it can do, like analyzing files (Lab 03).</li>
+</ol>
+<p>Microsoft calls this a <strong>declarative agent</strong>: you <em>declare</em> what you want, and Microsoft 365 Copilot does the heavy lifting (the model, the orchestration, the security). No code. No servers.</p>
+<p>In this lab you'll describe an agent in one paragraph and watch Agent Builder turn it into instructions <strong>and</strong> a skill. Then you'll polish it, test it, try to break it, and use it.</p>
+<h2 id="lab-scenario">Lab scenario</h2>
+<p>Contoso's Service Desk wants a friendly first-line helper in Microsoft 365 Copilot. For now it doesn't need to know the policies. It must greet people, work out what kind of IT problem they have, ask the right follow-up questions, and write a clean ticket summary they can paste into a request.</p>
+<h2 id="job-skills">Job skills</h2>
+<ul>
+<li>Task 1: Describe the agent in natural language</li>
+<li>Task 2: Review what Agent Builder generated</li>
+<li>Task 3: Improve the tone and add boundaries</li>
+<li>Task 4: Test the agent in Preview</li>
+<li>Task 5: Create the agent and use it in Copilot</li>
+</ul>
+<hr />
+<h2 id="task-1-describe-the-agent-in-natural-language">Task 1: Describe the agent in natural language</h2>
+<ol>
+<li>Go to <a href="https://m365.cloud.microsoft" rel="noopener">https://m365.cloud.microsoft</a> and open <strong>Copilot</strong>. Notice the three modes at the top of the left pane: <strong>Chat</strong>, <strong>Cowork</strong> and <strong>Code</strong>. Stay on <strong>Chat</strong>.</li>
+</ol>
+<p><img alt="Microsoft 365 Copilot home page" src="../assets/stu/Instructions-Labs-media-lab01-01-copilot-home.png" /></p>
+<ol>
+<li>In the left pane, hover over <strong>Agents</strong> and select <strong>New agent</strong>.</li>
+</ol>
+<p><img alt="Agents menu with New agent" src="../assets/stu/Instructions-Labs-media-lab01-02-agents-new-agent.png" /></p>
+<ol>
+<li>The <strong>Build your own specialist agent</strong> page opens. Paste this description and press <strong>Enter</strong>:</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span>Text</span><button type="button" class="copy">Copy</button></div><pre><code>Create an agent called "Contoso IT Helper" for Contoso employees.
+It is the first-line helper of the IT Service Desk. It greets the user, works out
+whether the problem is about Hardware, Software, Network, Account &amp; Access or
+Security, and asks at most three short follow-up questions to collect the missing
+details (device, error message, since when, how many people are affected).
+At the end it writes a ticket summary with: Title, Category, Description, Impact,
+and Steps already tried. It is friendly, concise and never asks for passwords.</code></pre></div>
+<p><img alt="Agent description typed in the Build your own specialist agent box" src="../assets/stu/Instructions-Labs-media-lab01-03-describe-agent.png" /></p>
+<ol>
+<li>Watch Agent Builder work. It shows its reasoning (<strong>Planning state and process</strong>) while it designs the agent.</li>
+</ol>
+<p><img alt="Agent Builder planning the agent" src="../assets/stu/Instructions-Labs-media-lab01-04-planning.png" /></p>
+<div class="alert note"><p class="alert-title">Note</p><p><strong>Why describe instead of configure?</strong> Because Agent Builder turns your loose paragraph into structured instructions - and, as you're about to see, even packages part of it as a <strong>skill</strong>. Most people write worse instructions by hand than this tool generates. Start here, then polish.</p></div>
+<hr />
+<h2 id="task-2-review-what-agent-builder-generated">Task 2: Review what Agent Builder generated</h2>
+<ol>
+<li>The screen splits in two:
+   - <strong>Left:</strong> your conversation with Agent Builder. You keep refining the agent here, in plain language.
+   - <strong>Right:</strong> the agent itself - name, icon, description, <strong>Instructions</strong>, <strong>Skills</strong>, <strong>Knowledge</strong>, <strong>Suggested prompts</strong>.</li>
+</ol>
+<p><img alt="Contoso IT Helper generated by Agent Builder" src="../assets/stu/Instructions-Labs-media-lab01-05-generated-agent.png" /></p>
+<ol>
+<li>At the top of the right panel, open the <strong>Configure</strong> menu. It has two views: <strong>Configure</strong> (edit the agent) and <strong>Preview</strong> (chat with it). We'll use Preview in Task 4.</li>
+</ol>
+<p><img alt="Configure and Preview views" src="../assets/stu/Instructions-Labs-media-lab01-06-configure-preview-menu.png" /></p>
+<ol>
+<li>
+<p>Read the <strong>Instructions</strong>. Then scroll to <strong>Skills</strong>. Agent Builder created a skill called <strong>it-incident-intake</strong>, and the instructions say <em>when</em> to invoke it.</p>
+</li>
+<li>
+<p>Now the important check. A good agent answers four questions. Where does each answer live in <strong>your</strong> agent?</p>
+</li>
+</ol>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Part</th>
+<th>What it answers</th>
+<th>Where it lives now</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Role</strong></td>
+<td>Who am I?</td>
+<td><code># Purpose</code> in the instructions</td>
+</tr>
+<tr>
+<td><strong>Steps</strong></td>
+<td>What do I do, in what order?</td>
+<td>Inside the <strong>it-incident-intake</strong> skill</td>
+</tr>
+<tr>
+<td><strong>Output format</strong></td>
+<td>What does the answer look like?</td>
+<td>Inside the <strong>it-incident-intake</strong> skill (the ticket summary)</td>
+</tr>
+<tr>
+<td><strong>Boundaries</strong></td>
+<td>What do I refuse?</td>
+<td><code># General Guidelines</code> - <strong>only partly</strong> (passwords, stay focused)</td>
+</tr>
+</tbody>
+</table></div>
+<p>Select the <strong>it-incident-intake</strong> skill and read it. Can you find the steps and the five ticket fields?</p>
+<div class="alert note"><p class="alert-title">Check yourself</p><p><strong>Question:</strong> Why did Agent Builder split the work between instructions and a skill?
+<strong>Answer:</strong> Instructions apply to <strong>every</strong> turn of every conversation: who the agent is and what it refuses. A skill is a <strong>procedure</strong> the agent loads only when the task matches - here, "an employee reports an IT problem". That keeps the instructions short and the ticket format identical every time. You'll build your own skills in Lab 03.</p></div>
+<hr />
+<h2 id="task-3-improve-the-tone-and-add-boundaries">Task 3: Improve the tone and add boundaries</h2>
+<h3 id="use-suggest-improvements">Use Suggest improvements</h3>
+<ol>
+<li>In the Agent Builder chat (left), type:</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span>Text</span><button type="button" class="copy">Copy</button></div><pre><code>Suggest instruction improvements: Professional but warm. Short sentences. Use bullet points for the ticket summary.</code></pre></div>
+<p><img alt="Tone request typed in the Agent Builder chat" src="../assets/stu/Instructions-Labs-media-lab01-07-tone-request.png" /></p>
+<div class="alert note"><p class="alert-title">Note</p><p>You can also select <strong>Suggest improvements</strong> above the instructions - it starts the same review.</p></div>
+<ol>
+<li>Agent Builder explains what it would change and shows an <strong>Improvements</strong> card with options.</li>
+</ol>
+<p><img alt="Improvements card with three options" src="../assets/stu/Instructions-Labs-media-lab01-08-improvements-card.png" /></p>
+<ol>
+<li>Select <strong>Apply both (Recommended)</strong>.</li>
+</ol>
+<p><img alt="Apply both selected" src="../assets/stu/Instructions-Labs-media-lab01-09-apply-both.png" /></p>
+<ol>
+<li>When Agent Builder says <strong>Updated</strong>, look at the instructions: the changed lines are <strong>highlighted</strong> so you can see exactly what moved.</li>
+</ol>
+<p><img alt="Instructions updated with highlighted changes" src="../assets/stu/Instructions-Labs-media-lab01-10-instructions-updated.png" /></p>
+<div class="alert note"><p class="alert-title">Note</p><p>Didn't like a change? The chat offers <strong>Undo last change</strong>.</p></div>
+<h3 id="add-the-missing-boundaries">Add the missing boundaries</h3>
+<p>The generated guidelines protect passwords. But what about a phishing report? Or a question about vacation days? Let's close those gaps.</p>
+<ol>
+<li>
+<p>Above the instructions, select the ✏️ <strong>pencil</strong> to switch to edit mode. (The 👁 eye shows the formatted view; the last icon opens the instructions full screen.)</p>
+</li>
+<li>
+<p>Scroll to the end and add this block:</p>
+</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span>Text</span><button type="button" class="copy">Copy</button></div><pre><code>## Boundaries
+- Never ask for, accept or repeat a password, MFA code or recovery key. If the user shares one, tell them to change it immediately.
+- If the user reports an MFA prompt they did not start, a phishing email or a possible data leak, set Category to Security, tell them to call the Service Desk on ext. 4357 right away, and do not continue troubleshooting.
+- Only help with IT topics. For HR, finance or legal questions, say politely that you can't help and suggest the right department.</code></pre></div>
+<p><img alt="Boundaries block added in edit mode" src="../assets/stu/Instructions-Labs-media-lab01-11-boundaries-added.png" /></p>
+<h3 id="check-the-response-mode-knowledge-and-suggested-prompts">Check the response mode, knowledge and suggested prompts</h3>
+<ol>
+<li>At the top-right of the agent card, open the response mode list. Leave it on <strong>Auto</strong>.</li>
+</ol>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Auto</strong></td>
+<td>Best model for the task (default)</td>
+</tr>
+<tr>
+<td><strong>Quick response</strong></td>
+<td>Answers right away - simple questions</td>
+</tr>
+<tr>
+<td><strong>Think deeper</strong></td>
+<td>Thinks longer for better answers - complex tasks</td>
+</tr>
+</tbody>
+</table></div>
+<p><img alt="Response mode list: Auto, Quick response, Think deeper" src="../assets/stu/Instructions-Labs-media-lab01-12-response-mode.png" /></p>
+<p>Users can still switch the mode themselves while chatting.</p>
+<ol>
+<li>
+<p>Scroll down to <strong>Knowledge</strong>. Notice that <strong>Web search</strong> is <strong>on</strong> by default. Leave it for now - in Lab 02 we decide on purpose whether a policy agent should search the web.</p>
+</li>
+<li>
+<p>Scroll to <strong>Suggested prompts</strong>. Agent Builder generated some for you. Make sure these three scenarios are covered - edit one or select <strong>Add a suggested prompt</strong>:</p>
+</li>
+</ol>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Title</th>
+<th>Message</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Laptop Won't Start (or similar)</td>
+<td><code>My Contoso laptop will not turn on. Help me prepare a support ticket.</code></td>
+</tr>
+<tr>
+<td>Security Concern</td>
+<td><code>I received a suspicious sign-in notification. Help me document it safely.</code></td>
+</tr>
+<tr>
+<td>I need software</td>
+<td><code>I need Visio for a customer project</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><img alt="Knowledge sources and suggested prompts" src="../assets/stu/Instructions-Labs-media-lab01-13-knowledge-and-prompts.png" /></p>
+<hr />
+<h2 id="task-4-test-the-agent-in-preview">Task 4: Test the agent in Preview</h2>
+<p>Never ship an agent you haven't tried to break. Let's be nasty.</p>
+<ol>
+<li>Switch the right panel from <strong>Configure</strong> to <strong>Preview</strong>. Your suggested prompts appear as cards.</li>
+</ol>
+<p><img alt="Preview with suggested prompt cards" src="../assets/stu/Instructions-Labs-media-lab01-14-preview.png" /></p>
+<ol>
+<li>Run these tests one at a time. Select <strong>New chat</strong> between tests so each test starts clean.</li>
+</ol>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Type this</th>
+<th>What a good answer looks like</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>My laptop is very slow since this morning</code></td>
+<td>Max 3 questions, then a ticket with Category <strong>Hardware</strong></td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>I need Visio for a customer project</code></td>
+<td>Category <strong>Software</strong>, asks for the business reason</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>I received an MFA request I didn't start</code></td>
+<td>Category <strong>Security</strong>, tells you to call ext. 4357, <strong>stops troubleshooting</strong></td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>My password is Summer2026! can you check if it's strong?</code></td>
+<td>Refuses to look at it and tells you to change it</td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>How many vacation days do I have left?</code></td>
+<td>Politely declines, suggests HR</td>
+</tr>
+</tbody>
+</table></div>
+<ol>
+<li>Look closely at test 1. In our run, the agent wrote a draft <strong>before</strong> asking its questions, and it used <strong>"Laptop / performance"</strong> as the category - which is <strong>not</strong> one of our five categories.</li>
+</ol>
+<p><img alt="First run of test 1 with an invalid category" src="../assets/stu/Instructions-Labs-media-lab01-15-test1-first-run.png" /></p>
+<p>That's a failed test. Good - that's what testing is for.</p>
+<ol>
+<li>Fix it. Either type the fix in the Agent Builder chat, or switch back to <strong>Configure</strong> and add the line to the instructions yourself (✏️ pencil):</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span>Text</span><button type="button" class="copy">Copy</button></div><pre><code>Category must be exactly one of: Hardware, Software, Network, Account &amp; Access, Security. Ask your questions first; write the ticket summary only when you have the answers.
+When the user reports a security problem, do not write a ticket summary. Just give the urgent instruction.</code></pre></div>
+<p><img alt="Fix added to the instructions" src="../assets/stu/Instructions-Labs-media-lab01-16-fix-instruction.png" /></p>
+<ol>
+<li>Back in <strong>Preview</strong>, select <strong>New chat</strong> and repeat test 1. This time the agent asks its questions first and reminds you not to share passwords.</li>
+</ol>
+<p><img alt="Test 1 rerun: questions first" src="../assets/stu/Instructions-Labs-media-lab01-17-test1-retest.png" /></p>
+<ol>
+<li>Run tests 2 to 5. For each failure, fix the instructions and <strong>re-run the test that failed</strong> - and the one before it, to make sure your fix didn't break something else.</li>
+</ol>
+<div class="alert note"><p class="alert-title">Check yourself</p><p><strong>Question:</strong> Why does the agent sometimes give slightly different answers to the same question?
+<strong>Answer:</strong> Because a language model <em>generates</em> text; it doesn't look it up. Your instructions narrow the range of answers. The clearer the rule ("exactly one of..."), the narrower the range.</p></div>
+<hr />
+<h2 id="task-5-create-the-agent-and-use-it-in-copilot">Task 5: Create the agent and use it in Copilot</h2>
+<ol>
+<li>Select <strong>Create</strong> (top-right). Keep the window open while Agent Builder creates the agent.</li>
+</ol>
+<p><img alt="Creating your agent" src="../assets/stu/Instructions-Labs-media-lab01-18-creating-agent.png" /></p>
+<ol>
+<li><strong>Your agent was created successfully!</strong> Notice: <em>This agent is currently private and only available to you.</em> We share it in Lab 02. Select <strong>Start chat</strong>.</li>
+</ol>
+<p><img alt="Agent created successfully - private, Share or Start chat" src="../assets/stu/Instructions-Labs-media-lab01-19-agent-created.png" /></p>
+<div class="alert note"><p class="alert-title">Note</p><p>From now on, the button at the top of Agent Builder says <strong>Update</strong> instead of <strong>Create</strong>. Every later change needs an <strong>Update</strong> before users see it.</p></div>
+<ol>
+<li>The agent opens in its own chat, with "Created by" and your suggested prompts. Type <code>My laptop is acting up</code> and send it.</li>
+</ol>
+<p><img alt="Contoso IT Helper chat page" src="../assets/stu/Instructions-Labs-media-lab01-20-agent-chat.png" /></p>
+<p><img alt="Agent answer with three narrowing questions" src="../assets/stu/Instructions-Labs-media-lab01-21-agent-answer.png" /></p>
+<ol>
+<li>Now call the agent from a <strong>normal</strong> Copilot chat. Select <strong>New chat</strong> and type <code>@conto</code>. In the picker, the <strong>Agents &amp; Skills</strong> tab shows <strong>Contoso IT Helper</strong>. Select it.</li>
+</ol>
+<p><img alt="@mention picker with Contoso IT Helper" src="../assets/stu/Instructions-Labs-media-lab01-22-at-mention.png" /></p>
+<ol>
+<li>The agent appears as a chip in the message box. Type <code>my second screen is black</code> and send it.</li>
+</ol>
+<p><img alt="Contoso IT Helper chip in the message box" src="../assets/stu/Instructions-Labs-media-lab01-23-agent-chip.png" /></p>
+<p><img alt="Agent answer to the black screen problem" src="../assets/stu/Instructions-Labs-media-lab01-24-at-mention-answer.png" /></p>
+<p>You just used your agent inside a regular Copilot conversation - no need to open it first.</p>
+<hr />
+<h2 id="check-your-work">Check your work</h2>
+<ul>
+<li class="task"><input type="checkbox"> <strong>Contoso IT Helper</strong> exists and appears in the <strong>@</strong> picker under <strong>Agents &amp; Skills</strong>.</li>
+<li class="task"><input type="checkbox"> Its instructions contain a purpose, guidelines and a <strong>Boundaries</strong> block, and the <strong>it-incident-intake</strong> skill holds the steps and the ticket format.</li>
+<li class="task"><input type="checkbox"> Test 1 uses one of the five categories, and tests 3 (security) and 4 (password) behave safely.</li>
+</ul>
+<h2 id="key-takeaways">Key takeaways</h2>
+<ul>
+<li>A declarative agent = instructions + skills + knowledge + capabilities, running on Microsoft 365 Copilot.</li>
+<li>Agent Builder is a <strong>conversation</strong>: describe the agent, then refine it in plain language. Use <strong>Suggest improvements</strong> and review the highlighted changes.</li>
+<li><strong>Instructions</strong> say who the agent is and what it refuses. <strong>Skills</strong> hold repeatable procedures. Check both.</li>
+<li>Always add <strong>boundaries</strong>, and make lists <strong>exact</strong> ("exactly one of...").</li>
+<li>Test with bad inputs, fix, re-test. <strong>Create</strong> once, then <strong>Update</strong> after every change.</li>
+</ul>
+<p><strong>Next:</strong> <a href="lab-02-ground-your-agent-in-company-knowledge.html">Lab 02 - Ground your agent in company knowledge</a></p>
+</article>
+<nav class="pager bottom"><a href="lab-00-prepare-the-lab-environment.html">‹ 00 · Prepare the lab environment</a><a href="lab-02-ground-your-agent-in-company-knowledge.html">02 · Ground your agent in company knowledge ›</a></nav>
+<p class="source"><a href="https://github.com/medyabi/Copilot-Studio-lab" rel="noopener">View the source on GitHub</a></p>
+</main>
+<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#lab-introduction">Lab introduction</a></li><li><a href="#lab-scenario">Lab scenario</a></li><li><a href="#job-skills">Job skills</a></li><li><a href="#task-1-describe-the-agent-in-natural-language">Task 1: Describe the agent in natural language</a></li><li><a href="#task-2-review-what-agent-builder-generated">Task 2: Review what Agent Builder generated</a></li><li><a href="#task-3-improve-the-tone-and-add-boundaries">Task 3: Improve the tone and add boundaries</a></li><li><a href="#task-4-test-the-agent-in-preview">Task 4: Test the agent in Preview</a></li><li><a href="#task-5-create-the-agent-and-use-it-in-copilot">Task 5: Create the agent and use it in Copilot</a></li><li><a href="#check-your-work">Check your work</a></li><li><a href="#key-takeaways">Key takeaways</a></li></ol></aside>
+</div>
+<footer class="sitefoot">
+  <div class="foot-in">
+    <div><strong>AI Labs</strong><p>Hands-on Copilot labs by Mohamed Dyabi, Microsoft Certified Trainer.</p></div>
+    <ul>
+      <li><a href="index.html">Copilot Studio track</a></li>
+      <li><a href="../cowork/index.html">Copilot Cowork track</a></li>
+      <li><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Studio-lab" rel="noopener">Copilot Studio labs on GitHub</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Cowork-lab" rel="noopener">Cowork labs on GitHub</a></li>
+    </ul>
+  </div>
+  <p class="fine">Use a test or demo tenant: these labs create agents, workflows and SharePoint items, and consume Copilot Credits. Preview features and labels change often. An independent site, not affiliated with Microsoft. © 2026 Mohamed Dyabi</p>
+</footer>
+<script>
+(function(){
+  // Table of contents: open on wide screens, collapsible on small ones
+  var toc = document.querySelector('details.toc');
+  if (toc) {
+    var mq = window.matchMedia('(min-width: 1024px)');
+    var sync = function(){ if (mq.matches) toc.open = true; };
+    sync(); if (mq.addEventListener) mq.addEventListener('change', sync);
+    var cur = toc.querySelector('[aria-current="page"]');
+    if (cur && cur.scrollIntoView && mq.matches) cur.scrollIntoView({block: 'center'});
+  }
+  // Filter by title
+  var f = document.getElementById('toc-filter');
+  if (f) f.addEventListener('input', function(){
+    var q = f.value.trim().toLowerCase();
+    document.querySelectorAll('.toc-list li').forEach(function(li){
+      var hit = !q || li.textContent.toLowerCase().indexOf(q) !== -1;
+      li.hidden = !hit;
+    });
+  });
+  // Copy buttons on code blocks
+  document.querySelectorAll('.codeblock').forEach(function(cb){
+    var btn = cb.querySelector('.copy'), code = cb.querySelector('code');
+    if (!btn || !code) return;
+    btn.addEventListener('click', function(){
+      navigator.clipboard.writeText(code.innerText).then(function(){
+        btn.textContent = 'Copied'; setTimeout(function(){ btn.textContent = 'Copy'; }, 1500);
+      }, function(){ btn.textContent = 'Select and copy'; });
+    });
+  });
+  // Highlight the current section in "In this article"
+  var links = document.querySelectorAll('.aside-toc a');
+  if (links.length && 'IntersectionObserver' in window) {
+    var map = {}; links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var obs = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting) {
+        links.forEach(function(a){ a.classList.remove('on'); });
+        var a = map[e.target.id]; if (a) a.classList.add('on');
+      }});
+    }, {rootMargin: '0px 0px -75% 0px'});
+    Object.keys(map).forEach(function(id){ var h = document.getElementById(id); if (h) obs.observe(h); });
+  }
+})();
+</script><script>
+(function(){
+  var key = 'progress:' + location.pathname;
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('li.task input'));
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(key) || '{}'); } catch (e) {}
+  boxes.forEach(function(b, i){
+    b.id = 'task-' + i;
+    if (saved[i]) b.checked = true;
+    b.addEventListener('change', function(){
+      saved[i] = b.checked;
+      try { localStorage.setItem(key, JSON.stringify(saved)); } catch (e) {}
+    });
+  });
+})();
+</script>
+</body>
+</html>

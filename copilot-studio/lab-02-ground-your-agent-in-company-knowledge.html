@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>02: Ground your agent in company knowledge · AI Labs</title>
+<meta name="description" content="Hands-on labs for Microsoft Copilot Studio, Agent Builder and Microsoft 365 Copilot Cowork: from a simple agent to autonomous agents.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+</head>
+<body class="t-studio">
+<a class="skip" href="#content">Skip to main content</a>
+<header class="masthead">
+  <a class="brand" href="../index.html"><img src="../assets/favicon.svg" alt="" width="24" height="24"><span>AI Labs</span></a>
+  <span class="divider" aria-hidden="true"></span>
+  <nav class="mainnav" aria-label="Main"><a href="index.html" aria-current="true">Copilot Studio</a><a href="../cowork/index.html">Copilot Cowork</a><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></nav>
+  <a class="gh" href="https://github.com/medyabi" rel="noopener">GitHub</a>
+</header>
+<div class="doc has-toc">
+<details class="toc"><summary>Table of contents</summary><nav aria-label="From simple agents to autonomous agents"><p class="toc-title">From simple agents to autonomous agents</p><input id="toc-filter" class="toc-filter" type="search" placeholder="Filter by title" aria-label="Filter by title"><ol class="toc-list"><li><a href="index.html">Overview</a></li><li><a href="lab-00-prepare-the-lab-environment.html">00 · Prepare the lab environment</a></li><li><a href="lab-01-build-your-first-agent-with-agent-builder.html">01 · Build your first agent with natural language</a></li><li><a href="lab-02-ground-your-agent-in-company-knowledge.html" aria-current="page">02 · Ground your agent in company knowledge</a></li><li><a href="lab-03-capabilities-skills-and-copy-to-copilot-studio.html">03 · Capabilities, skills and the jump to Copilot Studio</a></li><li><a href="lab-04-your-first-copilot-studio-agent.html">04 · Your first Copilot Studio agent</a></li><li><a href="lab-05-connectors-and-mcp-tools.html">05 · Give your agent hands: connectors and MCP tools</a></li><li><a href="lab-06-workflows-and-human-approval.html">06 · Workflows and human approval</a></li><li><a href="lab-07-skills-memory-and-connected-agents.html">07 · Skills, memory and connected agents</a></li><li><a href="lab-08-build-an-autonomous-agent.html">08 · Build an autonomous agent with triggers</a></li><li><a href="lab-09-evaluate-publish-and-govern.html">09 · Evaluate, publish and govern your agents</a></li><li><a href="trainer-notes.html">Trainer guide</a></li></ol></nav></details>
+<main id="content" class="article">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">AI Labs</a></li><li><a href="index.html">Copilot Studio track</a></li></ol></nav>
+<article class="prose">
+<h1 id="lab-02-ground-your-agent-in-company-knowledge">Lab 02 - Ground your agent in company knowledge</h1><p class="meta"><span>Lab</span><span>9 min read</span><span>Lab time: 40 min</span></p>
+<h2 id="lab-introduction">Lab introduction</h2>
+<p>Ask your Lab 01 agent "How long does it take to get Visio?" and it will guess. Politely. Confidently. And without a single source.</p>
+<p>Why? Because it has never read the Contoso Software Request Policy. The model knows a lot about the world, but nothing about <strong>your</strong> company.</p>
+<p>The fix has a name: <strong>grounding</strong>. You give the agent knowledge sources, and before it answers, Copilot searches those sources and builds the answer from what it finds - with <strong>citations</strong> so the user can check.</p>
+<p>In this lab you ground the agent, you decide which sources it may use (and which it may <strong>not</strong>), and you share it.</p>
+<h2 id="lab-scenario">Lab scenario</h2>
+<p>The Service Desk wants the IT Helper to answer policy questions from the official documents only, cite the source, and say "I don't know" instead of guessing. It also wants Microsoft's own support site available for "how do I..." questions about Microsoft 365.</p>
+<h2 id="job-skills">Job skills</h2>
+<ul>
+<li>Task 1: Prove the problem (ask before grounding)</li>
+<li>Task 2: Add the SharePoint policies as knowledge</li>
+<li>Task 3: Add a website and choose what else the agent may search</li>
+<li>Task 4: Teach the agent how to use its knowledge</li>
+<li>Task 5: Update and test grounding and citations</li>
+<li>Task 6: Share the agent</li>
+</ul>
+<hr />
+<h2 id="task-1-prove-the-problem">Task 1: Prove the problem</h2>
+<ol>
+<li>Open <strong>Contoso IT Helper</strong> in Copilot and ask:</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span>Text</span><button type="button" class="copy">Copy</button></div><pre><code>How long does it take to get Visio, and who approves it?</code></pre></div>
+<p><img alt="Visio question typed in the agent chat" src="../assets/stu/Instructions-Labs-media-lab02-01-ask-before.png" /></p>
+<ol>
+<li>Look at the answer. In our run, the agent said it <em>depends on Contoso's process</em> and that it <em>needs to check the internal Visio policy</em>. No numbers. No citation. It even suggested follow-ups like <strong>Check the Visio approval policy</strong> - which it can't do yet.</li>
+</ol>
+<p><img alt="Generic answer without a source" src="../assets/stu/Instructions-Labs-media-lab02-02-generic-answer.png" /></p>
+<p>Write the answer down. That's the problem we fix.</p>
+<hr />
+<h2 id="task-2-add-the-sharepoint-policies-as-knowledge">Task 2: Add the SharePoint policies as knowledge</h2>
+<ol>
+<li>In the Copilot left pane, hover over <strong>Agents</strong>, then select <strong>...</strong> next to <strong>Contoso IT Helper</strong> &gt; <strong>Edit</strong>.</li>
+</ol>
+<p><img alt="Agents menu with Edit" src="../assets/stu/Instructions-Labs-media-lab02-03-edit-agent-menu.png" /></p>
+<div class="alert note"><p class="alert-title">Note</p><p>The same menu has <strong>Pin</strong>, <strong>About</strong>, <strong>Share agent</strong> and <strong>Uninstall</strong>. We'll use <strong>Share agent</strong> in Task 6.</p></div>
+<ol>
+<li>Agent Builder opens with "How would you like to update your agent?". Make sure the right panel shows <strong>Configure</strong>, and scroll down to <strong>Knowledge</strong>.</li>
+</ol>
+<p><img alt="Knowledge section with Work content toggles" src="../assets/stu/Instructions-Labs-media-lab02-04-knowledge-section.png" /></p>
+<p>Notice two blocks:
+   - <strong>Focus your agent by adding specific knowledge sources</strong> - specific files, sites or websites you choose.
+   - <strong>Work content</strong> - broad sources (<strong>Cloud files</strong>, <strong>Outlook</strong>, <strong>Teams</strong>, <strong>Copilot connectors</strong>, <strong>Web search</strong>). <strong>Search all</strong> means the agent can search <em>everything</em> of that type the user can access.</p>
+<ol>
+<li>Select <strong>+ Add knowledge</strong>. A search box appears: <strong>Paste a link or search for your data</strong>, with tabs <strong>All, Files, Sites, Chats, Meetings</strong>. Your four policies already show up because you uploaded them recently.</li>
+</ol>
+<p><img alt="Add knowledge search box with the policies" src="../assets/stu/Instructions-Labs-media-lab02-05-add-knowledge-search.png" /></p>
+<ol>
+<li>Select the ☁️ <strong>cloud</strong> icon at the end of the search box to open the file picker. Browse to <strong>Contoso IT Hub</strong> &gt; <strong>Documents</strong>, select the <strong>four</strong> policy files and select <strong>Select</strong>.</li>
+</ol>
+<p><img alt="Pick items dialog with the four policies selected" src="../assets/stu/Instructions-Labs-media-lab02-06-pick-items.png" /></p>
+<ol>
+<li>The files now appear under <strong>Cloud files</strong> &gt; <strong>SharePoint (4)</strong>.</li>
+</ol>
+<div class="alert note"><p class="alert-title">Note</p><p><strong>Limits worth knowing:</strong> up to 100 SharePoint files, 1 SharePoint list and 50 OneDrive files per agent. The agent respects SharePoint permissions and sensitivity labels. Newly added files may show <strong>Preparing</strong> for a few minutes - the agent won't use them until they're ready. Keep documents short and focused - one topic per file works best.</p></div>
+<hr />
+<h2 id="task-3-add-a-website-and-choose-what-else-the-agent-may-search">Task 3: Add a website and choose what else the agent may search</h2>
+<ol>
+<li>Select <strong>+ Add knowledge</strong> again, paste this URL and select the <strong>+</strong> button:</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span>Text</span><button type="button" class="copy">Copy</button></div><pre><code>https://support.microsoft.com/office</code></pre></div>
+<p><img alt="Website URL pasted next to the SharePoint files" src="../assets/stu/Instructions-Labs-media-lab02-07-sharepoint-and-url.png" /></p>
+<div class="alert note"><p class="alert-title">Note</p><p>Public website rules: max <strong>two levels</strong> in the path, <strong>no query parameters</strong> (<code>?x=1</code>), up to <strong>four</strong> URLs.</p></div>
+<ol>
+<li>Scroll down. The website now appears under <strong>Web search</strong>.</li>
+</ol>
+<p><img alt="Web search with the support.microsoft.com site, Outlook and Teams toggles" src="../assets/stu/Instructions-Labs-media-lab02-08-web-search-site.png" /></p>
+<ol>
+<li>Now the important decision. Look at the <strong>Work content</strong> toggles. In our tenant <strong>Outlook</strong> and <strong>Teams</strong> were <strong>on</strong> (Search all) by default. That means the agent may also read the user's email and Teams chats to answer.</li>
+</ol>
+<p>For a <strong>policy</strong> agent that's not what we want. An answer about Visio approval should come from the policy - not from a colleague's chat message.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Toggle</th>
+<th>Set to</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Cloud files</strong></td>
+<td>On (with our 4 files)</td>
+<td>Our official source</td>
+</tr>
+<tr>
+<td><strong>Outlook</strong></td>
+<td><strong>Off</strong></td>
+<td>Policy answers must not come from email</td>
+</tr>
+<tr>
+<td><strong>Teams</strong></td>
+<td><strong>Off</strong></td>
+<td>Same for chats</td>
+</tr>
+<tr>
+<td><strong>Copilot connectors</strong></td>
+<td>Off</td>
+<td>Not used in this lab</td>
+</tr>
+<tr>
+<td><strong>Web search</strong></td>
+<td>On, with our one site</td>
+<td>So the agent can use support.microsoft.com</td>
+</tr>
+</tbody>
+</table></div>
+<div class="alert note"><p class="alert-title">Check yourself</p><p><strong>Question:</strong> Why keep <strong>Web search</strong> on?
+<strong>Answer:</strong> In the current Agent Builder, the websites you add are listed <strong>under</strong> Web search. We want the agent to use support.microsoft.com - and in Task 4 we tell it to use that site only for "how do I" questions. If your trainer's tenant shows <strong>Search all</strong> next to Web search, the agent may search the whole web: decide on purpose whether that's acceptable for your agent.</p></div>
+<ol>
+<li>Select the ⚙️ <strong>gear</strong> next to <strong>Suggest improvements</strong> in the Knowledge section. <strong>Knowledge settings</strong> opens.</li>
+</ol>
+<p><img alt="Knowledge settings: People data, documents and code, images, discourage model knowledge" src="../assets/stu/Instructions-Labs-media-lab02-09-knowledge-settings.png" /></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>What it does</th>
+<th>For our agent</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>People data</strong></td>
+<td>Org chart and profile data for people questions</td>
+<td>Keep <strong>on</strong> (useful for "who is my manager?")</td>
+</tr>
+<tr>
+<td><strong>Create documents, charts, and code</strong></td>
+<td>Code interpreter (Lab 03)</td>
+<td>Keep on</td>
+</tr>
+<tr>
+<td><strong>Create images</strong></td>
+<td>Image generation</td>
+<td>Keep on (or off - not needed here)</td>
+</tr>
+<tr>
+<td><strong>Discourage model knowledge</strong></td>
+<td>Prefer your sources over the model's general knowledge</td>
+<td>Turn <strong>on</strong> - a policy agent should trust Contoso documents first</td>
+</tr>
+</tbody>
+</table></div>
+<p>Close the dialog.</p>
+<hr />
+<h2 id="task-4-teach-the-agent-how-to-use-its-knowledge">Task 4: Teach the agent how to use its knowledge</h2>
+<p>Knowledge without instructions is like giving someone a library card without telling them what to read.</p>
+<ol>
+<li>Scroll up to <strong>Instructions</strong>, select the ✏️ <strong>pencil</strong> and add this block at the end:</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span>Text</span><button type="button" class="copy">Copy</button></div><pre><code>## Using knowledge
+- For any question about Contoso devices, software, remote access, passwords or MFA, answer ONLY from the Contoso IT Policies documents and always cite the document.
+- Use support.microsoft.com only for "how do I..." questions about Microsoft 365 apps.
+- If the answer is not in the documents, say "I couldn't find that in the Contoso IT policies" and offer to write a ticket summary instead. Never guess a policy, a price, an approval rule or a deadline.
+- When a policy has a table, answer with the relevant row, not the whole table.</code></pre></div>
+<p><img alt="Using knowledge block added to the instructions" src="../assets/stu/Instructions-Labs-media-lab02-10-using-knowledge-edit.png" /></p>
+<ol>
+<li>Scroll to <strong>Suggested prompts</strong> and select <strong>Add a suggested prompt</strong> twice:</li>
+</ol>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Title</th>
+<th>Message</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Lost device</td>
+<td><code>I lost my laptop at the airport, what do I do?</code></td>
+</tr>
+<tr>
+<td>Travel</td>
+<td><code>I'm going to Dubai next week, anything I should do?</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><img alt="Suggested prompts with Lost device and Travel" src="../assets/stu/Instructions-Labs-media-lab02-11-new-prompts.png" /></p>
+<hr />
+<h2 id="task-5-update-and-test-grounding-and-citations">Task 5: Update and test grounding and citations</h2>
+<ol>
+<li>Select <strong>Update</strong> (top-right). Keep the window open until <strong>Your agent was updated successfully!</strong> appears. The agent is still <strong>private</strong>.</li>
+</ol>
+<p><img alt="Agent updated successfully" src="../assets/stu/Instructions-Labs-media-lab02-12-updated.png" /></p>
+<ol>
+<li>Select <strong>Start chat</strong> and run the tests below. Use <strong>New</strong> between tests so each one starts clean.</li>
+</ol>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Question</th>
+<th>Expected (from the policies)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>How long does it take to get Visio, and who approves it?</code></td>
+<td>Category B, manager approval, 2 business days - <strong>with a citation</strong></td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>I lost my laptop at the airport, what do I do?</code></td>
+<td>Report within 4 hours, Intune wipe, replacement in 2 business days</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>Can I use ChatGPT with customer data?</code></td>
+<td>No - only approved Microsoft Copilot tools; other AI tools are Category D</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>How do I share my screen in Teams?</code></td>
+<td>Steps from Microsoft support, cited as <strong>microsoft</strong></td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>Which laptop does a pre-sales engineer get?</code></td>
+<td>Dell Latitude 9450 2-in-1, 5G, 3-year refresh</td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>What's the Wi-Fi password in the Paris office?</code></td>
+<td>"I couldn't find that..." + offers a ticket summary. <strong>No guess.</strong></td>
+</tr>
+<tr>
+<td>7</td>
+<td><code>Who is my manager?</code></td>
+<td>Your manager's name (People data)</td>
+</tr>
+</tbody>
+</table></div>
+<ol>
+<li><strong>Test 1</strong> - compare with Task 1. Category B, manager, 2 business days, and <strong>Source: Contoso-Software-Request-Policy</strong>. Select the source link: it opens the document. That difference is grounding.</li>
+</ol>
+<p><img alt="Visio answer with the policy as source" src="../assets/stu/Instructions-Labs-media-lab02-13-visio-cited.png" /></p>
+<ol>
+<li><strong>Test 2</strong> - every step carries a small document icon. Each one is a citation to the Laptop and Device Policy.</li>
+</ol>
+<p><img alt="Lost laptop answer with a citation on every step" src="../assets/stu/Instructions-Labs-media-lab02-14-lost-laptop.png" /></p>
+<ol>
+<li><strong>Test 3</strong> - the agent applies the Category D rule and cites the Software Request Policy.</li>
+</ol>
+<p><img alt="ChatGPT answer citing the Software Request Policy" src="../assets/stu/Instructions-Labs-media-lab02-15-chatgpt.png" /></p>
+<ol>
+<li><strong>Test 4</strong> - a "how do I" question. This time the citation is <strong>microsoft</strong>, and the agent links Microsoft's official article. The right source for the right question.</li>
+</ol>
+<p><img alt="Teams screen share answer citing Microsoft support" src="../assets/stu/Instructions-Labs-media-lab02-16-teams-share-screen.png" /></p>
+<ol>
+<li>Run tests 5 to 7. Test 6 is the most important: an agent that says <strong>"I don't know"</strong> is worth more than one that invents a password policy.</li>
+</ol>
+<div class="alert note"><p class="alert-title">Note</p><p><strong>Troubleshooting:</strong> If the agent ignores the documents, check that (a) the files aren't still <strong>Preparing</strong>, (b) your account can open them, (c) you selected <strong>Update</strong> after your changes, and (d) your tenant doesn't use Restricted SharePoint Search (it blocks SharePoint as a knowledge source).</p></div>
+<hr />
+<h2 id="task-6-share-the-agent">Task 6: Share the agent</h2>
+<ol>
+<li>Hover over <strong>Agents</strong>, select <strong>...</strong> next to <strong>Contoso IT Helper</strong> &gt; <strong>Share agent</strong>.</li>
+</ol>
+<p><img alt="Agents menu with Share agent" src="../assets/stu/Instructions-Labs-media-lab02-17-share-agent-menu.png" /></p>
+<ol>
+<li>In <strong>Share "Contoso IT Helper"</strong>, type the name or email of a colleague (or a second lab account). Notice:
+   - <strong>Org-wide sharing for chat access</strong> - leave it <strong>off</strong>. Everyone in the company is not a pilot group.
+   - <strong>Copy chat link</strong> - copies a link that opens the agent directly. The arrow next to it has more share options.</li>
+</ol>
+<p><img alt="Share dialog with org-wide toggle and Copy chat link" src="../assets/stu/Instructions-Labs-media-lab02-18-share-dialog.png" /></p>
+<ol>
+<li>Share the agent and send the link to your colleague. Ask them to run test 1.</li>
+</ol>
+<div class="alert note"><p class="alert-title">Note</p><p><strong>The permission test.</strong> Sharing the agent does <strong>not</strong> share the SharePoint files. If your colleague isn't a member of the <strong>Contoso IT Hub</strong> site, the agent can't read the policies <em>for them</em> - they'll get the "I couldn't find that" answer. Add them to the site and try again.
+Answers follow the <strong>user's</strong> permissions. That's exactly what you want in a real company.</p></div>
+<hr />
+<h2 id="check-your-work">Check your work</h2>
+<ul>
+<li class="task"><input type="checkbox"> The Visio answer cites <strong>Contoso-Software-Request-Policy</strong>.</li>
+<li class="task"><input type="checkbox"> The Teams screen-share answer cites Microsoft support.</li>
+<li class="task"><input type="checkbox"> The agent says it can't find the Wi-Fi password instead of inventing one.</li>
+<li class="task"><input type="checkbox"> Outlook and Teams are off, <strong>Discourage model knowledge</strong> is on, and the agent is shared with one colleague.</li>
+</ul>
+<h2 id="key-takeaways">Key takeaways</h2>
+<ul>
+<li><strong>Grounding</strong> = the agent searches your sources first, then answers with citations.</li>
+<li><strong>Specific sources</strong> (your files, your site) are different from <strong>Work content</strong> (Search all email, chats, files). Turn on only what the agent's job needs.</li>
+<li>Knowledge alone isn't enough. Tell the agent <strong>when</strong> to use each source and what to do when nothing is found.</li>
+<li><strong>Discourage model knowledge</strong> pushes the agent to trust your documents over its general knowledge.</li>
+<li>SharePoint knowledge respects each user's permissions. Sharing an agent never shares its files.</li>
+</ul>
+<p><strong>Next:</strong> <a href="lab-03-capabilities-skills-and-copy-to-copilot-studio.html">Lab 03 - Capabilities, skills and the jump to Copilot Studio</a></p>
+</article>
+<nav class="pager bottom"><a href="lab-01-build-your-first-agent-with-agent-builder.html">‹ 01 · Build your first agent with natural language</a><a href="lab-03-capabilities-skills-and-copy-to-copilot-studio.html">03 · Capabilities, skills and the jump to Copilot Studio ›</a></nav>
+<p class="source"><a href="https://github.com/medyabi/Copilot-Studio-lab" rel="noopener">View the source on GitHub</a></p>
+</main>
+<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#lab-introduction">Lab introduction</a></li><li><a href="#lab-scenario">Lab scenario</a></li><li><a href="#job-skills">Job skills</a></li><li><a href="#task-1-prove-the-problem">Task 1: Prove the problem</a></li><li><a href="#task-2-add-the-sharepoint-policies-as-knowledge">Task 2: Add the SharePoint policies as knowledge</a></li><li><a href="#task-3-add-a-website-and-choose-what-else-the-agent-may-search">Task 3: Add a website and choose what else the agent may search</a></li><li><a href="#task-4-teach-the-agent-how-to-use-its-knowledge">Task 4: Teach the agent how to use its knowledge</a></li><li><a href="#task-5-update-and-test-grounding-and-citations">Task 5: Update and test grounding and citations</a></li><li><a href="#task-6-share-the-agent">Task 6: Share the agent</a></li><li><a href="#check-your-work">Check your work</a></li><li><a href="#key-takeaways">Key takeaways</a></li></ol></aside>
+</div>
+<footer class="sitefoot">
+  <div class="foot-in">
+    <div><strong>AI Labs</strong><p>Hands-on Copilot labs by Mohamed Dyabi, Microsoft Certified Trainer.</p></div>
+    <ul>
+      <li><a href="index.html">Copilot Studio track</a></li>
+      <li><a href="../cowork/index.html">Copilot Cowork track</a></li>
+      <li><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Studio-lab" rel="noopener">Copilot Studio labs on GitHub</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Cowork-lab" rel="noopener">Cowork labs on GitHub</a></li>
+    </ul>
+  </div>
+  <p class="fine">Use a test or demo tenant: these labs create agents, workflows and SharePoint items, and consume Copilot Credits. Preview features and labels change often. An independent site, not affiliated with Microsoft. © 2026 Mohamed Dyabi</p>
+</footer>
+<script>
+(function(){
+  // Table of contents: open on wide screens, collapsible on small ones
+  var toc = document.querySelector('details.toc');
+  if (toc) {
+    var mq = window.matchMedia('(min-width: 1024px)');
+    var sync = function(){ if (mq.matches) toc.open = true; };
+    sync(); if (mq.addEventListener) mq.addEventListener('change', sync);
+    var cur = toc.querySelector('[aria-current="page"]');
+    if (cur && cur.scrollIntoView && mq.matches) cur.scrollIntoView({block: 'center'});
+  }
+  // Filter by title
+  var f = document.getElementById('toc-filter');
+  if (f) f.addEventListener('input', function(){
+    var q = f.value.trim().toLowerCase();
+    document.querySelectorAll('.toc-list li').forEach(function(li){
+      var hit = !q || li.textContent.toLowerCase().indexOf(q) !== -1;
+      li.hidden = !hit;
+    });
+  });
+  // Copy buttons on code blocks
+  document.querySelectorAll('.codeblock').forEach(function(cb){
+    var btn = cb.querySelector('.copy'), code = cb.querySelector('code');
+    if (!btn || !code) return;
+    btn.addEventListener('click', function(){
+      navigator.clipboard.writeText(code.innerText).then(function(){
+        btn.textContent = 'Copied'; setTimeout(function(){ btn.textContent = 'Copy'; }, 1500);
+      }, function(){ btn.textContent = 'Select and copy'; });
+    });
+  });
+  // Highlight the current section in "In this article"
+  var links = document.querySelectorAll('.aside-toc a');
+  if (links.length && 'IntersectionObserver' in window) {
+    var map = {}; links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var obs = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting) {
+        links.forEach(function(a){ a.classList.remove('on'); });
+        var a = map[e.target.id]; if (a) a.classList.add('on');
+      }});
+    }, {rootMargin: '0px 0px -75% 0px'});
+    Object.keys(map).forEach(function(id){ var h = document.getElementById(id); if (h) obs.observe(h); });
+  }
+})();
+</script><script>
+(function(){
+  var key = 'progress:' + location.pathname;
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('li.task input'));
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(key) || '{}'); } catch (e) {}
+  boxes.forEach(function(b, i){
+    b.id = 'task-' + i;
+    if (saved[i]) b.checked = true;
+    b.addEventListener('change', function(){
+      saved[i] = b.checked;
+      try { localStorage.setItem(key, JSON.stringify(saved)); } catch (e) {}
+    });
+  });
+})();
+</script>
+</body>
+</html>

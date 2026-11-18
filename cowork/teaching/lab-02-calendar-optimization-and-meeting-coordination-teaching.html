@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2: Calendar Optimization and Meeting Coordination · AI Labs</title>
+<meta name="description" content="Hands-on labs for Microsoft Copilot Studio, Agent Builder and Microsoft 365 Copilot Cowork: from a simple agent to autonomous agents.">
+<link rel="stylesheet" href="../../assets/site.css">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../../assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
+</head>
+<body class="t-cowork">
+<a class="skip" href="#content">Skip to main content</a>
+<header class="masthead">
+  <a class="brand" href="../../index.html"><img src="../../assets/favicon.svg" alt="" width="24" height="24"><span>AI Labs</span></a>
+  <span class="divider" aria-hidden="true"></span>
+  <nav class="mainnav" aria-label="Main"><a href="../../copilot-studio/index.html">Copilot Studio</a><a href="../index.html" aria-current="true">Copilot Cowork</a><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></nav>
+  <a class="gh" href="https://github.com/medyabi" rel="noopener">GitHub</a>
+</header>
+<div class="doc has-toc">
+<details class="toc"><summary>Table of contents</summary><nav aria-label="AI automation with Copilot Cowork"><p class="toc-title">AI automation with Copilot Cowork</p><input id="toc-filter" class="toc-filter" type="search" placeholder="Filter by title" aria-label="Filter by title"><ol class="toc-list"><li><a href="../index.html">Overview</a></li><li><a href="../lab-01-getting-started-with-copilot-cowork.html">1 · Getting Started with Copilot Cowork</a></li><li><a href="../lab-02-calendar-optimization-and-meeting-coordination.html">2 · AI-Powered Calendar Optimization and Executive Meeting Coordination</a></li><li><a href="../lab-03-intelligent-file-organizer.html">3 · Intelligent File Organizer</a></li><li><a href="../lab-04-building-custom-cowork-skills.html">4 · Building Custom Cowork Skills (Read-only)</a></li><li><a href="../lab-05-personal-work-dashboard.html">5 · Building a Personal Work Dashboard with Copilot Cowork (Read-only)</a></li><li><a href="../lab-06-build-and-publish-a-cowork-plugin.html">6 · Building and Publishing a Custom Copilot Cowork Plugin (Read-only)</a></li><li class="group"><details open><summary>Teaching editions</summary><ol><li><a href="lab-01-getting-started-with-copilot-cowork-teaching.html">1 · Getting Started with Copilot Cowork</a></li><li><a href="lab-02-calendar-optimization-and-meeting-coordination-teaching.html" aria-current="page">2 · Calendar Optimization and Meeting Coordination</a></li><li><a href="lab-03-intelligent-file-organizer-teaching.html">3 · Intelligent File Organizer</a></li><li><a href="lab-04-building-custom-cowork-skills-teaching.html">4 · Building Custom Cowork Skills</a></li><li><a href="lab-05-personal-work-dashboard-teaching.html">5 · Personal Work Dashboard</a></li><li><a href="lab-06-build-and-publish-a-cowork-plugin-teaching.html">6 · Build and Publish a Cowork Plugin</a></li></ol></details></li><li><a href="../trainer-guide.html">Trainer guide</a></li></ol></nav></details>
+<main id="content" class="article">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../../index.html">AI Labs</a></li><li><a href="../index.html">Cowork track</a></li></ol></nav>
+<article class="prose">
+<h1 id="lab-2-calendar-optimization-and-meeting-coordination-teaching-edition">Lab 2: Calendar Optimization and Meeting Coordination (Teaching edition)</h1><p class="meta"><span>Teaching edition</span><span>6 min read</span><span>Lab time: 40 min</span></p>
+<p><strong>Time:</strong> about 40 minutes. The prompts and screenshots for every step are in the <a href="../lab-02-calendar-optimization-and-meeting-coordination.html">lab instructions</a>.</p>
+<h2 id="before-we-start-from-assistant-to-executive-assistant">Before we start: from assistant to executive assistant</h2>
+<p>In Lab 1, Cowork did one job at a time. Send five emails. Create three events. Useful, but simple.</p>
+<p>Real executive assistants don't work like that. They work with <strong>rules</strong>. "Never book me before 10." "Protect my Friday afternoons." "If there's no agenda, push back." You say it once, and they apply it everywhere.</p>
+<p>That's what this lab is about. We'll give Cowork rules, not just tasks. Then we'll see what happens when those rules collide with real life: a new meeting, an important review, and a week of vacation.</p>
+<p>Ready? Let's go.</p>
+<h2 id="task-1-teach-cowork-your-rules">Task 1: Teach Cowork your rules</h2>
+<h3 id="give-it-the-rules">Give it the rules</h3>
+<p>On <strong>Home</strong>, make sure <strong>Cowork</strong> is selected and send the standing-rules prompt from Task 1. Read it again before you send it. It contains four rules:</p>
+<ol>
+<li>Two <strong>90-minute focus blocks</strong> before noon, every day.</li>
+<li><strong>Decline</strong> meetings with no agenda, but ask the organizer first.</li>
+<li>Keep <strong>Friday afternoon</strong> free.</li>
+<li><strong>Show me</strong> every change before you apply it.</li>
+</ol>
+<p>That last rule is the important one. Why? Because rules touch <em>many</em> events at once. One wrong rule, applied to a whole week, makes a big mess. So we ask for a preview first.</p>
+<h3 id="read-the-proposal">Read the proposal</h3>
+<p>Cowork checks your calendar, your time zone and your working hours. Then it shows a table of proposed changes and says something like <em>"Nothing has been applied yet."</em></p>
+<p>Look at the notes under the table. Cowork explains <strong>how it understood your rules</strong>. For example: "I read <em>two focus blocks</em> as two per day. If you meant two for the whole week, tell me." That's the agent showing its reasoning so you can correct it before anything happens.</p>
+<p>Happy with it? Type <strong>Approve all</strong> and send.</p>
+<h3 id="approve-the-cards">Approve the cards</h3>
+<p>Now the <strong>Create calendar event?</strong> cards appear: one per focus-block series, one for the Friday hold. Check the date, the time and the repeat pattern, then click <strong>Save</strong> on each.</p>
+<p>Notice how few cards there are. Ten focus blocks, but only two cards. Why? Because Cowork created each block as a <strong>recurring series</strong>. Fewer approvals, same result.</p>
+<p>Did Cowork ask you questions first, or skip straight to the cards? Both happen. Answer the questions and carry on.</p>
+<h3 id="check-the-result">Check the result</h3>
+<p>Cowork ends with a day-by-day table: two focus blocks every weekday, Friday afternoon held, everything marked <strong>Busy</strong>. Your week is protected.</p>
+<h2 id="task-2-new-meetings-and-a-prep-brief">Task 2: New meetings and a prep brief</h2>
+<h3 id="add-two-meetings">Add two meetings</h3>
+<p>Stay in the <strong>same conversation</strong> and send the two-meeting prompt from Task 2. Approve both <strong>Create calendar event?</strong> cards with <strong>Save</strong>.</p>
+<p>Now read the summary carefully. Do you see something like <em>"The Monday call overlaps your focus block"</em>?</p>
+<p>That's your rules at work. You booked a 10:00 call, and Cowork remembered the focus block you created ten minutes ago. It <strong>flags</strong> the clash and suggests a fix, but it doesn't move anything on its own. You're still the boss.</p>
+<p>And the Teams link? If your summary says <strong>Not added</strong>, that's the same tenant limit you saw in Lab 1. Nothing to fix.</p>
+<h3 id="build-the-prep-brief">Build the prep brief</h3>
+<p>Now a bigger job. Start a <strong>New</strong> Cowork task and send the prep-brief prompt from Task 2.</p>
+<p>Look at how that prompt is written. It says <strong>"from these three sources only"</strong>: the calendar, the last 7 days of email, one OneDrive folder. Why limit it? Because the more you narrow the sources, the more <strong>grounded</strong> the answer is. Cowork can't invent facts if you've told it exactly where to look.</p>
+<p>While it works, watch the <strong>Workspace</strong> panel. <strong>Steps</strong> shows the plan. <strong>Plugins</strong> shows which apps it's using: Calendar, SharePoint (that's where OneDrive files live), Outlook.</p>
+<p>When it's ready to save, you get an <strong>Approve action?</strong> card. Check one thing: the <strong>Parent path</strong> must say <strong>Lab Files</strong>. Then click <strong>Approve</strong>.</p>
+<p>Open the Word document. Is it all there? Purpose and agenda, attendees with your last interaction, related emails and files, open actions, decisions needed. That's a brief an executive would actually read.</p>
+<h2 id="task-3-the-vacation-problem">Task 3: The vacation problem</h2>
+<h3 id="set-up-the-problem">Set up the problem</h3>
+<p>Here's the twist. You're on vacation <strong>next Monday to Friday</strong>. That's the same week you just filled with focus blocks, a client call and a budget review.</p>
+<p>Sounds like a mistake? It's on purpose. We <em>want</em> conflicts, so we can watch Cowork find them.</p>
+<p>Start a <strong>New</strong> Cowork task and send the vacation prompt from Task 3. Notice the last line: <strong>"Take no action yet - just show me the plan."</strong> First we look, then we act.</p>
+<h3 id="read-the-triage">Read the triage</h3>
+<p>Cowork scans email, calendar, To Do and Teams. Before the findings, it lists <strong>coverage gaps</strong>: sources it couldn't read. Often that's Planner and To Do. Is that a failure? No. An agent that tells you <em>what it couldn't see</em> is much safer than one that pretends it saw everything.</p>
+<p>Then come the three buckets:</p>
+<ul>
+<li>🔴 <strong>Must Handle</strong>: do it before you leave.</li>
+<li>🟡 <strong>Needs Delegation</strong>: someone has to own it while you're away.</li>
+<li>🟢 <strong>Can Wait</strong>: safe until you're back.</li>
+</ul>
+<p>Scroll through all three. Don't worry if you have fewer items than the screenshots. It depends on how full your mailbox is.</p>
+<h3 id="plan-the-handoff">Plan the handoff</h3>
+<p>Send the follow-up: <em>"Go ahead and handle everything... get my approval before sending or posting anything."</em></p>
+<p>Cowork doesn't just charge ahead. It <strong>asks you questions</strong> first. Who covers for you? Reschedule, delegate or cancel your meetings? What about that unsent draft? Pick your answers and click <strong>Next</strong>, then <strong>Submit</strong> on the last one.</p>
+<p>Then it shows the full plan: which meeting moves where, what's held until you return. And it says it hasn't touched anything yet.</p>
+<h3 id="execute-card-by-card">Execute, card by card</h3>
+<p>Send: <em>"Confirm the proposed actions and execute them."</em></p>
+<p>Now the approval cards arrive: <strong>Update</strong> for moved meetings, <strong>Send cancellation</strong> for cancelled ones, <strong>Reply</strong> for emails. Use the arrows to move between them.</p>
+<p>Here's the habit to build: <strong>read before you click.</strong> Look at the Tailspin reply. Does it sign off with a name that isn't yours? Agents sometimes fill in placeholders. You can edit the text right in the card. The approval card isn't a formality. It's your last line of defense.</p>
+<p>There's also an <strong>Approve All</strong> button. Handy, but only after you've read every card.</p>
+<h3 id="check-the-result_1">Check the result</h3>
+<p>Cowork's final summary lists every meeting with its new time in your return week. Vacation week: clear. Nothing went out that you didn't see first.</p>
+<h2 id="what-did-we-learn">What did we learn?</h2>
+<ul>
+<li><strong>Rules beat tasks.</strong> Say it once and Cowork applies it across the whole week.</li>
+<li><strong>Preview first, apply second.</strong> For bulk changes, always ask for the plan before the action.</li>
+<li><strong>Cowork remembers context.</strong> It caught the clash between your new meeting and your focus block.</li>
+<li><strong>Narrow sources mean grounded answers.</strong> Tell Cowork exactly where to look.</li>
+<li><strong>Coverage gaps are a feature.</strong> A good agent tells you what it couldn't see.</li>
+<li><strong>Approval cards are your safety net.</strong> Read them, edit them, then approve.</li>
+</ul>
+<p>Next up, Lab 3: we go deeper into executive meeting preparation.</p>
+</article>
+
+<p class="source"><a href="https://github.com/medyabi/Copilot-Cowork-lab" rel="noopener">View the source on GitHub</a></p>
+</main>
+<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#before-we-start-from-assistant-to-executive-assistant">Before we start: from assistant to executive assistant</a></li><li><a href="#task-1-teach-cowork-your-rules">Task 1: Teach Cowork your rules</a></li><li><a href="#task-2-new-meetings-and-a-prep-brief">Task 2: New meetings and a prep brief</a></li><li><a href="#task-3-the-vacation-problem">Task 3: The vacation problem</a></li><li><a href="#what-did-we-learn">What did we learn?</a></li></ol></aside>
+</div>
+<footer class="sitefoot">
+  <div class="foot-in">
+    <div><strong>AI Labs</strong><p>Hands-on Copilot labs by Mohamed Dyabi, Microsoft Certified Trainer.</p></div>
+    <ul>
+      <li><a href="../../copilot-studio/index.html">Copilot Studio track</a></li>
+      <li><a href="../index.html">Copilot Cowork track</a></li>
+      <li><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Studio-lab" rel="noopener">Copilot Studio labs on GitHub</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Cowork-lab" rel="noopener">Cowork labs on GitHub</a></li>
+    </ul>
+  </div>
+  <p class="fine">Use a test or demo tenant: these labs create agents, workflows and SharePoint items, and consume Copilot Credits. Preview features and labels change often. An independent site, not affiliated with Microsoft. © 2026 Mohamed Dyabi</p>
+</footer>
+<script>
+(function(){
+  // Table of contents: open on wide screens, collapsible on small ones
+  var toc = document.querySelector('details.toc');
+  if (toc) {
+    var mq = window.matchMedia('(min-width: 1024px)');
+    var sync = function(){ if (mq.matches) toc.open = true; };
+    sync(); if (mq.addEventListener) mq.addEventListener('change', sync);
+    var cur = toc.querySelector('[aria-current="page"]');
+    if (cur && cur.scrollIntoView && mq.matches) cur.scrollIntoView({block: 'center'});
+  }
+  // Filter by title
+  var f = document.getElementById('toc-filter');
+  if (f) f.addEventListener('input', function(){
+    var q = f.value.trim().toLowerCase();
+    document.querySelectorAll('.toc-list li').forEach(function(li){
+      var hit = !q || li.textContent.toLowerCase().indexOf(q) !== -1;
+      li.hidden = !hit;
+    });
+  });
+  // Copy buttons on code blocks
+  document.querySelectorAll('.codeblock').forEach(function(cb){
+    var btn = cb.querySelector('.copy'), code = cb.querySelector('code');
+    if (!btn || !code) return;
+    btn.addEventListener('click', function(){
+      navigator.clipboard.writeText(code.innerText).then(function(){
+        btn.textContent = 'Copied'; setTimeout(function(){ btn.textContent = 'Copy'; }, 1500);
+      }, function(){ btn.textContent = 'Select and copy'; });
+    });
+  });
+  // Highlight the current section in "In this article"
+  var links = document.querySelectorAll('.aside-toc a');
+  if (links.length && 'IntersectionObserver' in window) {
+    var map = {}; links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var obs = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting) {
+        links.forEach(function(a){ a.classList.remove('on'); });
+        var a = map[e.target.id]; if (a) a.classList.add('on');
+      }});
+    }, {rootMargin: '0px 0px -75% 0px'});
+    Object.keys(map).forEach(function(id){ var h = document.getElementById(id); if (h) obs.observe(h); });
+  }
+})();
+</script>
+</body>
+</html>

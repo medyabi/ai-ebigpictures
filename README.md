@@ -1,0 +1,14 @@
+# ai.ebigpictures.com
+
+Static site for the Copilot labs, built from:
+- https://github.com/medyabi/Copilot-Studio-lab
+- https://github.com/medyabi/Copilot-Cowork-lab
+
+Rebuild after changing a lab repo:
+
+```bash
+pip install markdown pymdown-extensions pillow   # and librsvg (rsvg-convert) for the icons
+git clone https://github.com/medyabi/Copilot-Studio-lab studio
+git clone https://github.com/medyabi/Copilot-Cowork-lab cowork
+python3 tools/build.py studio cowork .
+```

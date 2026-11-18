@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3: Intelligent File Organizer · AI Labs</title>
+<meta name="description" content="Hands-on labs for Microsoft Copilot Studio, Agent Builder and Microsoft 365 Copilot Cowork: from a simple agent to autonomous agents.">
+<link rel="stylesheet" href="../../assets/site.css">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../../assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
+</head>
+<body class="t-cowork">
+<a class="skip" href="#content">Skip to main content</a>
+<header class="masthead">
+  <a class="brand" href="../../index.html"><img src="../../assets/favicon.svg" alt="" width="24" height="24"><span>AI Labs</span></a>
+  <span class="divider" aria-hidden="true"></span>
+  <nav class="mainnav" aria-label="Main"><a href="../../copilot-studio/index.html">Copilot Studio</a><a href="../index.html" aria-current="true">Copilot Cowork</a><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></nav>
+  <a class="gh" href="https://github.com/medyabi" rel="noopener">GitHub</a>
+</header>
+<div class="doc has-toc">
+<details class="toc"><summary>Table of contents</summary><nav aria-label="AI automation with Copilot Cowork"><p class="toc-title">AI automation with Copilot Cowork</p><input id="toc-filter" class="toc-filter" type="search" placeholder="Filter by title" aria-label="Filter by title"><ol class="toc-list"><li><a href="../index.html">Overview</a></li><li><a href="../lab-01-getting-started-with-copilot-cowork.html">1 · Getting Started with Copilot Cowork</a></li><li><a href="../lab-02-calendar-optimization-and-meeting-coordination.html">2 · AI-Powered Calendar Optimization and Executive Meeting Coordination</a></li><li><a href="../lab-03-intelligent-file-organizer.html">3 · Intelligent File Organizer</a></li><li><a href="../lab-04-building-custom-cowork-skills.html">4 · Building Custom Cowork Skills (Read-only)</a></li><li><a href="../lab-05-personal-work-dashboard.html">5 · Building a Personal Work Dashboard with Copilot Cowork (Read-only)</a></li><li><a href="../lab-06-build-and-publish-a-cowork-plugin.html">6 · Building and Publishing a Custom Copilot Cowork Plugin (Read-only)</a></li><li class="group"><details open><summary>Teaching editions</summary><ol><li><a href="lab-01-getting-started-with-copilot-cowork-teaching.html">1 · Getting Started with Copilot Cowork</a></li><li><a href="lab-02-calendar-optimization-and-meeting-coordination-teaching.html">2 · Calendar Optimization and Meeting Coordination</a></li><li><a href="lab-03-intelligent-file-organizer-teaching.html" aria-current="page">3 · Intelligent File Organizer</a></li><li><a href="lab-04-building-custom-cowork-skills-teaching.html">4 · Building Custom Cowork Skills</a></li><li><a href="lab-05-personal-work-dashboard-teaching.html">5 · Personal Work Dashboard</a></li><li><a href="lab-06-build-and-publish-a-cowork-plugin-teaching.html">6 · Build and Publish a Cowork Plugin</a></li></ol></details></li><li><a href="../trainer-guide.html">Trainer guide</a></li></ol></nav></details>
+<main id="content" class="article">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../../index.html">AI Labs</a></li><li><a href="../index.html">Cowork track</a></li></ol></nav>
+<article class="prose">
+<h1 id="lab-3-intelligent-file-organizer-teaching-edition">Lab 3: Intelligent File Organizer (Teaching edition)</h1><p class="meta"><span>Teaching edition</span><span>6 min read</span><span>Lab time: 40 min</span></p>
+<p><strong>Time:</strong> about 40 minutes. The prompts and screenshots for every step are in the <a href="../lab-03-intelligent-file-organizer.html">lab instructions</a>.</p>
+<h2 id="before-we-start-the-messy-shared-folder">Before we start: the messy shared folder</h2>
+<p>Every company has one. A folder full of files called <em>Final</em>, <em>Final_v2</em>, <em>Report (1)</em> and <em>Copy of Copy of Tracker</em>. Nobody knows which version is current. Nobody knows who owns what. And then someone says the word <strong>"audit"</strong>.</p>
+<p>Cleaning that up by hand is slow and boring. So why not let an agent do it?</p>
+<p>Here's the catch. Renaming, moving, archiving and deleting <strong>change things</strong>. Some of those changes are hard to undo. So in this lab we'll let Cowork do the heavy lifting, but we'll keep our hand on the brake the whole time.</p>
+<p>One rule for this lab: <strong>stay in one conversation</strong>. In Task 1 we ask Cowork to build an inventory of the files and <em>remember</em> it. Tasks 2 and 3 reuse that inventory. Start a new task and Cowork forgets it.</p>
+<h2 id="task-1-classify-and-rename">Task 1: Classify and rename</h2>
+<h3 id="ask-for-a-plan-not-an-action">Ask for a plan, not an action</h3>
+<p>Start a <strong>New</strong> Cowork task and send the classification prompt from Task 1. Look at what it asks for:</p>
+<ul>
+<li><strong>Classify</strong> every file by business function: Sales, Procurement, Security or Executive.</li>
+<li><strong>Propose</strong> a name in the form <code>YYYY-MM-DD_BusinessFunction_DocType</code>.</li>
+<li><strong>Show</strong> an old-name → new-name table, and nothing else.</li>
+</ul>
+<p>Notice what's missing? The word <em>rename</em>. We're asking for a <strong>proposal</strong>. Nothing changes yet.</p>
+<p>Why that naming format? Because dates first means files sort in time order, the function tells you who owns it, and the doc type tells you what it is. Anyone can read <code>2026-03-31_Sales_QuarterlyReport-v2.docx</code> and know exactly what it is.</p>
+<h3 id="check-the-mapping">Check the mapping</h3>
+<p>Cowork reads each file, not just its name, then shows the table. Read the note under it. Cowork tells you <strong>where each date came from</strong>: a meeting date or effective date inside the document, or the file's creation date when the document has none.</p>
+<p>That's important. A good agent shows its evidence, so you can judge it.</p>
+<h3 id="approve-the-rename">Approve the rename</h3>
+<p>Happy with the names? Send the "Proceed with the renaming…" prompt. Now Cowork <em>will</em> change things, so the approval cards arrive:</p>
+<ul>
+<li><strong>Create folder?</strong> for <em>Project Orion - Renamed Files</em>: click <strong>Create</strong>.</li>
+<li>One card per subfolder, rename and move: click <strong>Approve</strong>, or <strong>Approve All</strong> once you've looked at them.</li>
+</ul>
+<p>Did a few actions fail and get retried? That happens. Cowork tells you and tries again. Just approve the new cards.</p>
+<h3 id="check-the-result">Check the result</h3>
+<p>Open <strong>OneDrive</strong>, go to <strong>Lab Files › Project Orion - Renamed Files</strong>. You should see four folders: <strong>Executive</strong>, <strong>Procurement</strong>, <strong>Sales</strong>, <strong>Security</strong>. Open one. Every file now has a clean, sortable name.</p>
+<p>Ten minutes ago, this was a mess. Now it's organized, and you approved every step.</p>
+<h2 id="task-2-the-governance-audit">Task 2: The governance audit</h2>
+<h3 id="audit-without-re-reading">Audit without re-reading</h3>
+<p>Go back to the same conversation and send the audit prompt from Task 2. Look at the first line: <strong>"Using the file inventory you already built - do not re-scan or re-read any files."</strong></p>
+<p>Why say that? Speed and consistency. Cowork already knows these files. Reading them again costs time and may give slightly different answers.</p>
+<p>The audit looks for four problems:</p>
+<ol>
+<li><strong>Duplicates</strong>: the same file twice.</li>
+<li><strong>Stale files</strong>: not touched in six months.</li>
+<li><strong>Over-shared files</strong>: "anyone with the link" access.</li>
+<li><strong>Orphans</strong>: no clear owner.</li>
+</ol>
+<p>And the last line again: <strong>"Take no action yet."</strong></p>
+<h3 id="read-the-findings-and-the-gaps">Read the findings, and the gaps</h3>
+<p>Cowork shows a table: each finding with a recommended action (archive, delete, restrict sharing).</p>
+<p>Now read the notes under the table. Cowork may say something like: <em>"I can't check sharing links from the inventory, because it holds content, not permissions."</em> Or: <em>"Every file has a recent timestamp because we just renamed them, so I judged staleness by the dates inside the documents."</em></p>
+<p>Is that a problem? No, it's honesty. Think of an auditor who says "I didn't check the safe, I don't have the key." That's far better than one who pretends the safe is fine.</p>
+<h3 id="approve-only-part-of-the-plan">Approve only part of the plan</h3>
+<p>Here's the key skill of this lab: <strong>you don't have to accept the whole plan.</strong></p>
+<p>Send the follow-up: <em>"Approve only the archive actions… leave everything else pending."</em> Archiving is safe because files move to a folder; they don't disappear. Deleting and changing permissions? Not today.</p>
+<p>Click <strong>Create</strong> for the <strong>Archive</strong> folder and approve the moves. Then check OneDrive: the archived files are in <strong>Archive</strong>, everything else is untouched.</p>
+<h3 id="ask-the-big-question">Ask the big question</h3>
+<p>Now ask Cowork directly: <em>"Which of these governance actions should an agent ever take WITHOUT human approval?"</em></p>
+<p>Read its answer carefully. It usually splits the world in two:</p>
+<ul>
+<li><strong>Safe without approval</strong>: reading, classifying, finding duplicates, writing reports. These change nothing. The worst case is a bad suggestion you ignore.</li>
+<li><strong>Always needs a human</strong>: <strong>deleting</strong> (hard to undo), <strong>restricting sharing</strong> (silently breaks someone else's access), <strong>renaming and moving</strong> (can break links).</li>
+</ul>
+<p>That's the rule of thumb for any agent. <strong>Reads are free. Changes need a human.</strong></p>
+<h2 id="task-3-report-it">Task 3: Report it</h2>
+<h3 id="one-instruction-two-apps">One instruction, two apps</h3>
+<p>Send the tracker prompt from Task 3. It asks for two things in one go:</p>
+<ol>
+<li>An <strong>Excel workbook</strong> with one row per file: name, type, business function, last modified, sharing status, action taken.</li>
+<li>A <strong>3-line summary</strong> posted to the <strong>General</strong> channel of your <strong>Retail</strong> team, with a link to the workbook.</li>
+</ol>
+<p>Two apps, one sentence. That's what an agentic workspace is for.</p>
+<h3 id="approve-the-upload-and-the-post">Approve the upload and the post</h3>
+<p>You'll see an <strong>Approve action?</strong> card for the workbook. Check the file name, click <strong>Approve</strong>.</p>
+<p>Then a <strong>Post to channel?</strong> card. Check it says <strong>Retail › #General</strong>. Read the message. Is it empty? Then write your own three lines, using <strong>your</strong> numbers, not the screenshot's. Click <strong>Send</strong>.</p>
+<p>What if Cowork says the upload to Lab Files failed? Then it saves the tracker to your <strong>Cowork</strong> folder in OneDrive instead and tells you so. The work is done, just in a different place.</p>
+<h3 id="check-the-result_1">Check the result</h3>
+<p>Open the workbook: one tidy row per file. Then open <strong>Teams › Retail › General</strong>: your cleanup summary is there for the team to see.</p>
+<h2 id="what-did-we-learn">What did we learn?</h2>
+<ul>
+<li><strong>Plan first, act second.</strong> Ask for a mapping or an audit before any change.</li>
+<li><strong>Show me the evidence.</strong> Cowork explains where dates and findings come from, so you can judge them.</li>
+<li><strong>You can approve part of a plan.</strong> Archive today, decide on deletes later.</li>
+<li><strong>Honest gaps beat fake confidence.</strong> An agent that says "I couldn't check this" is a safer agent.</li>
+<li><strong>Reads are free, changes need a human.</strong> That's the governance rule for any AI agent.</li>
+<li><strong>One conversation, one memory.</strong> Reusing the inventory keeps every step fast and consistent.</li>
+</ul>
+<p>Next up, Lab 4.</p>
+</article>
+
+<p class="source"><a href="https://github.com/medyabi/Copilot-Cowork-lab" rel="noopener">View the source on GitHub</a></p>
+</main>
+<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#before-we-start-the-messy-shared-folder">Before we start: the messy shared folder</a></li><li><a href="#task-1-classify-and-rename">Task 1: Classify and rename</a></li><li><a href="#task-2-the-governance-audit">Task 2: The governance audit</a></li><li><a href="#task-3-report-it">Task 3: Report it</a></li><li><a href="#what-did-we-learn">What did we learn?</a></li></ol></aside>
+</div>
+<footer class="sitefoot">
+  <div class="foot-in">
+    <div><strong>AI Labs</strong><p>Hands-on Copilot labs by Mohamed Dyabi, Microsoft Certified Trainer.</p></div>
+    <ul>
+      <li><a href="../../copilot-studio/index.html">Copilot Studio track</a></li>
+      <li><a href="../index.html">Copilot Cowork track</a></li>
+      <li><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Studio-lab" rel="noopener">Copilot Studio labs on GitHub</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Cowork-lab" rel="noopener">Cowork labs on GitHub</a></li>
+    </ul>
+  </div>
+  <p class="fine">Use a test or demo tenant: these labs create agents, workflows and SharePoint items, and consume Copilot Credits. Preview features and labels change often. An independent site, not affiliated with Microsoft. © 2026 Mohamed Dyabi</p>
+</footer>
+<script>
+(function(){
+  // Table of contents: open on wide screens, collapsible on small ones
+  var toc = document.querySelector('details.toc');
+  if (toc) {
+    var mq = window.matchMedia('(min-width: 1024px)');
+    var sync = function(){ if (mq.matches) toc.open = true; };
+    sync(); if (mq.addEventListener) mq.addEventListener('change', sync);
+    var cur = toc.querySelector('[aria-current="page"]');
+    if (cur && cur.scrollIntoView && mq.matches) cur.scrollIntoView({block: 'center'});
+  }
+  // Filter by title
+  var f = document.getElementById('toc-filter');
+  if (f) f.addEventListener('input', function(){
+    var q = f.value.trim().toLowerCase();
+    document.querySelectorAll('.toc-list li').forEach(function(li){
+      var hit = !q || li.textContent.toLowerCase().indexOf(q) !== -1;
+      li.hidden = !hit;
+    });
+  });
+  // Copy buttons on code blocks
+  document.querySelectorAll('.codeblock').forEach(function(cb){
+    var btn = cb.querySelector('.copy'), code = cb.querySelector('code');
+    if (!btn || !code) return;
+    btn.addEventListener('click', function(){
+      navigator.clipboard.writeText(code.innerText).then(function(){
+        btn.textContent = 'Copied'; setTimeout(function(){ btn.textContent = 'Copy'; }, 1500);
+      }, function(){ btn.textContent = 'Select and copy'; });
+    });
+  });
+  // Highlight the current section in "In this article"
+  var links = document.querySelectorAll('.aside-toc a');
+  if (links.length && 'IntersectionObserver' in window) {
+    var map = {}; links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var obs = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting) {
+        links.forEach(function(a){ a.classList.remove('on'); });
+        var a = map[e.target.id]; if (a) a.classList.add('on');
+      }});
+    }, {rootMargin: '0px 0px -75% 0px'});
+    Object.keys(map).forEach(function(id){ var h = document.getElementById(id); if (h) obs.observe(h); });
+  }
+})();
+</script>
+</body>
+</html>

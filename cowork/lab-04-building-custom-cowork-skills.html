@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4: Building Custom Cowork Skills (Read-only) · AI Labs</title>
+<meta name="description" content="Hands-on labs for Microsoft Copilot Studio, Agent Builder and Microsoft 365 Copilot Cowork: from a simple agent to autonomous agents.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+</head>
+<body class="t-cowork">
+<a class="skip" href="#content">Skip to main content</a>
+<header class="masthead">
+  <a class="brand" href="../index.html"><img src="../assets/favicon.svg" alt="" width="24" height="24"><span>AI Labs</span></a>
+  <span class="divider" aria-hidden="true"></span>
+  <nav class="mainnav" aria-label="Main"><a href="../copilot-studio/index.html">Copilot Studio</a><a href="index.html" aria-current="true">Copilot Cowork</a><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></nav>
+  <a class="gh" href="https://github.com/medyabi" rel="noopener">GitHub</a>
+</header>
+<div class="doc has-toc">
+<details class="toc"><summary>Table of contents</summary><nav aria-label="AI automation with Copilot Cowork"><p class="toc-title">AI automation with Copilot Cowork</p><input id="toc-filter" class="toc-filter" type="search" placeholder="Filter by title" aria-label="Filter by title"><ol class="toc-list"><li><a href="index.html">Overview</a></li><li><a href="lab-01-getting-started-with-copilot-cowork.html">1 · Getting Started with Copilot Cowork</a></li><li><a href="lab-02-calendar-optimization-and-meeting-coordination.html">2 · AI-Powered Calendar Optimization and Executive Meeting Coordination</a></li><li><a href="lab-03-intelligent-file-organizer.html">3 · Intelligent File Organizer</a></li><li><a href="lab-04-building-custom-cowork-skills.html" aria-current="page">4 · Building Custom Cowork Skills (Read-only)</a></li><li><a href="lab-05-personal-work-dashboard.html">5 · Building a Personal Work Dashboard with Copilot Cowork (Read-only)</a></li><li><a href="lab-06-build-and-publish-a-cowork-plugin.html">6 · Building and Publishing a Custom Copilot Cowork Plugin (Read-only)</a></li><li class="group"><details><summary>Teaching editions</summary><ol><li><a href="teaching/lab-01-getting-started-with-copilot-cowork-teaching.html">1 · Getting Started with Copilot Cowork</a></li><li><a href="teaching/lab-02-calendar-optimization-and-meeting-coordination-teaching.html">2 · Calendar Optimization and Meeting Coordination</a></li><li><a href="teaching/lab-03-intelligent-file-organizer-teaching.html">3 · Intelligent File Organizer</a></li><li><a href="teaching/lab-04-building-custom-cowork-skills-teaching.html">4 · Building Custom Cowork Skills</a></li><li><a href="teaching/lab-05-personal-work-dashboard-teaching.html">5 · Personal Work Dashboard</a></li><li><a href="teaching/lab-06-build-and-publish-a-cowork-plugin-teaching.html">6 · Build and Publish a Cowork Plugin</a></li></ol></details></li><li><a href="trainer-guide.html">Trainer guide</a></li></ol></nav></details>
+<main id="content" class="article">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">AI Labs</a></li><li><a href="index.html">Cowork track</a></li></ol></nav>
+<article class="prose">
+<h1 id="lab-4-building-custom-cowork-skills-read-only">Lab 4: Building Custom Cowork Skills (Read-only)</h1><p class="meta"><span>Lab</span><span>15 min read</span><span>Lab time: 30 min</span></p>
+<h2 id="overview">Overview</h2>
+<p>In this lab, you see how Copilot Cowork's conversational <strong>skill builder</strong> creates reusable custom skills. You don't fill in forms or write code: you start the builder, answer a short series of questions in plain language, and approve the save while Cowork writes a <strong>SKILL.md</strong> file to your Cowork skills folder in OneDrive.</p>
+<p>You will plan a skill on paper, build a <strong>Leadership Update</strong> skill and test it with a sample input, build a second <strong>Project Status Brief</strong> skill, review its quality report and details page, download the skill file and upload it again, run the skill with its trigger phrase, and publish its output to a Teams channel with human approval at the write step.</p>
+<div class="alert important"><p class="alert-title">Important</p><p><strong>Read-only lab:</strong> To manage Copilot credit consumption during the workshop, <strong>Tasks 2–8 are a guided walkthrough</strong>. Read each step and its screenshot (your trainer may demonstrate them live), but don't run them in your own environment. <strong>Task 1 is hands-on</strong>: it uses only Notepad and costs no credits.</p>
+<p><strong>Disclaimer:</strong> Cowork is AI-powered, so outputs differ between sessions. The skill builder's questions, their order and the generated content can change.</p>
+<p><strong>Interface note:</strong> Some screenshots come from an earlier Cowork interface, where the skills page was called <strong>Customize</strong> and <strong>New skill</strong> was labelled <strong>Create skill with Cowork</strong>. In the current interface, use <strong>Plugins</strong> and <strong>New skill</strong>.</p></div>
+<h2 id="objectives">Objectives</h2>
+<ul>
+<li>Task 1: Design your skill on paper first</li>
+<li>Task 2: Start the skill builder for the Leadership Update skill</li>
+<li>Task 3: Answer the skill builder questions and save the skill</li>
+<li>Task 4: Test the Leadership Update skill</li>
+<li>Task 5: Build the Project Status Brief skill</li>
+<li>Task 6: Review, inspect and download the Project Status Brief skill</li>
+<li>Task 7: Upload and run the Project Status Brief skill</li>
+<li>Task 8: Post the Project Status Brief to a Teams channel</li>
+</ul>
+<h2 id="task-1-design-your-skill-on-paper-first-hands-on">Task 1: Design your skill on paper first (hands-on)</h2>
+<p>A good skill starts with a clear specification. In this task, you answer five planning questions and write a short skill specification in Notepad before touching the builder.</p>
+<h3 id="open-copilot-cowork">Open Copilot Cowork</h3>
+<ol>
+<li>Open a browser, go to <code>https://m365.cloud.microsoft</code> and sign in with your lab credentials if prompted.</li>
+<li>Select <strong>New</strong> in the left pane, then select <strong>Cowork</strong> in the task box. Check that the left pane shows <strong>New</strong>, <strong>Search</strong>, <strong>Library</strong>, <strong>Plugins</strong>, <strong>Automations</strong> and <strong>Workspaces</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab4-01.png" /></p>
+<h3 id="capture-the-planning-questions">Capture the planning questions</h3>
+<ol start="3">
+<li>Open the <strong>Start</strong> menu, search for <strong>Notepad</strong> and open it. Resize it so it sits next to your browser.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab4-02.png" /></p>
+<ol start="4">
+<li>In Notepad, enter the five planning questions:</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span></span><button type="button" class="copy">Copy</button></div><pre><code>What should this skill do?
+What does it need to read?
+Does it write or change anything?
+What should the output look like?
+Is there a variable that might change?</code></pre></div>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab4-03.png" /></p>
+<ol start="5">
+<li>Write your answer under each question. If you need help, use these sample answers:</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span></span><button type="button" class="copy">Copy</button></div><pre><code>What should this skill do?
+Turn project, operational or business updates I provide into a concise update for senior leadership.
+
+What does it need to read?
+Updates I paste in, plus project content in Teams, Outlook, Word, OneNote or SharePoint.
+
+Does it write or change anything?
+No. It only drafts text. It never sends, posts or changes anything.
+
+What should the output look like?
+A message of under 200 words with four sections:
+- Headline (one sentence with Green / Amber / Red status)
+- Progress
+- Risks and Blockers
+- Asks / Next Steps
+
+Is there a variable that might change?
+Yes: project name, reporting period, audience, status details, risks and action items.</code></pre></div>
+<h3 id="write-the-skill-specification">Write the skill specification</h3>
+<ol start="6">
+<li>Below your answers, add a <strong>Skill specification</strong> section with these fields and fill them in for the Leadership Update skill:</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span></span><button type="button" class="copy">Copy</button></div><pre><code>Skill name:
+Trigger phrases:
+Parameters:
+Apps it may read:
+Apps it may write:
+Output format:</code></pre></div>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab4-04.png" /></p>
+<ol start="7">
+<li>If you need help, use this sample specification:</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span></span><button type="button" class="copy">Copy</button></div><pre><code>Skill name:
+leadership-update
+
+Trigger phrases:
+- Create a leadership update
+- Generate an executive status update
+- Prepare a leadership summary
+
+Parameters:
+- Project name
+- Reporting period
+- Audience
+- Status details, risks and action items
+
+Apps it may read:
+- Microsoft Teams, Outlook, Word, OneNote, SharePoint
+
+Apps it may write:
+- None
+
+Output format:
+Under 200 words, four sections in this order:
+- Headline (overall status: Green / Amber / Red)
+- Progress (2-4 bullets)
+- Risks and Blockers (with impact if not addressed)
+- Asks / Next Steps</code></pre></div>
+<ol start="8">
+<li>Save the Notepad file and keep it open. You'll use it as a reference in the next tasks. Don't paste the specification into Cowork.</li>
+</ol>
+<h2 id="task-2-start-the-skill-builder-for-the-leadership-update-skill-walkthrough">Task 2: Start the skill builder for the Leadership Update skill (walkthrough)</h2>
+<p>In this task, the skill builder is started from the <strong>Plugins</strong> page. Instead of a form, Cowork starts a new task and asks a short series of questions.</p>
+<ol>
+<li>Select <strong>New (1)</strong> in the left pane. In the task box, select <strong>+ (2)</strong>, then <strong>Plugins (3)</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab4-05.png" /></p>
+<ol start="2">
+<li>On the <strong>Plugins</strong> page, make sure <strong>Cowork</strong> is selected. Select <strong>Add</strong>, then <strong>New skill</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab4-06.png" /></p>
+<ol start="3">
+<li>Cowork starts a new task and sends this request for you: <em>"I want to create a new personal skill. Guide me through defining the skill name, description, category, and instructions. Help me write a SKILL.md file and save it to my OneDrive skills folder."</em> It replies that it will ask a few questions, then draft the SKILL.md for review before saving it.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab4-07.png" /></p>
+<ol start="4">
+<li>A new task, such as <strong>Creating a Personal Skill in OneDrive</strong>, appears under <strong>Recent</strong> in the left pane. The title is generated automatically and may differ.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab4-08.png" /></p>
+<ol start="5">
+<li>The first question card appears above the task box. The counter in its top-right corner (for example, <strong>1 of 5</strong>) shows how many questions there are. Use the <strong>&lt;</strong> and <strong>&gt;</strong> arrows to move between questions, <strong>Skip</strong> to leave one blank and <strong>X</strong> to close the card.</li>
+</ol>
+<div class="alert note"><p class="alert-title">Note</p><p><strong>Note:</strong> The builder asks four or five questions, and their wording and order can change. Always answer what the question actually asks.</p></div>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab4-09.png" /></p>
+<h2 id="task-3-answer-the-skill-builder-questions-and-save-the-skill-walkthrough">Task 3: Answer the skill builder questions and save the skill (walkthrough)</h2>
+<p>In this task, the builder's questions are answered with the Leadership Update specification from Task 1. Cowork then writes the SKILL.md file, checks its quality and asks for approval before saving it to OneDrive.</p>
+<ol>
+<li>For the question about what the skill should help you do, enter the following and select <strong>Next</strong>:</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span></span><button type="button" class="copy">Copy</button></div><pre><code>Turn project, operational, or business updates that I provide into a concise leadership / executive update. Read my notes, pull out the overall progress, key accomplishments, risks and blockers, and what I need from leadership. The result should be a short, professional message with four sections: Headline, Progress, Risks and Blockers, and Asks / Next Steps, ready to send to senior leadership.</code></pre></div>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab4-10.png" /></p>
+<ol start="2">
+<li>For the question about the skill's name, enter the following and select <strong>Next</strong>:</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span></span><button type="button" class="copy">Copy</button></div><pre><code>leadership-update</code></pre></div>
+<div class="alert note"><p class="alert-title">Note</p><p><strong>Note:</strong> Skill names use short lowercase words separated by hyphens. If you leave the name blank, Cowork suggests one.</p></div>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab4-11.png" /></p>
+<ol start="3">
+<li>For <strong>Which category fits it best?</strong>, select <strong>Communication</strong> and then <strong>Next</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab4-12.png" /></p>
+<ol start="4">
+<li>For the question about the phrases you'd type to use the skill, enter the following and select <strong>Next</strong>:</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span></span><button type="button" class="copy">Copy</button></div><pre><code>Create a leadership update, Generate an executive status update, Prepare a leadership summary</code></pre></div>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab4-13.png" /></p>
+<ol start="5">
+<li>For the question about rules the skill should always follow, enter the following and select <strong>Submit</strong>:</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span></span><button type="button" class="copy">Copy</button></div><pre><code>Tone: professional and concise, suitable for senior leadership. Keep the update under 200 words. Always use four sections in this order: Headline (one sentence on overall status, including Green / Amber / Red), Progress (2-4 bullets), Risks and Blockers (bullets with impact if not addressed), and Asks / Next Steps (specific asks of leadership and upcoming actions). Use only the information I provide or content from Teams, Outlook, Word, OneNote, or SharePoint; never invent figures, dates, or names. Never send, post, or change anything; only draft the update text.</code></pre></div>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab4-14.png" /></p>
+<ol start="6">
+<li>
+<p>Cowork shows <strong>Working on 1 background task</strong> while it creates the skill. The <strong>Workspace</strong> pane opens on the right with <strong>skill-quality-report.html</strong> under <strong>Output</strong> and <strong>Skill Management</strong> under <strong>Plugins</strong>.</p>
+</li>
+<li>
+<p>When the <strong>Copy file</strong> approval card appears, check the details: <strong>To:</strong> <em>Your Cowork folder / skills / leadership-update</em>, <strong>Overwrite:</strong> Yes, <strong>Recursive:</strong> Yes, <strong>Source:</strong> <em>working/leadership-update</em>. Select <strong>Approve</strong> to save the skill.</p>
+</li>
+</ol>
+<div class="alert note"><p class="alert-title">Note</p><p><strong>Note:</strong> Cowork asks for approval before it writes files to OneDrive. If you select <strong>Cancel</strong>, the skill isn't saved.</p></div>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab4-15.png" /></p>
+<ol start="8">
+<li>Review the completion summary. Under <strong>Changes I made</strong>, Cowork lists any adjustments, for example narrowing the skill so it doesn't overlap with a similar skill you already have. At the end of the response, two cards appear: <strong>leadership-update</strong> (Skill) and <strong>skill-quality-report</strong> (HTML file).</li>
+</ol>
+<div class="alert note"><p class="alert-title">Note</p><p><strong>Note:</strong> In the screenshots, the account already had a <strong>weekly-status-email</strong> skill, so Cowork mentions it. If you have no similar skills, you won't see that adjustment.</p></div>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab4-16.png" /></p>
+<ol start="9">
+<li>Select <strong>skill-quality-report.html</strong> under <strong>Output</strong> in the Workspace pane.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab4-17.png" /></p>
+<ol start="10">
+<li>Review the quality report: the skill name and the status <strong>This skill is ready to share</strong>, an overall health score out of 100 with <strong>Meets the bar to publish</strong>, the <strong>Risk</strong> and <strong>Grounding</strong> indicators, and the <strong>What's already working</strong> checklist. Then close the preview with <strong>X</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab4-18.png" /></p>
+<h2 id="task-4-test-the-leadership-update-skill-walkthrough">Task 4: Test the Leadership Update skill (walkthrough)</h2>
+<p>A skill is only useful if it runs when you call it. In this task, the skill is tested with a sample input to confirm that Cowork uses it.</p>
+<ol>
+<li>Select <strong>New</strong> in the left pane. Enter the following prompt and select <strong>Send</strong>:</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span></span><button type="button" class="copy">Copy</button></div><pre><code>Use leadership-update
+
+Summarize the following:
+
+Over the past week, several key initiatives have made progress. Most planned activities are on schedule, although a few tasks are taking longer than expected due to resource constraints. Team collaboration has improved, and stakeholder engagement remains positive. Some risks have been identified that may impact upcoming deadlines if not addressed. Additional support may be needed to maintain momentum.</code></pre></div>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab4-19.png" /></p>
+<ol start="2">
+<li>Cowork processes the request. The activity log shows <strong>Reviewed custom skill Leadership update</strong>, and <strong>leadership-update</strong> appears under <strong>Plugins</strong> in the Workspace pane. This confirms the skill was used. The update is organized into <strong>Headline</strong>, <strong>Progress</strong>, <strong>Risks and Blockers</strong> and <strong>Asks / Next Steps</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab4-20.png" /></p>
+<ol start="3">
+<li>Scroll down to review the <strong>Asks / Next Steps</strong> section, the word count and any placeholders such as <strong>[Add date]</strong> or <strong>[Add owner]</strong> that the skill adds where details were missing. At the end, Cowork explains its status rating (for example, <strong>Amber</strong>).</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab4-21.png" /></p>
+<ol start="4">
+<li>Select <strong>Plugins</strong> in the left pane and check that <strong>leadership-update</strong> is listed under <strong>Added</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab4-22.png" /></p>
+<h2 id="task-5-build-the-project-status-brief-skill-walkthrough">Task 5: Build the Project Status Brief skill (walkthrough)</h2>
+<p>The same conversational pattern is now applied to a Project Orion scenario. This time, the builder may ask four questions instead of five, and its first question asks for the task, the trigger phrases and the expected output together.</p>
+<ol>
+<li>Select <strong>Plugins</strong> in the left pane, make sure <strong>Cowork</strong> is selected, then select <strong>Add &gt; New skill</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab4-23.png" /></p>
+<ol start="2">
+<li>For the first question (what the skill should do, when it should trigger and what it should produce), enter the following and select <strong>Next</strong>:</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span></span><button type="button" class="copy">Copy</button></div><pre><code>Generate a concise project status brief from project updates, meeting notes, task progress, risks, and milestone details that I provide or that are in Teams, Outlook, Word, OneNote, or SharePoint. Trigger when I ask to "create a project status brief", "generate a project update", "summarize project progress", or "give me the project status brief". Produce a professional brief with these sections: Project Overview, Key Accomplishments, Current Status, Risks and Blockers, Upcoming Milestones, and Next Steps.</code></pre></div>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab4-24.png" /></p>
+<ol start="3">
+<li>For <strong>Which category fits the skill best?</strong>, select <strong>Documents &amp; reports</strong> and then <strong>Next</strong>.</li>
+</ol>
+<div class="alert note"><p class="alert-title">Note</p><p><strong>Note:</strong> The category options can differ from the first skill. If Cowork can't use the category you pick, it chooses the closest allowed one (for example, <strong>writing</strong>) and tells you in the summary.</p></div>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab4-25.png" /></p>
+<ol start="4">
+<li>For the name question, enter the following and select <strong>Next</strong>:</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span></span><button type="button" class="copy">Copy</button></div><pre><code>project-status-brief</code></pre></div>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab4-26.png" /></p>
+<ol start="5">
+<li>For the rules question, enter the following and select <strong>Submit</strong>:</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span></span><button type="button" class="copy">Copy</button></div><pre><code>Tone: professional and concise. Keep the brief to one page. Always use the six sections in this order: Project Overview, Key Accomplishments, Current Status, Risks and Blockers, Upcoming Milestones, Next Steps. Audience: project stakeholders and leadership. Use only the information I provide or content from Teams, Outlook, Word, OneNote, or SharePoint; never invent figures, dates, or names. Never send, post, or change anything on its own; only draft the brief and wait for my instruction before sharing it anywhere.</code></pre></div>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab4-27.png" /></p>
+<ol start="6">
+<li>When the <strong>Copy file</strong> card appears, check <strong>To:</strong> <em>Your Cowork folder / skills / project-status-brief</em> and <strong>Source:</strong> <em>working/project-status-brief</em>, then select <strong>Approve</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab4-28.png" /></p>
+<ol start="7">
+<li>Review the completion summary. Cowork confirms the skill was saved to <code>Documents/Cowork/skills/project-status-brief/SKILL.md</code> and lists what it put in the skill: the name, the description and the trigger phrases.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab4-29.png" /></p>
+<ol start="8">
+<li>Scroll down to the <strong>Format</strong>, <strong>Your rules</strong> and <strong>Checks</strong> sections. The skill passed the format check and received a quality score, and a <strong>project-status-brief-quality-report</strong> card (HTML file) appears at the end.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab4-30.png" /></p>
+<h2 id="task-6-review-inspect-and-download-the-project-status-brief-skill-walkthrough">Task 6: Review, inspect and download the Project Status Brief skill (walkthrough)</h2>
+<p>In this task, the quality report and the skill details page are reviewed, and the skill file is downloaded for the upload exercise in Task 7.</p>
+<ol>
+<li>Select the <strong>project-status-brief-quality-report</strong> card. Review the status, the health score, the <strong>Risk</strong> and <strong>Grounding</strong> indicators and the <strong>What's already working</strong> checklist, then close the preview.</li>
+</ol>
+<div class="alert note"><p class="alert-title">Note</p><p><strong>Note:</strong> The <strong>Risk</strong> rating can differ between skills. In the screenshots, the first skill was rated <em>Risk medium</em> and this one <em>Risk high</em>. Read why before you share a skill.</p></div>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab4-31.png" /></p>
+<ol start="2">
+<li>Select <strong>Plugins</strong> in the left pane.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab4-32.png" /></p>
+<ol start="3">
+<li>Check that <strong>project-status-brief</strong> is listed under <strong>Added</strong>, next to <strong>leadership-update</strong>, and select it to open its details page.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab4-33.png" /></p>
+<ol start="4">
+<li>Review the details page: the skill name and <strong>Created by you</strong>, the description, and the <strong>Instructions</strong> with <strong>Overview</strong>, <strong>When to Use</strong> and <strong>When NOT to Use</strong> sections. <strong>When NOT to Use</strong> sends other requests to your other skills, such as <strong>leadership-update</strong>. The icons next to <strong>Instructions</strong> let you edit the instructions or open them in a separate view.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab4-34.png" /></p>
+<ol start="5">
+<li>Select the ellipsis (<strong>...</strong>) in the top-right corner. Two actions are available: <strong>Download</strong> and <strong>Delete</strong>.</li>
+</ol>
+<div class="alert note"><p class="alert-title">Note</p><p><strong>Note:</strong> <strong>Delete</strong> permanently removes the skill. Use <strong>Download</strong> to keep a copy before you change or remove a skill.</p></div>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab4-35.png" /></p>
+<ol start="6">
+<li>Select <strong>Download</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab4-36.png" /></p>
+<ol start="7">
+<li>The browser's <strong>Downloads</strong> panel shows <strong>project-status-brief.md</strong>. This file is used in the next task.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab4-37.png" /></p>
+<h2 id="task-7-upload-and-run-the-project-status-brief-skill-walkthrough">Task 7: Upload and run the Project Status Brief skill (walkthrough)</h2>
+<p>Skills can be shared as files and uploaded again. In this task, the downloaded file is uploaded and the skill is run with one of its trigger phrases.</p>
+<ol>
+<li>Select <strong>Plugins</strong> in the left pane, then <strong>Add &gt; Upload</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab4-38.png" /></p>
+<ol start="2">
+<li>The <strong>Upload a skill or plugin</strong> dialog accepts <strong>.MD</strong>, <strong>.ZIP</strong> or <strong>.SKILL</strong> files. Select <strong>choose a file</strong>.</li>
+</ol>
+<div class="alert note"><p class="alert-title">Note</p><p><strong>Note:</strong> Skills and plugins run as instructions to Cowork and can connect it to external services. Only upload files from sources you trust.</p></div>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab4-39.png" /></p>
+<ol start="3">
+<li>In the <strong>Open</strong> dialog, select <strong>Downloads</strong>, select <strong>project-status-brief</strong> and select <strong>Open</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab4-40.png" /></p>
+<ol start="4">
+<li>The uploaded skill appears under <strong>Added</strong> as <strong>project-status-brief-1</strong>, next to the original. Because a skill named <em>project-status-brief</em> already exists, Cowork adds <strong>-1</strong> to the copy.</li>
+</ol>
+<div class="alert tip"><p class="alert-title">Tip</p><p><strong>Tip:</strong> Two copies of the same skill share the same trigger phrases, which can confuse Cowork about which one to run. After this exercise, delete the <strong>-1</strong> copy.</p></div>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab4-41.png" /></p>
+<ol start="5">
+<li>Select <strong>New</strong> in the left pane, enter the following trigger phrase and select <strong>Send</strong>:</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span></span><button type="button" class="copy">Copy</button></div><pre><code>give me the project status brief</code></pre></div>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab4-42.png" /></p>
+<ol start="6">
+<li>Cowork processes the request and a new task, such as <strong>Project Status Brief Summary</strong>, appears under <strong>Recent</strong>. In the Workspace pane, <strong>project-status-brief</strong> appears under <strong>Plugins</strong>, along with the connectors used to find project content, such as <strong>SharePoint</strong>. The brief shows the reporting period and the six sections: <strong>Project Overview</strong>, <strong>Key Accomplishments</strong>, <strong>Current Status</strong>, <strong>Risks and Blockers</strong>, <strong>Upcoming Milestones</strong> and <strong>Next Steps</strong>.</li>
+</ol>
+<div class="alert note"><p class="alert-title">Note</p><p><strong>Note:</strong> When a detail isn't available, the skill shows <strong>Not stated</strong> instead of making it up.</p></div>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab4-43.png" /></p>
+<h2 id="task-8-post-the-project-status-brief-to-a-teams-channel-walkthrough">Task 8: Post the Project Status Brief to a Teams channel (walkthrough)</h2>
+<p>Skills become most useful when their output goes somewhere useful. In this task, Cowork posts the brief to a Teams channel, and the post is approved before it's sent.</p>
+<ol>
+<li>In the same task, enter the following in the <strong>Message Cowork</strong> box and select <strong>Send</strong>:</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span></span><button type="button" class="copy">Copy</button></div><pre><code>Post this brief to the General channel of my Retail team in Teams.</code></pre></div>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab4-44.png" /></p>
+<ol start="2">
+<li>Review the <strong>Post to channel?</strong> card: the channel (<strong>#General</strong>), the subject (<strong>Project Orion Status Brief</strong> with the reporting period), the message preview with the brief's sections, and the risk level in the top-right corner. Select <strong>Send</strong> to approve the post.</li>
+</ol>
+<div class="alert note"><p class="alert-title">Note</p><p><strong>Note:</strong> You can edit the subject and message in the card before sending, or select <strong>Cancel</strong> to stop the post.</p></div>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab4-45.png" /></p>
+<ol start="3">
+<li>Review the confirmation that the brief was posted to the <strong>General</strong> channel of the <strong>Retail</strong> team. Cowork also explains what it left out of the post (such as internal notes) and flags any date conflicts to check. A <strong>General (Posted to Teams)</strong> card appears, and <strong>General</strong> is listed under <strong>Output</strong> in the Workspace pane.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab4-46.png" /></p>
+<ol start="4">
+<li>Open Microsoft Teams from the open icon on the <strong>General</strong> card, or go to <code>https://teams.microsoft.com</code>. If prompted to download the desktop app, select <strong>Use the web app instead</strong>.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab4-47.png" /></p>
+<ol start="5">
+<li>Under <strong>Teams and channels</strong>, select <strong>Retail &gt; General</strong>. The <strong>Project Orion Status Brief</strong> post shows the title, the reporting period and the brief's sections. This completes the end-to-end flow: brief generated by the custom skill, post approved in Cowork, message delivered to the channel.</li>
+</ol>
+<p><img alt="" src="../assets/cow/Instructions-Labs-Media-lab4-48.png" /></p>
+<h2 id="review">Review</h2>
+<p>In this lab, you:</p>
+<ul>
+<li>Planned a skill specification on paper (purpose, inputs, outputs, trigger phrases) before using the builder</li>
+<li>Saw how the skill builder creates the <strong>leadership-update</strong> skill from a short series of questions instead of a form</li>
+<li>Saw the approval step that saves the skill to the Cowork skills folder in OneDrive, and reviewed the skill quality report</li>
+<li>Tested the skill with a sample input and confirmed its four-section output</li>
+<li>Built a second skill, <strong>project-status-brief</strong>, and reviewed its quality report, details page (Overview, When to Use, When NOT to Use) and its <strong>Download</strong> and <strong>Delete</strong> options</li>
+<li>Uploaded the downloaded skill file and ran the skill with its trigger phrase</li>
+<li>Posted the generated brief to a Microsoft Teams channel after reviewing and approving the post</li>
+</ul>
+</article>
+<nav class="pager bottom"><a href="lab-03-intelligent-file-organizer.html">‹ 3 · Intelligent File Organizer</a><a href="lab-05-personal-work-dashboard.html">5 · Building a Personal Work Dashboard with Copilot Cowork (Read-only) ›</a></nav>
+<p class="source"><a href="https://github.com/medyabi/Copilot-Cowork-lab" rel="noopener">View the source on GitHub</a></p>
+</main>
+<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#overview">Overview</a></li><li><a href="#objectives">Objectives</a></li><li><a href="#task-1-design-your-skill-on-paper-first-hands-on">Task 1: Design your skill on paper first (hands-on)</a></li><li><a href="#task-2-start-the-skill-builder-for-the-leadership-update-skill-walkthrough">Task 2: Start the skill builder for the Leadership Update skill (walkthrough)</a></li><li><a href="#task-3-answer-the-skill-builder-questions-and-save-the-skill-walkthrough">Task 3: Answer the skill builder questions and save the skill (walkthrough)</a></li><li><a href="#task-4-test-the-leadership-update-skill-walkthrough">Task 4: Test the Leadership Update skill (walkthrough)</a></li><li><a href="#task-5-build-the-project-status-brief-skill-walkthrough">Task 5: Build the Project Status Brief skill (walkthrough)</a></li><li><a href="#task-6-review-inspect-and-download-the-project-status-brief-skill-walkthrough">Task 6: Review, inspect and download the Project Status Brief skill (walkthrough)</a></li><li><a href="#task-7-upload-and-run-the-project-status-brief-skill-walkthrough">Task 7: Upload and run the Project Status Brief skill (walkthrough)</a></li><li><a href="#task-8-post-the-project-status-brief-to-a-teams-channel-walkthrough">Task 8: Post the Project Status Brief to a Teams channel (walkthrough)</a></li><li><a href="#review">Review</a></li></ol></aside>
+</div>
+<footer class="sitefoot">
+  <div class="foot-in">
+    <div><strong>AI Labs</strong><p>Hands-on Copilot labs by Mohamed Dyabi, Microsoft Certified Trainer.</p></div>
+    <ul>
+      <li><a href="../copilot-studio/index.html">Copilot Studio track</a></li>
+      <li><a href="index.html">Copilot Cowork track</a></li>
+      <li><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Studio-lab" rel="noopener">Copilot Studio labs on GitHub</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Cowork-lab" rel="noopener">Cowork labs on GitHub</a></li>
+    </ul>
+  </div>
+  <p class="fine">Use a test or demo tenant: these labs create agents, workflows and SharePoint items, and consume Copilot Credits. Preview features and labels change often. An independent site, not affiliated with Microsoft. © 2026 Mohamed Dyabi</p>
+</footer>
+<script>
+(function(){
+  // Table of contents: open on wide screens, collapsible on small ones
+  var toc = document.querySelector('details.toc');
+  if (toc) {
+    var mq = window.matchMedia('(min-width: 1024px)');
+    var sync = function(){ if (mq.matches) toc.open = true; };
+    sync(); if (mq.addEventListener) mq.addEventListener('change', sync);
+    var cur = toc.querySelector('[aria-current="page"]');
+    if (cur && cur.scrollIntoView && mq.matches) cur.scrollIntoView({block: 'center'});
+  }
+  // Filter by title
+  var f = document.getElementById('toc-filter');
+  if (f) f.addEventListener('input', function(){
+    var q = f.value.trim().toLowerCase();
+    document.querySelectorAll('.toc-list li').forEach(function(li){
+      var hit = !q || li.textContent.toLowerCase().indexOf(q) !== -1;
+      li.hidden = !hit;
+    });
+  });
+  // Copy buttons on code blocks
+  document.querySelectorAll('.codeblock').forEach(function(cb){
+    var btn = cb.querySelector('.copy'), code = cb.querySelector('code');
+    if (!btn || !code) return;
+    btn.addEventListener('click', function(){
+      navigator.clipboard.writeText(code.innerText).then(function(){
+        btn.textContent = 'Copied'; setTimeout(function(){ btn.textContent = 'Copy'; }, 1500);
+      }, function(){ btn.textContent = 'Select and copy'; });
+    });
+  });
+  // Highlight the current section in "In this article"
+  var links = document.querySelectorAll('.aside-toc a');
+  if (links.length && 'IntersectionObserver' in window) {
+    var map = {}; links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var obs = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting) {
+        links.forEach(function(a){ a.classList.remove('on'); });
+        var a = map[e.target.id]; if (a) a.classList.add('on');
+      }});
+    }, {rootMargin: '0px 0px -75% 0px'});
+    Object.keys(map).forEach(function(id){ var h = document.getElementById(id); if (h) obs.observe(h); });
+  }
+})();
+</script>
+</body>
+</html>

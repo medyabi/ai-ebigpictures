@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>00: Prepare the lab environment · AI Labs</title>
+<meta name="description" content="Hands-on labs for Microsoft Copilot Studio, Agent Builder and Microsoft 365 Copilot Cowork: from a simple agent to autonomous agents.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+</head>
+<body class="t-studio">
+<a class="skip" href="#content">Skip to main content</a>
+<header class="masthead">
+  <a class="brand" href="../index.html"><img src="../assets/favicon.svg" alt="" width="24" height="24"><span>AI Labs</span></a>
+  <span class="divider" aria-hidden="true"></span>
+  <nav class="mainnav" aria-label="Main"><a href="index.html" aria-current="true">Copilot Studio</a><a href="../cowork/index.html">Copilot Cowork</a><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></nav>
+  <a class="gh" href="https://github.com/medyabi" rel="noopener">GitHub</a>
+</header>
+<div class="doc has-toc">
+<details class="toc"><summary>Table of contents</summary><nav aria-label="From simple agents to autonomous agents"><p class="toc-title">From simple agents to autonomous agents</p><input id="toc-filter" class="toc-filter" type="search" placeholder="Filter by title" aria-label="Filter by title"><ol class="toc-list"><li><a href="index.html">Overview</a></li><li><a href="lab-00-prepare-the-lab-environment.html" aria-current="page">00 · Prepare the lab environment</a></li><li><a href="lab-01-build-your-first-agent-with-agent-builder.html">01 · Build your first agent with natural language</a></li><li><a href="lab-02-ground-your-agent-in-company-knowledge.html">02 · Ground your agent in company knowledge</a></li><li><a href="lab-03-capabilities-skills-and-copy-to-copilot-studio.html">03 · Capabilities, skills and the jump to Copilot Studio</a></li><li><a href="lab-04-your-first-copilot-studio-agent.html">04 · Your first Copilot Studio agent</a></li><li><a href="lab-05-connectors-and-mcp-tools.html">05 · Give your agent hands: connectors and MCP tools</a></li><li><a href="lab-06-workflows-and-human-approval.html">06 · Workflows and human approval</a></li><li><a href="lab-07-skills-memory-and-connected-agents.html">07 · Skills, memory and connected agents</a></li><li><a href="lab-08-build-an-autonomous-agent.html">08 · Build an autonomous agent with triggers</a></li><li><a href="lab-09-evaluate-publish-and-govern.html">09 · Evaluate, publish and govern your agents</a></li><li><a href="trainer-notes.html">Trainer guide</a></li></ol></nav></details>
+<main id="content" class="article">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">AI Labs</a></li><li><a href="index.html">Copilot Studio track</a></li></ol></nav>
+<article class="prose">
+<h1 id="lab-00-prepare-the-lab-environment">Lab 00 - Prepare the lab environment</h1><p class="meta"><span>Lab</span><span>10 min read</span><span>Lab time: 30 min</span></p>
+<h2 id="lab-introduction">Lab introduction</h2>
+<p>Before we build anything, we need a place for our agents to live and some data for them to work with.</p>
+<p>Think of it like a kitchen. Before you cook, you check the oven works and you put the ingredients on the counter. That's this lab. No agents yet - just the <strong>ingredients</strong>:</p>
+<ul>
+<li>a Copilot Studio environment you can build in,</li>
+<li>a SharePoint site with four Contoso IT policies,</li>
+<li>a SharePoint list where employees log IT requests.</li>
+</ul>
+<p>Every lab after this one uses these ingredients, so take your time here.</p>
+<h2 id="lab-scenario">Lab scenario</h2>
+<p>You work for <strong>Contoso</strong>, a company with offices in Casablanca, Paris, Madrid, Dubai and Lisbon. The IT Service Desk is drowning in repetitive questions ("How do I reset my password?", "How long does Visio take?") and in requests that someone has to read, classify and route by hand.</p>
+<p>Your manager asks you to build agents that help. Step by step.</p>
+<h2 id="job-skills">Job skills</h2>
+<ul>
+<li>Task 1: Check your access and pick your Copilot Studio environment</li>
+<li>Task 2: Create the Contoso IT Hub SharePoint site</li>
+<li>Task 3: Upload the Contoso IT policies</li>
+<li>Task 4: Create the IT Requests list</li>
+<li>Task 5: Give the environment Copilot Credits (admin)</li>
+</ul>
+<hr />
+<h2 id="task-1-check-your-access-and-pick-your-copilot-studio-environment">Task 1: Check your access and pick your Copilot Studio environment</h2>
+<p>Why start here? Because 90% of "the lab doesn't work" problems are a missing license or the wrong environment.</p>
+<ol>
+<li>
+<p>Sign in to <a href="https://m365.cloud.microsoft" rel="noopener">https://m365.cloud.microsoft</a> with your lab account.</p>
+</li>
+<li>
+<p>In the left pane, look for <strong>New agent</strong> (it may sit under <strong>Agents &amp; Skills</strong>). If you see it, Agent Builder is available to you. ✅</p>
+</li>
+<li>
+<p>Open a new browser tab and go to <a href="https://copilotstudio.microsoft.com" rel="noopener">https://copilotstudio.microsoft.com</a>.</p>
+</li>
+<li>
+<p>If you're asked to pick a country/region or start a trial, follow the prompts. The <strong>Home</strong> page greets you with three tiles: <strong>Agent</strong>, <strong>Workflow</strong> and <strong>App (preview)</strong>. Notice the <strong>Uses Copilot Credits</strong> label - everything you build here consumes credits. ✅</p>
+</li>
+</ol>
+<p><img alt="Copilot Studio Home page with the Agent, Workflow and App tiles" src="../assets/stu/Instructions-Labs-media-lab00-01-copilot-studio-home.png" /></p>
+<ol>
+<li>
+<p>A tip appears: <strong>Find your environments here</strong>. The environment picker now lives in the <strong>left rail</strong> (the globe icon above your initials), not in the top-right corner. Select <strong>Got it</strong>, then select the <strong>globe</strong> icon.</p>
+</li>
+<li>
+<p>The <strong>Switch environment</strong> panel shows your <strong>Current environment</strong>. Here it's the tenant's <strong>default</strong> environment.</p>
+</li>
+</ol>
+<p><img alt="Switch environment panel showing the default environment" src="../assets/stu/Instructions-Labs-media-lab00-02-switch-environment.png" /></p>
+<ol>
+<li>Expand <strong>All environments</strong> to see every environment you can build in.</li>
+</ol>
+<p><img alt="All environments list with a Sandbox environment" src="../assets/stu/Instructions-Labs-media-lab00-03-all-environments.png" /></p>
+<ol>
+<li>Select the environment you'll use for Labs 03 to 09 and <strong>write its name down</strong>.</li>
+</ol>
+<div class="alert note"><p class="alert-title">Note</p><p><strong>Which environment should I pick?</strong>
+- Copying an agent from Agent Builder (Lab 03) and building in Copilot Studio both need an environment <strong>with a Dataverse database</strong>.
+- In a <strong>demo or lab tenant</strong>, the default environment is fine.
+- In a <strong>production tenant</strong>, prefer a dedicated environment (a <strong>Sandbox</strong> or <strong>Developer</strong> environment such as the one in the screenshot). The default environment is shared by everyone in the company - not where you want test agents and test connectors.</p>
+<p>Not sure your environment has Dataverse? Ask your trainer, or check it in the <a href="https://admin.powerplatform.microsoft.com" rel="noopener">Power Platform admin center</a> &gt; <strong>Environments</strong>.</p>
+<p><strong>Two engines, one studio.</strong> Look at the bottom of the Home page: <strong>Explore what else is possible with agents - Build a standard agent, create an agent flow, or create a Customer Conversation agent.</strong> Copilot Studio runs agents on a <strong>harness</strong> - the runtime between your design and the AI model.
+- The <strong>Microsoft Copilot harness</strong> (behind the <strong>Agent</strong> tile - the default) takes a goal, plans the steps, calls tools, and recovers when something fails.
+- The <strong>standard harness</strong> ("standard agent") follows the topics and paths you draw.
+- The <strong>Customer Conversation harness</strong> is built for customer-facing voice and chat.</p>
+<p>We use the <strong>Agent</strong> tile in this course. You may also see the old name, <strong>GitHub Copilot harness</strong>, in older docs - it was renamed to <strong>Microsoft Copilot harness</strong>. Same runtime, and your data isn't sent to the GitHub Copilot service.</p></div>
+<hr />
+<h2 id="task-2-create-the-contoso-it-hub-sharepoint-site">Task 2: Create the Contoso IT Hub SharePoint site</h2>
+<ol>
+<li>
+<p>Open the SharePoint start page: <code>https://&lt;your-tenant&gt;.sharepoint.com</code> (or the app launcher &gt; <strong>SharePoint</strong>).</p>
+</li>
+<li>
+<p>In the left rail, select <strong>Build</strong>. The <strong>Start building</strong> page opens. Select the <strong>Site</strong> card.</p>
+</li>
+</ol>
+<p><img alt="SharePoint Build page with the Site card" src="../assets/stu/Instructions-Labs-media-lab00-04-sharepoint-build-site.png" /></p>
+<ol>
+<li>In <strong>Select a site template</strong>, keep <strong>Team site</strong> selected and choose <strong>Standard team</strong>.</li>
+</ol>
+<p><img alt="Team site templates from Microsoft" src="../assets/stu/Instructions-Labs-media-lab00-05-team-site-templates.png" /></p>
+<div class="alert note"><p class="alert-title">Note</p><p><strong>Why a team site and not the "IT help desk" template?</strong> The IT help desk template ships with its own pages and lists. We want a clean site so you build - and understand - every piece yourself.</p></div>
+<ol>
+<li>Review the preview and select <strong>Use template</strong>.</li>
+</ol>
+<p><img alt="Standard team template preview with the Use template button" src="../assets/stu/Instructions-Labs-media-lab00-06-standard-team-preview.png" /></p>
+<ol>
+<li>Fill in <strong>Set up your site</strong>:</li>
+</ol>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Site name</td>
+<td><code>Contoso IT Hub</code></td>
+</tr>
+<tr>
+<td>Site description</td>
+<td><code>Policies and requests for the Contoso IT Service Desk</code></td>
+</tr>
+<tr>
+<td>Group email address</td>
+<td><code>ContosoITHub</code> (filled in for you)</td>
+</tr>
+<tr>
+<td>Site address</td>
+<td><code>.../sites/ContosoITHub</code> (filled in for you)</td>
+</tr>
+<tr>
+<td>Privacy settings</td>
+<td><strong>Private - only members can access this site</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p>Wait for the green check marks (<strong>The site name is available</strong>, <strong>The group alias is available</strong>, <strong>The site address is available</strong>), then select <strong>Create site</strong>.</p>
+<p><img alt="Set up your site form filled in for Contoso IT Hub" src="../assets/stu/Instructions-Labs-media-lab00-07-set-up-your-site.png" /></p>
+<div class="alert note"><p class="alert-title">Note</p><p>A team site is connected to a <strong>Microsoft 365 group</strong>. That group - not the agent - decides who can read the policies. Remember this; it matters in Lab 02.</p></div>
+<ol>
+<li>Wait a few seconds while SharePoint creates the site.</li>
+</ol>
+<p><img alt="Creating site progress screen" src="../assets/stu/Instructions-Labs-media-lab00-08-creating-site.png" /></p>
+<ol>
+<li>When you see <strong>Your site is ready!</strong>, you can add owners and members now (your trainer or a test colleague), or skip it. Select <strong>Go to site</strong>.</li>
+</ol>
+<p><img alt="Your site is ready screen with the Go to site button" src="../assets/stu/Instructions-Labs-media-lab00-09-site-ready.png" /></p>
+<ol>
+<li>The <strong>Contoso IT Hub</strong> home page opens with a <strong>Next steps</strong> panel. Close the panel.</li>
+</ol>
+<p><img alt="Contoso IT Hub home page with the Next steps panel" src="../assets/stu/Instructions-Labs-media-lab00-10-site-home.png" /></p>
+<hr />
+<h2 id="task-3-upload-the-contoso-it-policies">Task 3: Upload the Contoso IT policies</h2>
+<ol>
+<li>Download the four policy files from this repository: open <strong>Allfiles/Labs/00</strong>, select each file, and use the <strong>Download raw file</strong> button (or download the whole repo with <strong>Code &gt; Download ZIP</strong>).</li>
+</ol>
+<p><img alt="The four policy files in Allfiles/Labs/00 on GitHub" src="../assets/stu/Instructions-Labs-media-lab00-11-github-allfiles.png" /></p>
+<ul>
+<li><code>Contoso-Laptop-and-Device-Policy.docx</code></li>
+<li><code>Contoso-Password-and-MFA-Policy.docx</code></li>
+<li><code>Contoso-Remote-Access-and-VPN-Guide.docx</code></li>
+<li><code>Contoso-Software-Request-Policy.docx</code></li>
+</ul>
+<ol>
+<li>
+<p>On the <strong>Contoso IT Hub</strong> site, select <strong>Documents</strong> in the left navigation.</p>
+</li>
+<li>
+<p>Select <strong>Create or upload</strong> &gt; <strong>Files upload</strong>, select the four files and open them. You should see <strong>Uploaded 4 items to Documents</strong>.</p>
+</li>
+</ol>
+<p><img alt="Documents library with the four Contoso policies uploaded" src="../assets/stu/Instructions-Labs-media-lab00-12-documents-uploaded.png" /></p>
+<ol>
+<li>Copy the <strong>site URL</strong> - everything up to and including the site name - and paste it into a notepad. You'll need it a lot.</li>
+</ol>
+<div class="codeblock"><div class="code-head"><span>Text</span><button type="button" class="copy">Copy</button></div><pre><code>https://&lt;your-tenant&gt;.sharepoint.com/sites/ContosoITHub</code></pre></div>
+<p><img alt="Site URL saved in Notepad" src="../assets/stu/Instructions-Labs-media-lab00-13-site-url-notepad.png" /></p>
+<div class="alert note"><p class="alert-title">Note</p><p>Copy the address <strong>without</strong> <code>/Shared Documents/Forms/AllItems.aspx</code>. Agents and connectors want the <strong>site</strong> address. In later labs we point them at the <strong>Documents</strong> library of this site.</p>
+<p><strong>Why do we upload to SharePoint and not straight into the agent?</strong>
+Because SharePoint keeps the <strong>permissions</strong>. When an agent answers from SharePoint, a user only gets answers from files they're allowed to open. Upload a file into an agent, and everyone who uses the agent can read it. Remember this - it matters in Lab 09.</p></div>
+<hr />
+<h2 id="task-4-create-the-it-requests-list">Task 4: Create the IT Requests list</h2>
+<p>This list is the "inbox" of our Service Desk. In Lab 05 an agent writes into it. In Lab 08 an autonomous agent watches it.</p>
+<ol>
+<li>Go back to the site <strong>Home</strong> page and select <strong>+ New</strong> &gt; <strong>List</strong>.</li>
+</ol>
+<p><img alt="New menu on the site home page with List highlighted" src="../assets/stu/Instructions-Labs-media-lab00-14-new-list-menu.png" /></p>
+<ol>
+<li>In <strong>How would you like to start?</strong>, under <strong>Create from blank</strong>, select <strong>List</strong>.</li>
+</ol>
+<p><img alt="How would you like to start dialog with the blank List option" src="../assets/stu/Instructions-Labs-media-lab00-15-list-start-options.png" /></p>
+<div class="alert note"><p class="alert-title">Note</p><p>Notice <strong>Import from Excel / CSV</strong> and the <strong>Issue tracker</strong> template. Useful in real life - but we build the columns ourselves so the agents' expectations match exactly.</p></div>
+<ol>
+<li>Name the list <code>IT Requests</code>, keep <strong>Show list in site navigation</strong> checked, and select <strong>Create</strong>.</li>
+</ol>
+<p><img alt="Naming the list IT Requests" src="../assets/stu/Instructions-Labs-media-lab00-16-list-name.png" /></p>
+<ol>
+<li>Now add the columns. For each row of the table below, select <strong>+ Add column</strong>, choose the <strong>type</strong>, select <strong>Next</strong>, and fill in the settings.</li>
+</ol>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Column name</th>
+<th>Type</th>
+<th>Choices / settings</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Description</code></td>
+<td>Multiple lines of text</td>
+<td></td>
+</tr>
+<tr>
+<td><code>Category</code></td>
+<td>Choice</td>
+<td>Hardware, Software, Network, Account &amp; Access, Security</td>
+</tr>
+<tr>
+<td><code>Priority</code></td>
+<td>Choice</td>
+<td>Low, Normal, High, Critical - <strong>Default value: Normal</strong></td>
+</tr>
+<tr>
+<td><code>Status</code></td>
+<td>Choice</td>
+<td>New, Triaged, Waiting for approval, Approved, Rejected, Resolved - <strong>Default value: New</strong></td>
+</tr>
+<tr>
+<td><code>AssignedTeam</code></td>
+<td>Choice</td>
+<td>Endpoint, Apps, Network, Identity, SecOps</td>
+</tr>
+<tr>
+<td><code>RequestedBy</code></td>
+<td>Person</td>
+<td></td>
+</tr>
+<tr>
+<td><code>TriageNotes</code></td>
+<td>Multiple lines of text</td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+<div class="alert important"><p class="alert-title">Important</p><p>⚠️ <strong>Type the choice values exactly as shown</strong> - same spelling, same capitals, same <code>&amp;</code>. The agents in Labs 05-08 write these exact values. A typo here = a failed tool call later.</p></div>
+<ol>
+<li><strong>How to fill a Choice column.</strong> The panel starts with three placeholders: <strong>Choice 1</strong>, <strong>Choice 2</strong>, <strong>Choice 3</strong>. Select each placeholder and type over it, then use <strong>+ Add Choice</strong> for the extra values. Leave <strong>Can add values manually</strong> unchecked. The <strong>Description</strong> field is optional - listing the values there helps your colleagues.</li>
+</ol>
+<p><img alt="Create a column panel for the Category choice column" src="../assets/stu/Instructions-Labs-media-lab00-17-category-column.png" /></p>
+<p>When you're done, the <strong>Status</strong> column should look like this. Set <strong>Default value</strong> to <strong>New</strong> (scroll down in the panel), then <strong>Save</strong>.</p>
+<p><img alt="Edit column panel for Status with its six choices" src="../assets/stu/Instructions-Labs-media-lab00-18-status-column.png" /></p>
+<p>And the <strong>AssignedTeam</strong> column, with the five teams the agents route to:</p>
+<p><img alt="Edit column panel for AssignedTeam with its five choices" src="../assets/stu/Instructions-Labs-media-lab00-20-assignedteam-column.png" /></p>
+<div class="alert note"><p class="alert-title">Note</p><p><strong>Made a mistake?</strong> Select the column header &gt; <strong>Column settings</strong> &gt; <strong>Edit</strong> to fix the name, the choices or the default value.</p></div>
+<ol>
+<li>Check the result. Your list shows <strong>Title, Description, Category, Priority, Status, AssignedTeam, RequestedBy</strong> (scroll right for <strong>TriageNotes</strong>).</li>
+</ol>
+<p><img alt="IT Requests list with all the custom columns" src="../assets/stu/Instructions-Labs-media-lab00-19-it-requests-columns.png" /></p>
+<ol>
+<li>Add one test item so the list isn't empty. Select <strong>+ New</strong> and enter:</li>
+</ol>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Title</td>
+<td><code>Docking station not detected</code></td>
+</tr>
+<tr>
+<td>Description</td>
+<td><code>My Dell dock stopped detecting my second screen after the update</code></td>
+</tr>
+<tr>
+<td>Category</td>
+<td>Hardware</td>
+</tr>
+<tr>
+<td>Priority</td>
+<td>Normal (already filled in - that's the default value you set)</td>
+</tr>
+<tr>
+<td>Status</td>
+<td>New (default)</td>
+</tr>
+</tbody>
+</table></div>
+<p>Select <strong>Save</strong>.</p>
+<p><img alt="New item form for the Docking station test request" src="../assets/stu/Instructions-Labs-media-lab00-21-new-test-item.png" /></p>
+<div class="alert note"><p class="alert-title">Note</p><p>Notice that <strong>Priority</strong> and <strong>Status</strong> were filled in for you. That's the <strong>default value</strong> at work. Later, when an agent creates an item and forgets a field, the default keeps the data clean.</p>
+<p>The grey text under each field is the column <strong>description</strong>. Keep it readable (for example <code>Hardware, Software, Network, Account &amp; Access, Security</code>) - it's the hint your colleagues see when they fill in the form.</p></div>
+<hr />
+<h2 id="task-5-give-the-environment-copilot-credits-admin">Task 5: Give the environment Copilot Credits (admin)</h2>
+<div class="alert note"><p class="alert-title">Note</p><p><strong>Who does this?</strong> A Power Platform or global admin - usually the trainer, once, before the course.</p></div>
+<p>Here's a surprise many people hit. You have Microsoft 365 E5 <strong>and</strong> a Microsoft 365 Copilot license. You build an agent from the <strong>Agent</strong> tile, ask it a question in <strong>Preview</strong>... and get this:</p>
+<p><img alt="You need credits to continue - EnforcementUsageCredits" src="../assets/stu/Instructions-Labs-media-lab00-20-out-of-credits.png" /></p>
+<p><strong>Why?</strong> Agents on the Microsoft Copilot harness are billed <strong>per use, in Copilot Credits</strong> - and billing starts <strong>as soon as you build and test</strong>, not when you publish. Credits belong to the <strong>environment</strong>, not to your user license. Your Copilot license doesn't add any.</p>
+<p>The fastest way for a lab: <strong>pay-as-you-go</strong>, billed to an Azure subscription.</p>
+<ol>
+<li>Open the <a href="https://admin.powerplatform.microsoft.com" rel="noopener">Power Platform admin center</a> &gt; <strong>Licensing</strong> &gt; <strong>Copilot Studio</strong>. Under <strong>Recommendations</strong>, select <strong>+ New billing plan</strong>.</li>
+</ol>
+<p><img alt="Copilot Studio licensing page with New billing plan" src="../assets/stu/Instructions-Labs-media-lab00-21-ppac-copilot-studio-licensing.png" /></p>
+<ol>
+<li>Fill in the plan:</li>
+</ol>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Name</td>
+<td><code>CopilotLabsPAYG</code></td>
+</tr>
+<tr>
+<td>Azure subscription</td>
+<td>The subscription that pays for the labs</td>
+</tr>
+<tr>
+<td>Resource group</td>
+<td>For example <code>copilot-credits-rg</code></td>
+</tr>
+<tr>
+<td>Meter</td>
+<td><strong>Copilot Studio</strong> only</td>
+</tr>
+</tbody>
+</table></div>
+<p><img alt="New billing plan with only the Copilot Studio meter selected" src="../assets/stu/Instructions-Labs-media-lab00-22-new-billing-plan-meter.png" /></p>
+<div class="alert note"><p class="alert-title">Note</p><p>Untick the other meters (Windows 365 for Agents, Dataverse...). Select only what this plan should pay for.</p></div>
+<ol>
+<li>Select <strong>Next</strong>. In <strong>Select environments</strong>, pick the <strong>Region</strong> where your environment lives. The list is <strong>filtered by region</strong> - pick the wrong one and it's empty:</li>
+</ol>
+<p><img alt="Wrong region: no environments" src="../assets/stu/Instructions-Labs-media-lab00-23-select-env-wrong-region.png" /></p>
+<p>Not sure? <strong>Manage</strong> &gt; <strong>Environments</strong> &gt; your environment shows its region. Here it's <strong>Europe</strong>:</p>
+<p><img alt="Europe: the MTS Team environment appears" src="../assets/stu/Instructions-Labs-media-lab00-24-select-env-europe.png" /></p>
+<ol>
+<li>
+<p>Tick your lab environment and select <strong>Save</strong>.</p>
+</li>
+<li>
+<p>Go to <strong>Licensing</strong> &gt; <strong>Billing Plans</strong>. Your plan shows <strong>Enabled</strong>, with <strong>Copilot Studio</strong> as the product.</p>
+</li>
+</ol>
+<p><img alt="CopilotLabsPAYG enabled" src="../assets/stu/Instructions-Labs-media-lab00-25-billing-plan-enabled.png" /></p>
+<ol>
+<li>Wait 5-10 minutes before testing an agent.</li>
+</ol>
+<div class="alert warning"><p class="alert-title">Cost</p><p><strong>Protect your wallet.</strong> Pay-as-you-go has no hard cap. In the Azure portal, open <strong>Cost Management</strong> &gt; <strong>Budgets</strong> and create a budget on the resource group with an e-mail alert. You can unlink the environment from the plan at any time to stop billing.</p>
+<p><strong>Other options:</strong> prepaid <strong>Copilot Credits capacity</strong> (allocate it to the environment under <strong>Licensing</strong> &gt; <strong>Copilot Studio</strong> &gt; <strong>Manage Copilot Credits</strong>) or a one-year <strong>Copilot Credits prepurchase plan</strong> bought in the Azure portal.</p></div>
+<hr />
+<h2 id="check-your-work">Check your work</h2>
+<ul>
+<li class="task"><input type="checkbox"> You can open <strong>New agent</strong> in Microsoft 365 Copilot.</li>
+<li class="task"><input type="checkbox"> You can open Copilot Studio and you wrote down your environment name.</li>
+<li class="task"><input type="checkbox"> The <strong>Contoso IT Hub</strong> site has four policies in its <strong>Documents</strong> library.</li>
+<li class="task"><input type="checkbox"> You saved the site URL (<code>.../sites/ContosoITHub</code>) in a notepad.</li>
+<li class="task"><input type="checkbox"> The <strong>IT Requests</strong> list exists with seven custom columns and one item.</li>
+<li class="task"><input type="checkbox"> Your lab environment is linked to an <strong>enabled</strong> billing plan with the Copilot Studio meter.</li>
+</ul>
+<h2 id="key-takeaways">Key takeaways</h2>
+<ul>
+<li>Agents are only as good as the data you give them. Clean, short, well-titled documents give better answers.</li>
+<li>SharePoint keeps permissions. Uploaded files don't.</li>
+<li>Copilot Studio needs an environment with Dataverse. Find it with the <strong>globe</strong> icon in the left rail.</li>
+<li>New Copilot Studio agents (the <strong>Agent</strong> tile) run on the Microsoft Copilot harness by default.</li>
+<li>Exact column names and choice values are a contract between your data and your agents.</li>
+</ul>
+<p><strong>Next:</strong> <a href="lab-01-build-your-first-agent-with-agent-builder.html">Lab 01 - Build your first agent with natural language</a></p>
+</article>
+<nav class="pager bottom"><a href="index.html">‹ Overview</a><a href="lab-01-build-your-first-agent-with-agent-builder.html">01 · Build your first agent with natural language ›</a></nav>
+<p class="source"><a href="https://github.com/medyabi/Copilot-Studio-lab" rel="noopener">View the source on GitHub</a></p>
+</main>
+<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#lab-introduction">Lab introduction</a></li><li><a href="#lab-scenario">Lab scenario</a></li><li><a href="#job-skills">Job skills</a></li><li><a href="#task-1-check-your-access-and-pick-your-copilot-studio-environment">Task 1: Check your access and pick your Copilot Studio environment</a></li><li><a href="#task-2-create-the-contoso-it-hub-sharepoint-site">Task 2: Create the Contoso IT Hub SharePoint site</a></li><li><a href="#task-3-upload-the-contoso-it-policies">Task 3: Upload the Contoso IT policies</a></li><li><a href="#task-4-create-the-it-requests-list">Task 4: Create the IT Requests list</a></li><li><a href="#task-5-give-the-environment-copilot-credits-admin">Task 5: Give the environment Copilot Credits (admin)</a></li><li><a href="#check-your-work">Check your work</a></li><li><a href="#key-takeaways">Key takeaways</a></li></ol></aside>
+</div>
+<footer class="sitefoot">
+  <div class="foot-in">
+    <div><strong>AI Labs</strong><p>Hands-on Copilot labs by Mohamed Dyabi, Microsoft Certified Trainer.</p></div>
+    <ul>
+      <li><a href="index.html">Copilot Studio track</a></li>
+      <li><a href="../cowork/index.html">Copilot Cowork track</a></li>
+      <li><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Studio-lab" rel="noopener">Copilot Studio labs on GitHub</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Cowork-lab" rel="noopener">Cowork labs on GitHub</a></li>
+    </ul>
+  </div>
+  <p class="fine">Use a test or demo tenant: these labs create agents, workflows and SharePoint items, and consume Copilot Credits. Preview features and labels change often. An independent site, not affiliated with Microsoft. © 2026 Mohamed Dyabi</p>
+</footer>
+<script>
+(function(){
+  // Table of contents: open on wide screens, collapsible on small ones
+  var toc = document.querySelector('details.toc');
+  if (toc) {
+    var mq = window.matchMedia('(min-width: 1024px)');
+    var sync = function(){ if (mq.matches) toc.open = true; };
+    sync(); if (mq.addEventListener) mq.addEventListener('change', sync);
+    var cur = toc.querySelector('[aria-current="page"]');
+    if (cur && cur.scrollIntoView && mq.matches) cur.scrollIntoView({block: 'center'});
+  }
+  // Filter by title
+  var f = document.getElementById('toc-filter');
+  if (f) f.addEventListener('input', function(){
+    var q = f.value.trim().toLowerCase();
+    document.querySelectorAll('.toc-list li').forEach(function(li){
+      var hit = !q || li.textContent.toLowerCase().indexOf(q) !== -1;
+      li.hidden = !hit;
+    });
+  });
+  // Copy buttons on code blocks
+  document.querySelectorAll('.codeblock').forEach(function(cb){
+    var btn = cb.querySelector('.copy'), code = cb.querySelector('code');
+    if (!btn || !code) return;
+    btn.addEventListener('click', function(){
+      navigator.clipboard.writeText(code.innerText).then(function(){
+        btn.textContent = 'Copied'; setTimeout(function(){ btn.textContent = 'Copy'; }, 1500);
+      }, function(){ btn.textContent = 'Select and copy'; });
+    });
+  });
+  // Highlight the current section in "In this article"
+  var links = document.querySelectorAll('.aside-toc a');
+  if (links.length && 'IntersectionObserver' in window) {
+    var map = {}; links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var obs = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting) {
+        links.forEach(function(a){ a.classList.remove('on'); });
+        var a = map[e.target.id]; if (a) a.classList.add('on');
+      }});
+    }, {rootMargin: '0px 0px -75% 0px'});
+    Object.keys(map).forEach(function(id){ var h = document.getElementById(id); if (h) obs.observe(h); });
+  }
+})();
+</script><script>
+(function(){
+  var key = 'progress:' + location.pathname;
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('li.task input'));
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(key) || '{}'); } catch (e) {}
+  boxes.forEach(function(b, i){
+    b.id = 'task-' + i;
+    if (saved[i]) b.checked = true;
+    b.addEventListener('change', function(){
+      saved[i] = b.checked;
+      try { localStorage.setItem(key, JSON.stringify(saved)); } catch (e) {}
+    });
+  });
+})();
+</script>
+</body>
+</html>

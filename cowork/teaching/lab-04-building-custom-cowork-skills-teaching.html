@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4: Building Custom Cowork Skills · AI Labs</title>
+<meta name="description" content="Hands-on labs for Microsoft Copilot Studio, Agent Builder and Microsoft 365 Copilot Cowork: from a simple agent to autonomous agents.">
+<link rel="stylesheet" href="../../assets/site.css">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../../assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
+</head>
+<body class="t-cowork">
+<a class="skip" href="#content">Skip to main content</a>
+<header class="masthead">
+  <a class="brand" href="../../index.html"><img src="../../assets/favicon.svg" alt="" width="24" height="24"><span>AI Labs</span></a>
+  <span class="divider" aria-hidden="true"></span>
+  <nav class="mainnav" aria-label="Main"><a href="../../copilot-studio/index.html">Copilot Studio</a><a href="../index.html" aria-current="true">Copilot Cowork</a><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></nav>
+  <a class="gh" href="https://github.com/medyabi" rel="noopener">GitHub</a>
+</header>
+<div class="doc has-toc">
+<details class="toc"><summary>Table of contents</summary><nav aria-label="AI automation with Copilot Cowork"><p class="toc-title">AI automation with Copilot Cowork</p><input id="toc-filter" class="toc-filter" type="search" placeholder="Filter by title" aria-label="Filter by title"><ol class="toc-list"><li><a href="../index.html">Overview</a></li><li><a href="../lab-01-getting-started-with-copilot-cowork.html">1 · Getting Started with Copilot Cowork</a></li><li><a href="../lab-02-calendar-optimization-and-meeting-coordination.html">2 · AI-Powered Calendar Optimization and Executive Meeting Coordination</a></li><li><a href="../lab-03-intelligent-file-organizer.html">3 · Intelligent File Organizer</a></li><li><a href="../lab-04-building-custom-cowork-skills.html">4 · Building Custom Cowork Skills (Read-only)</a></li><li><a href="../lab-05-personal-work-dashboard.html">5 · Building a Personal Work Dashboard with Copilot Cowork (Read-only)</a></li><li><a href="../lab-06-build-and-publish-a-cowork-plugin.html">6 · Building and Publishing a Custom Copilot Cowork Plugin (Read-only)</a></li><li class="group"><details open><summary>Teaching editions</summary><ol><li><a href="lab-01-getting-started-with-copilot-cowork-teaching.html">1 · Getting Started with Copilot Cowork</a></li><li><a href="lab-02-calendar-optimization-and-meeting-coordination-teaching.html">2 · Calendar Optimization and Meeting Coordination</a></li><li><a href="lab-03-intelligent-file-organizer-teaching.html">3 · Intelligent File Organizer</a></li><li><a href="lab-04-building-custom-cowork-skills-teaching.html" aria-current="page">4 · Building Custom Cowork Skills</a></li><li><a href="lab-05-personal-work-dashboard-teaching.html">5 · Personal Work Dashboard</a></li><li><a href="lab-06-build-and-publish-a-cowork-plugin-teaching.html">6 · Build and Publish a Cowork Plugin</a></li></ol></details></li><li><a href="../trainer-guide.html">Trainer guide</a></li></ol></nav></details>
+<main id="content" class="article">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../../index.html">AI Labs</a></li><li><a href="../index.html">Cowork track</a></li></ol></nav>
+<article class="prose">
+<h1 id="lab-4-building-custom-cowork-skills-teaching-edition">Lab 4: Building Custom Cowork Skills (Teaching edition)</h1><p class="meta"><span>Teaching edition</span><span>6 min read</span><span>Lab time: 30 min</span></p>
+<p><strong>Time:</strong> about 30 minutes. The prompts and screenshots for every step are in the <a href="../lab-04-building-custom-cowork-skills.html">lab instructions</a>. Task 1 is hands-on; Tasks 2–8 are a walkthrough to save Copilot credits.</p>
+<h2 id="before-we-start-what-is-a-skill-really">Before we start: what is a skill, really?</h2>
+<p>Think back to Labs 1 to 3. Every time, you wrote a long prompt. Sections, tone, sources, "don't send anything"... Now imagine typing that same prompt every Friday. Boring, right? And error-prone. Forget one line and the output changes.</p>
+<p>A <strong>skill</strong> fixes that. It's a set of instructions you write <strong>once</strong>, and Cowork applies them <strong>every time</strong> your request matches.</p>
+<p>Here's an analogy. A prompt is like giving a new colleague directions every morning. A skill is like writing the <strong>procedure</strong> in the team handbook. From then on, you just say "do the leadership update" and they know exactly how.</p>
+<p>Under the hood, a skill is a simple file called <strong>SKILL.md</strong> in your OneDrive, under <code>Documents/Cowork/skills/</code>. But you don't have to write it yourself. Cowork's <strong>skill builder</strong> interviews you and writes it for you.</p>
+<h2 id="task-1-plan-on-paper-first">Task 1: Plan on paper first</h2>
+<p>Why paper? Because the builder asks good questions, but <strong>you</strong> need good answers. Five minutes of planning saves you a bad skill.</p>
+<p>Open Notepad and answer five questions:</p>
+<ol>
+<li><strong>What should this skill do?</strong> One sentence. If you need two, you may need two skills.</li>
+<li><strong>What does it need to read?</strong> Your notes? Your mailbox? SharePoint?</li>
+<li><strong>Does it write or change anything?</strong> This is the big one. A skill that only <em>drafts</em> is low risk. A skill that <em>sends</em> is not.</li>
+<li><strong>What should the output look like?</strong> Sections, length, tone.</li>
+<li><strong>What might change each time?</strong> Project name, period, audience. These are your <strong>parameters</strong>.</li>
+</ol>
+<p>Then turn your answers into a short <strong>specification</strong>: name, trigger phrases, parameters, apps it may read, apps it may write, output format.</p>
+<p>Notice the line <strong>"Apps it may write: None"</strong>. Keep that in mind. It comes back in Task 8.</p>
+<h2 id="task-2-meet-the-skill-builder">Task 2: Meet the skill builder</h2>
+<p>Go to <strong>Plugins</strong>, then <strong>Add &gt; New skill</strong>.</p>
+<p>What happens? No form. Cowork starts a normal task and says: "Let's build your skill. I'll start with a few questions." Then a question card appears: <strong>1 of 5</strong>.</p>
+<p>That's the whole idea. You build a skill the same way you use Cowork: by <strong>talking</strong> to it.</p>
+<h2 id="task-3-answer-the-questions">Task 3: Answer the questions</h2>
+<p>The builder asks things like:</p>
+<ul>
+<li><strong>What should the skill help you do?</strong> Paste your purpose from Notepad.</li>
+<li><strong>What should it be called?</strong> Lowercase with hyphens: <code>leadership-update</code>.</li>
+<li><strong>Which category fits best?</strong> Communication.</li>
+<li><strong>Which phrases would you type to use it?</strong> These are the <strong>trigger phrases</strong>. They're how Cowork knows <em>when</em> to use your skill.</li>
+<li><strong>Any rules it should always follow?</strong> Tone, length, sections, sources, and the important one: <em>"Never send, post, or change anything."</em></li>
+</ul>
+<p>Then Cowork goes to work. It writes the SKILL.md, checks it, and asks for approval with a <strong>Copy file</strong> card. Why a card? Because saving a file to your OneDrive is a <strong>write</strong>. Same rule as in every lab: changes need a human.</p>
+<p>Approve it, and you get two things: the <strong>skill</strong> and a <strong>quality report</strong>.</p>
+<h3 id="read-the-quality-report">Read the quality report</h3>
+<p>Open the report. You'll see a score out of 100, a <strong>Risk</strong> indicator, a <strong>Grounding</strong> indicator and a checklist like "It switches on at the right time" and "It stays in its lane".</p>
+<p>What's <strong>grounding</strong>? It means the skill only uses real sources (what you give it, or your Microsoft 365 content) and doesn't invent facts. That's exactly why we wrote "never invent figures, dates, or names" in the rules.</p>
+<h2 id="task-4-does-it-actually-work">Task 4: Does it actually work?</h2>
+<p>A skill you never test is just a hope. So test it.</p>
+<p>Start a <strong>New</strong> task and send <em>"Use leadership-update"</em> with a vague paragraph of notes. Then check three things:</p>
+<ol>
+<li>The activity log says <strong>Reviewed custom skill Leadership update</strong>. Cowork found it.</li>
+<li><strong>leadership-update</strong> shows under <strong>Plugins</strong> in the Workspace pane. Cowork used it.</li>
+<li>The output has your four sections: Headline, Progress, Risks and Blockers, Asks / Next Steps.</li>
+</ol>
+<p>Look closely at the output. See <strong>[Add date]</strong> and <strong>[Add owner]</strong>? Our notes didn't have those details, so the skill left <strong>placeholders</strong> instead of inventing them. That's grounding in action.</p>
+<h2 id="task-5-a-second-skill-faster">Task 5: A second skill, faster</h2>
+<p>Now build <strong>project-status-brief</strong> for Project Orion. Same pattern, but notice two differences:</p>
+<ul>
+<li>The builder may ask <strong>four</strong> questions instead of five. The first one asks for purpose, triggers <em>and</em> output at once.</li>
+<li>If you pick a category Cowork doesn't accept, it picks the closest one and <strong>tells you</strong>. No silent changes.</li>
+</ul>
+<p>Same ending: a <strong>Copy file</strong> card, approve, and a new quality report.</p>
+<h2 id="task-6-look-inside-the-skill">Task 6: Look inside the skill</h2>
+<p>Open <strong>Plugins</strong> and select <strong>project-status-brief</strong>. This is the skill's <strong>details page</strong>.</p>
+<p>Read the <strong>Instructions</strong>. Three sections matter:</p>
+<ul>
+<li><strong>Overview</strong>: what the skill does.</li>
+<li><strong>When to Use</strong>: the triggers.</li>
+<li><strong>When NOT to Use</strong>: requests that belong to another skill, like <strong>leadership-update</strong>.</li>
+</ul>
+<p>Why does "When NOT to Use" matter? Because skills compete. If two skills both claim "status update", Cowork has to guess. Clear boundaries mean the right skill fires.</p>
+<p>Now open the <strong>...</strong> menu: <strong>Download</strong> and <strong>Delete</strong>. Rule of thumb: <strong>download before you delete</strong>. Deleting is permanent.</p>
+<h2 id="task-7-share-it-as-a-file">Task 7: Share it as a file</h2>
+<p>A skill is just a file, so you can share it like one. Download it, then <strong>Add &gt; Upload</strong> it again.</p>
+<p>Cowork adds it as <strong>project-status-brief-1</strong>. Why "-1"? Because the name is already taken.</p>
+<p>Here's a question for you: now there are two skills with the <strong>same trigger phrases</strong>. Which one runs? Hard to say. That's why, in real life, you delete the duplicate. Same lesson as Task 6: one job, one skill.</p>
+<p>Then say the magic words: <em>"give me the project status brief"</em>. No "use project-status-brief" this time. The <strong>trigger phrase</strong> alone is enough. Cowork recognizes it, loads the skill and builds the six-section brief. Where a detail is missing, it writes <strong>Not stated</strong>.</p>
+<h2 id="task-8-send-it-somewhere-useful">Task 8: Send it somewhere useful</h2>
+<p>Remember "Apps it may write: None"? Our skill only <strong>drafts</strong>. So how does the brief get to Teams?</p>
+<p>You ask for it, in the conversation: <em>"Post this brief to the General channel of my Retail team."</em> And Cowork shows a <strong>Post to channel?</strong> card, with a risk level, the subject and the message. You can edit it, cancel it or send it.</p>
+<p>See the design? The <strong>skill</strong> does the thinking. <strong>You</strong> decide what leaves the building. That's the safest way to build skills: drafting inside the skill, publishing behind an approval card.</p>
+<p>Open Teams, <strong>Retail &gt; General</strong>: there's your status brief.</p>
+<h2 id="what-did-we-learn">What did we learn?</h2>
+<ul>
+<li><strong>A skill is a reusable procedure.</strong> Write it once, and Cowork applies it every time your request matches.</li>
+<li><strong>Plan before you build.</strong> Purpose, inputs, writes, output, parameters.</li>
+<li><strong>Trigger phrases decide when a skill runs.</strong> "When NOT to Use" decides when it doesn't.</li>
+<li><strong>Test every skill.</strong> Check the activity log, the Workspace pane and the output format.</li>
+<li><strong>Grounded skills use placeholders</strong>, not invented facts.</li>
+<li><strong>Skills are files.</strong> Download, share, upload, and delete duplicates.</li>
+<li><strong>Keep writes outside the skill.</strong> Let the skill draft; let a human approve the post.</li>
+</ul>
+<p>Next up, Lab 5.</p>
+</article>
+
+<p class="source"><a href="https://github.com/medyabi/Copilot-Cowork-lab" rel="noopener">View the source on GitHub</a></p>
+</main>
+<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#before-we-start-what-is-a-skill-really">Before we start: what is a skill, really?</a></li><li><a href="#task-1-plan-on-paper-first">Task 1: Plan on paper first</a></li><li><a href="#task-2-meet-the-skill-builder">Task 2: Meet the skill builder</a></li><li><a href="#task-3-answer-the-questions">Task 3: Answer the questions</a></li><li><a href="#task-4-does-it-actually-work">Task 4: Does it actually work?</a></li><li><a href="#task-5-a-second-skill-faster">Task 5: A second skill, faster</a></li><li><a href="#task-6-look-inside-the-skill">Task 6: Look inside the skill</a></li><li><a href="#task-7-share-it-as-a-file">Task 7: Share it as a file</a></li><li><a href="#task-8-send-it-somewhere-useful">Task 8: Send it somewhere useful</a></li><li><a href="#what-did-we-learn">What did we learn?</a></li></ol></aside>
+</div>
+<footer class="sitefoot">
+  <div class="foot-in">
+    <div><strong>AI Labs</strong><p>Hands-on Copilot labs by Mohamed Dyabi, Microsoft Certified Trainer.</p></div>
+    <ul>
+      <li><a href="../../copilot-studio/index.html">Copilot Studio track</a></li>
+      <li><a href="../index.html">Copilot Cowork track</a></li>
+      <li><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Studio-lab" rel="noopener">Copilot Studio labs on GitHub</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Cowork-lab" rel="noopener">Cowork labs on GitHub</a></li>
+    </ul>
+  </div>
+  <p class="fine">Use a test or demo tenant: these labs create agents, workflows and SharePoint items, and consume Copilot Credits. Preview features and labels change often. An independent site, not affiliated with Microsoft. © 2026 Mohamed Dyabi</p>
+</footer>
+<script>
+(function(){
+  // Table of contents: open on wide screens, collapsible on small ones
+  var toc = document.querySelector('details.toc');
+  if (toc) {
+    var mq = window.matchMedia('(min-width: 1024px)');
+    var sync = function(){ if (mq.matches) toc.open = true; };
+    sync(); if (mq.addEventListener) mq.addEventListener('change', sync);
+    var cur = toc.querySelector('[aria-current="page"]');
+    if (cur && cur.scrollIntoView && mq.matches) cur.scrollIntoView({block: 'center'});
+  }
+  // Filter by title
+  var f = document.getElementById('toc-filter');
+  if (f) f.addEventListener('input', function(){
+    var q = f.value.trim().toLowerCase();
+    document.querySelectorAll('.toc-list li').forEach(function(li){
+      var hit = !q || li.textContent.toLowerCase().indexOf(q) !== -1;
+      li.hidden = !hit;
+    });
+  });
+  // Copy buttons on code blocks
+  document.querySelectorAll('.codeblock').forEach(function(cb){
+    var btn = cb.querySelector('.copy'), code = cb.querySelector('code');
+    if (!btn || !code) return;
+    btn.addEventListener('click', function(){
+      navigator.clipboard.writeText(code.innerText).then(function(){
+        btn.textContent = 'Copied'; setTimeout(function(){ btn.textContent = 'Copy'; }, 1500);
+      }, function(){ btn.textContent = 'Select and copy'; });
+    });
+  });
+  // Highlight the current section in "In this article"
+  var links = document.querySelectorAll('.aside-toc a');
+  if (links.length && 'IntersectionObserver' in window) {
+    var map = {}; links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var obs = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting) {
+        links.forEach(function(a){ a.classList.remove('on'); });
+        var a = map[e.target.id]; if (a) a.classList.add('on');
+      }});
+    }, {rootMargin: '0px 0px -75% 0px'});
+    Object.keys(map).forEach(function(id){ var h = document.getElementById(id); if (h) obs.observe(h); });
+  }
+})();
+</script>
+</body>
+</html>
