@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Build your own on-device AI app for Windows 11 (Copilot+ PC) · AI Labs</title>
+<meta name="description" content="Hands-on labs for Microsoft Copilot Studio, Agent Builder and Microsoft 365 Copilot Cowork: from a simple agent to autonomous agents.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+</head>
+<body class="t-localai">
+<a class="skip" href="#content">Skip to main content</a>
+<header class="masthead">
+  <a class="brand" href="../index.html"><img src="../assets/favicon.svg" alt="" width="24" height="24"><span>AI Labs</span></a>
+  <span class="divider" aria-hidden="true"></span>
+  <nav class="mainnav" aria-label="Main"><a href="../copilot-studio/index.html">Copilot Studio</a><a href="../cowork/index.html">Copilot Cowork</a><a href="index.html" aria-current="true">Copilot+ PC</a><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></nav>
+  <a class="gh" href="https://github.com/medyabi" rel="noopener">GitHub</a>
+</header>
+<div class="doc has-toc">
+<details class="toc"><summary>Table of contents</summary><nav aria-label="On-device AI apps for Copilot+ PC"><p class="toc-title">On-device AI apps for Copilot+ PC</p><input id="toc-filter" class="toc-filter" type="search" placeholder="Filter by title" aria-label="Filter by title"><ol class="toc-list"><li><a href="index.html">Overview</a></li><li><a href="deploy.html">Deployment guide: from git clone to a running app</a></li><li><a href="architecture.html">Architecture shared by all apps</a></li><li><a href="build.html">Building an app</a></li><li><a href="build-your-own-app.html" aria-current="page">Build your own on-device AI app for Windows 11 (Copilot+ PC)</a></li><li><a href="use-the-skill.html">Use the windows-ondevice-ai-app skill: step by step</a></li><li><a href="windows-ai-lessons.html">Lessons from building on the Windows AI APIs</a></li><li class="group"><details><summary>The apps</summary><ol><li><a href="apps/aishelfauditorapp.html">AI Shelf Auditor</a></li><li><a href="apps/financecopilotapp.html">Finance Copilot</a></li><li><a href="apps/fraudinvestigatorapp.html">Local Fraud Investigator</a></li><li><a href="apps/hrrecruiterapp.html">HR Recruiter Agent</a></li><li><a href="apps/hybridmedapp.html">HybridMed</a></li><li><a href="apps/hybridmindapp.html">HybridMind</a></li><li><a href="apps/localiqapp.html">LocalIQ</a></li><li><a href="apps/localmindapp.html">LocalMind</a></li><li><a href="apps/poephotoprocessorapp.html">POE Photo Processor</a></li><li><a href="apps/poeverificationapp.html">POE Verification Analyst</a></li><li><a href="apps/readingroomassistantapp.html">Reading Room Assistant (prototype)</a></li></ol></details></li></ol></nav></details>
+<main id="content" class="article">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">AI Labs</a></li><li><a href="index.html">Copilot+ PC track</a></li></ol></nav>
+<article class="prose">
+<h1 id="build-your-own-on-device-ai-app-for-windows-11-copilot-pc">Build your own on-device AI app for Windows 11 (Copilot+ PC)</h1><p class="meta"><span>Guide</span><span>27 min read</span></p>
+<p>A playbook distilled from the eleven apps in this repository. It describes <strong>the recipe that worked every time</strong>: what to create, in which order, which Windows AI API to call for which job, and which traps cost hours. Follow it top to bottom for a new app, or hand it to Claude Code as the brief (section 14).</p>
+<div class="alert note"><p class="alert-title">Note</p><p><strong>Scope.</strong> Everything here targets a <strong>Copilot+ PC</strong> (NPU, Windows 11 24H2 or later) and the Windows AI APIs shipped with the Windows App SDK <code>2.2.2-experimental9</code>. Those APIs are experimental: names, behaviour and limits can change. Re-check the lessons in <a href="windows-ai-lessons.html"><code>WINDOWS-AI-LESSONS.md</code></a> when you upgrade the SDK.</p></div>
+<h2 id="contents">Contents</h2>
+<ol>
+<li><a href="#1-the-recipe-in-one-picture">The recipe in one picture</a></li>
+<li><a href="#2-prerequisites">Prerequisites</a></li>
+<li><a href="#3-decide-before-you-code">Decide before you code</a></li>
+<li><a href="#4-scaffold-the-project">Scaffold the project</a></li>
+<li><a href="#5-the-host-mainwindowxamlcs">The host: <code>MainWindow.xaml.cs</code></a></li>
+<li><a href="#6-the-page-and-the-json-bridge">The page and the JSON bridge</a></li>
+<li><a href="#7-windows-ai-recipes">Windows AI recipes</a></li>
+<li><a href="#8-prompt-and-design-rules">Prompt and design rules</a></li>
+<li><a href="#9-build-sign-install">Build, sign, install</a></li>
+<li><a href="#10-the-developer-loop-and-testing">The developer loop and testing</a></li>
+<li><a href="#11-traps-symptom-cause-fix">Traps: symptom, cause, fix</a></li>
+<li><a href="#12-growing-the-app">Growing the app</a></li>
+<li><a href="#13-definition-of-done">Definition of done</a></li>
+<li><a href="#14-a-brief-to-give-claude-code">A brief to give Claude Code</a></li>
+<li><a href="#15-reference-apps">Reference apps</a></li>
+</ol>
+<hr />
+<h2 id="1-the-recipe-in-one-picture">1. The recipe in one picture</h2>
+<pre class="mermaid">flowchart LR
+  A["1. Brief&lt;br/&gt;who, what, which inputs"] --&gt; B["2. Split the work&lt;br/&gt;code computes / model words"]
+  B --&gt; C["3. Scaffold&lt;br/&gt;WinUI 3 + WebView2"]
+  C --&gt; D["4. Bridge ops&lt;br/&gt;only what the page needs"]
+  D --&gt; E["5. UI in www/&lt;br/&gt;HTML + JS, no build step"]
+  E --&gt; F["6. Test with self-test&lt;br/&gt;+ bridge.log"]
+  F --&gt; G["7. Sign + package&lt;br/&gt;MSIX"]
+  G --&gt; H["8. Ship&lt;br/&gt;zip: msix + cer + install script"]</pre>
+<p>The architecture never changes:</p>
+<ul>
+<li>A <strong>packaged WinUI 3 window</strong> that contains nothing but a <code>WebView2</code>.</li>
+<li>A <strong>C# host</strong> (<code>MainWindow.xaml.cs</code>) that exposes the Windows AI APIs to the page through a tiny JSON message bridge.</li>
+<li>A <strong>plain HTML/CSS/JavaScript UI</strong> in <code>www/</code>, served from a virtual host name (<code>https://&lt;app&gt;.local/</code>) mapped to that folder.</li>
+</ul>
+<p>Why this shape: the UI can be iterated in a browser without touching C#, there is no local web server and no <code>file://</code>, and the AI calls stay on the device. Full diagram: <a href="architecture.html"><code>ARCHITECTURE.md</code></a>.</p>
+<hr />
+<h2 id="2-prerequisites">2. Prerequisites</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Need</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PC</td>
+<td>Windows 11, x64, <strong>Copilot+ PC</strong> for Phi Silica (<code>LanguageModel</code>), OCR and image description. Without an NPU the APIs report <code>NotSupportedOnCurrentSystem</code>.</td>
+</tr>
+<tr>
+<td>SDK</td>
+<td>.NET 8 SDK or newer (a .NET 9 SDK builds the <code>net8.0</code> target fine).</td>
+</tr>
+<tr>
+<td>Packages</td>
+<td><code>Microsoft.WindowsAppSDK 2.2.2-experimental9</code>, <code>Microsoft.Windows.SDK.BuildTools 10.0.26100.4654</code>, and <code>UglyToad.PdfPig</code> if you read PDFs. Pin exact versions.</td>
+</tr>
+<tr>
+<td>Model</td>
+<td>The language model is provisioned by Windows on first use (<code>EnsureReadyAsync</code>). It can take minutes, and image models took much longer on one PC (15+ minutes). Plan a first-run progress message.</td>
+</tr>
+<tr>
+<td>Signing</td>
+<td>A self-signed code-signing certificate, trusted in <code>Cert:\LocalMachine\TrustedPeople</code> (needs one elevated step). See section 9.</td>
+</tr>
+<tr>
+<td>No Visual Studio</td>
+<td>Not required. <code>dotnet build</code> produces the signed MSIX (section 9).</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="3-decide-before-you-code">3. Decide before you code</h2>
+<p>Answer these six questions in a short brief. Most rework in the earlier apps came from skipping one of them.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Question</th>
+<th>Why it matters</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>Who uses it and what decision do they make?</strong></td>
+<td>The UI and the wording of the model's output follow the decision, not the technology.</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>What are the inputs?</strong> (typed text, PDF, scanned PDF, photo, DICOM, CSV, a whole folder)</td>
+<td>Each input type maps to one bridge op: <code>pdfText</code>, <code>ocr</code>, <code>describeImage</code>, an index.</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>Which numbers or checks are deterministic?</strong></td>
+<td>Those are computed by JavaScript or C#, never by the model (rule 1 in section 8).</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>What exactly must the model write?</strong></td>
+<td>Keep it to short explanations, summaries, drafts, classifications. Split anything long (rule 2).</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>Is retrieval needed?</strong></td>
+<td>If the corpus does not fit in one prompt, add <code>AppContentIndexer</code> plus your own ranking (section 7.5).</td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>Does anything leave the device?</strong></td>
+<td>Default answer: no. If a cloud stage is needed, it is an explicit, consented, user-supplied endpoint (see HybridMed, HybridMind).</td>
+</tr>
+</tbody>
+</table></div>
+<p>If a spec is far larger than what a single on-device app can do (for example a multi-service backend with a database and trained models), <strong>say so and re-scope before building</strong>. For Fraud Investigator the detection engine became deterministic rules in JavaScript and the model only narrates; that was the right call. Ask the user to pick a scope option when the raw request is much bigger than the realistic build.</p>
+<p>Also decide the <strong>names</strong> now, because they are painful to change later:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Example</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Folder / assembly</td>
+<td><code>LocalIQApp</code></td>
+<td>Namespace equals the assembly name.</td>
+</tr>
+<tr>
+<td>Package identity <code>Name</code></td>
+<td><code>Dyabi.LocalIQ</code></td>
+<td>Letters, digits, dots. Different identity = separate install and separate data.</td>
+</tr>
+<tr>
+<td>Display name</td>
+<td><code>LocalIQ by Dyabi</code></td>
+<td>What the user sees in Start.</td>
+</tr>
+<tr>
+<td>Virtual host</td>
+<td><code>localiq.local</code></td>
+<td>One per app.</td>
+</tr>
+<tr>
+<td><code>Publisher</code></td>
+<td><code>CN=YourName</code></td>
+<td>Must equal the certificate subject.</td>
+</tr>
+<tr>
+<td>Version</td>
+<td><code>1.0.0.0</code></td>
+<td>Raise it to upgrade in place (keeps <code>LocalState</code>).</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="4-scaffold-the-project">4. Scaffold the project</h2>
+<p>Copy a small reference app (for example <code>FinanceCopilotApp</code>) and rename, or create these files.</p>
+<div class="codeblock"><div class="code-head"><span></span><button type="button" class="copy">Copy</button></div><pre><code>MyApp/
+├── MyApp.csproj
+├── Package.appxmanifest          identity, capabilities, device families
+├── app.manifest                  DPI awareness
+├── App.xaml / App.xaml.cs        start-up
+├── MainWindow.xaml / .xaml.cs    the WebView2 + all host logic
+├── Assets/                       6 PNGs the manifest references
+└── www/
+    ├── index.html
+    ├── style.css
+    └── app.js</code></pre></div>
+<h3 id="41-myappcsproj">4.1 <code>MyApp.csproj</code></h3>
+<div class="codeblock"><div class="code-head"><span>Xml</span><button type="button" class="copy">Copy</button></div><pre><code>&lt;Project Sdk="Microsoft.NET.Sdk"&gt;
+  &lt;PropertyGroup&gt;
+    &lt;OutputType&gt;WinExe&lt;/OutputType&gt;
+    &lt;TargetFramework&gt;net8.0-windows10.0.22621.0&lt;/TargetFramework&gt;
+    &lt;TargetPlatformMinVersion&gt;10.0.22621.0&lt;/TargetPlatformMinVersion&gt;
+    &lt;RootNamespace&gt;MyApp&lt;/RootNamespace&gt;
+    &lt;ApplicationManifest&gt;app.manifest&lt;/ApplicationManifest&gt;
+    &lt;Platforms&gt;x64&lt;/Platforms&gt;
+    &lt;RuntimeIdentifiers&gt;win-x64&lt;/RuntimeIdentifiers&gt;
+    &lt;UseWinUI&gt;true&lt;/UseWinUI&gt;
+    &lt;EnableMsixTooling&gt;true&lt;/EnableMsixTooling&gt;
+    &lt;WindowsPackageType&gt;MSIX&lt;/WindowsPackageType&gt;
+    &lt;WindowsAppSDKSelfContained&gt;true&lt;/WindowsAppSDKSelfContained&gt;
+    &lt;Nullable&gt;enable&lt;/Nullable&gt;
+    &lt;ImplicitUsings&gt;enable&lt;/ImplicitUsings&gt;
+    &lt;GenerateTestArtifacts&gt;true&lt;/GenerateTestArtifacts&gt;
+    &lt;AppxPackageSigningEnabled&gt;true&lt;/AppxPackageSigningEnabled&gt;
+    &lt;PackageCertificateThumbprint&gt;YOUR-CERT-THUMBPRINT&lt;/PackageCertificateThumbprint&gt;
+    &lt;AppxOSMinVersionReplaceManifestVersion&gt;false&lt;/AppxOSMinVersionReplaceManifestVersion&gt;
+    &lt;AppxOSMaxVersionTestedReplaceManifestVersion&gt;false&lt;/AppxOSMaxVersionTestedReplaceManifestVersion&gt;
+  &lt;/PropertyGroup&gt;
+
+  &lt;ItemGroup&gt;
+    &lt;!-- the UI is copied next to the exe; exclude generators and sample data you do not ship --&gt;
+    &lt;Content Include="www\**\*"&gt;&lt;CopyToOutputDirectory&gt;PreserveNewest&lt;/CopyToOutputDirectory&gt;&lt;/Content&gt;
+  &lt;/ItemGroup&gt;
+  &lt;ItemGroup&gt;&lt;Manifest Include="$(ApplicationManifest)" /&gt;&lt;/ItemGroup&gt;
+
+  &lt;ItemGroup&gt;
+    &lt;PackageReference Include="Microsoft.WindowsAppSDK" Version="2.2.2-experimental9" /&gt;
+    &lt;PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.4654" /&gt;
+    &lt;PackageReference Include="UglyToad.PdfPig" Version="1.7.0-custom-5" /&gt; &lt;!-- only if you read PDFs --&gt;
+  &lt;/ItemGroup&gt;
+&lt;/Project&gt;</code></pre></div>
+<h3 id="42-packageappxmanifest-the-part-that-matters">4.2 <code>Package.appxmanifest</code> (the part that matters)</h3>
+<div class="codeblock"><div class="code-head"><span>Xml</span><button type="button" class="copy">Copy</button></div><pre><code>&lt;Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+         xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
+         xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+         xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
+         xmlns:systemai="http://schemas.microsoft.com/appx/manifest/systemai/windows10"
+         IgnorableNamespaces="uap rescap systemai"&gt;
+
+  &lt;Identity Name="YourName.MyApp" Publisher="CN=YourName" Version="1.0.0.0" /&gt;
+  &lt;mp:PhoneIdentity PhoneProductId="NEW-GUID-HERE" PhonePublisherId="00000000-0000-0000-0000-000000000000"/&gt;
+
+  &lt;Properties&gt;
+    &lt;DisplayName&gt;My App&lt;/DisplayName&gt;
+    &lt;PublisherDisplayName&gt;YourName&lt;/PublisherDisplayName&gt;
+    &lt;Logo&gt;Assets\StoreLogo.png&lt;/Logo&gt;
+  &lt;/Properties&gt;
+
+  &lt;Dependencies&gt;
+    &lt;!-- BOTH families are needed, otherwise the Windows AI APIs do not work --&gt;
+    &lt;TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.17763.0" MaxVersionTested="10.0.26226.0" /&gt;
+    &lt;TargetDeviceFamily Name="Windows.Desktop"   MinVersion="10.0.22621.0" MaxVersionTested="10.0.26226.0" /&gt;
+  &lt;/Dependencies&gt;
+
+  &lt;Resources&gt;&lt;Resource Language="en-us"/&gt;&lt;/Resources&gt;
+
+  &lt;Applications&gt;
+    &lt;Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="Windows.FullTrustApplication"&gt;
+      &lt;uap:VisualElements DisplayName="My App" Description="What it does, on-device"
+        BackgroundColor="transparent"
+        Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png"&gt;
+        &lt;uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" /&gt;
+        &lt;uap:SplashScreen Image="Assets\SplashScreen.png" /&gt;
+      &lt;/uap:VisualElements&gt;
+    &lt;/Application&gt;
+  &lt;/Applications&gt;
+
+  &lt;Capabilities&gt;
+    &lt;rescap:Capability Name="runFullTrust" /&gt;
+    &lt;systemai:Capability Name="systemAIModels" /&gt;   &lt;!-- the on-device model capability --&gt;
+  &lt;/Capabilities&gt;
+&lt;/Package&gt;</code></pre></div>
+<p>Non-negotiable points:</p>
+<ul>
+<li><strong>Package identity is mandatory.</strong> Without it <code>ApplicationData.Current</code> throws and the <code>Microsoft.Windows.AI.*</code> APIs are unreliable. This is why a raw <code>.exe</code> does not work (section 10).</li>
+<li><strong>Both</strong> <code>Windows.Universal</code> and <code>Windows.Desktop</code> device families, from the first commit.</li>
+<li>The <code>systemAIModels</code> capability. <code>AppContentIndexer</code> needed no extra capability.</li>
+<li>Generate a fresh <code>PhoneProductId</code> GUID per app.</li>
+<li>Six PNGs in <code>Assets/</code>. Generate them with a small script (Pillow) so a rename or recolour is one command; keep that script out of the package (<code>tools/</code>, not <code>www/</code>).</li>
+</ul>
+<h3 id="43-appmanifest">4.3 <code>app.manifest</code></h3>
+<p>Copy it from any reference app. It sets <code>asInvoker</code>, the Windows 10/11 <code>supportedOS</code> GUIDs and <code>PerMonitorV2</code> DPI awareness. Change only the <code>assemblyIdentity name</code>.</p>
+<h3 id="44-appxaml-appxamlcs-mainwindowxaml">4.4 <code>App.xaml</code>, <code>App.xaml.cs</code>, <code>MainWindow.xaml</code></h3>
+<div class="codeblock"><div class="code-head"><span>Xml</span><button type="button" class="copy">Copy</button></div><pre><code>&lt;!-- App.xaml --&gt;
+&lt;Application x:Class="MyApp.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"&gt;
+  &lt;Application.Resources&gt;
+    &lt;ResourceDictionary&gt;
+      &lt;ResourceDictionary.MergedDictionaries&gt;
+        &lt;XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" /&gt;
+      &lt;/ResourceDictionary.MergedDictionaries&gt;
+    &lt;/ResourceDictionary&gt;
+  &lt;/Application.Resources&gt;
+&lt;/Application&gt;</code></pre></div>
+<div class="codeblock"><div class="code-head"><span>Csharp</span><button type="button" class="copy">Copy</button></div><pre><code>// App.xaml.cs
+using Microsoft.UI.Xaml;
+namespace MyApp;
+public partial class App : Application
+{
+    private Window? _window;
+    public App() { InitializeComponent(); }
+    protected override void OnLaunched(LaunchActivatedEventArgs args)
+    { _window = new MainWindow(); _window.Activate(); }
+}</code></pre></div>
+<div class="codeblock"><div class="code-head"><span>Xml</span><button type="button" class="copy">Copy</button></div><pre><code>&lt;!-- MainWindow.xaml --&gt;
+&lt;Window x:Class="MyApp.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:Microsoft.UI.Xaml.Controls"&gt;
+  &lt;Grid&gt;&lt;controls:WebView2 x:Name="Web" /&gt;&lt;/Grid&gt;
+&lt;/Window&gt;</code></pre></div>
+<hr />
+<h2 id="5-the-host-mainwindowxamlcs">5. The host: <code>MainWindow.xaml.cs</code></h2>
+<p>The host does five things: log, create the WebView2, map the virtual host, receive bridge messages, answer them. The skeleton below is the pattern used by every app, with the two improvements learned later (check the model status; never log content).</p>
+<div class="codeblock"><div class="code-head"><span>Csharp</span><button type="button" class="copy">Copy</button></div><pre><code>using System.Text.Json;
+using System.Text.Json.Serialization;
+using Microsoft.UI.Xaml;
+using Microsoft.Web.WebView2.Core;
+using Microsoft.Windows.AI;
+using Microsoft.Windows.AI.Text;
+using Windows.Storage;
+
+namespace MyApp;
+
+public sealed partial class MainWindow : Window
+{
+    private LanguageModel? _model;                       // create once, reuse
+    private static readonly string LogPath =
+        Path.Combine(ApplicationData.Current.LocalFolder.Path, "bridge.log");
+
+    // Log operation names, sizes and statuses. NEVER prompts, documents or keys.
+    private static void Log(string msg)
+    { try { File.AppendAllText(LogPath, $"{DateTime.Now:HH:mm:ss.fff} {msg}\n"); } catch { } }
+
+    public MainWindow()
+    {
+        InitializeComponent();
+        Title = "My App - on-device AI";
+        InitWebViewAsync();
+    }
+
+    private async void InitWebViewAsync()
+    {
+        try
+        {
+            await Web.EnsureCoreWebView2Async();
+            var www = Path.Combine(AppContext.BaseDirectory, "www");
+            Web.CoreWebView2.SetVirtualHostNameToFolderMapping(
+                "myapp.local", www, CoreWebView2HostResourceAccessKind.Allow);
+            Web.CoreWebView2.WebMessageReceived += OnWebMessageReceived;
+            Web.CoreWebView2.Navigate("https://myapp.local/index.html");
+        }
+        catch (Exception ex) { Log("InitWebViewAsync EXCEPTION: " + ex); }
+    }
+
+    private async void OnWebMessageReceived(CoreWebView2 sender, CoreWebView2WebMessageReceivedEventArgs args)
+    {
+        BridgeRequest? req;
+        try { req = JsonSerializer.Deserialize(args.WebMessageAsJson, BridgeJsonContext.Default.BridgeRequest); }
+        catch (Exception ex) { Log("Deserialize EXCEPTION: " + ex.Message); return; }
+        if (req is null) return;
+
+        Log($"IN type={req.Type} promptLen={req.Prompt?.Length ?? 0} b64Len={req.Base64?.Length ?? 0}");
+        var resp = new BridgeResponse { Id = req.Id };
+        try
+        {
+            resp = req.Type switch
+            {
+                "ensureReady" =&gt; await HandleEnsureReadyAsync(req.Id),
+                "generate"    =&gt; await HandleGenerateAsync(req.Id, req.Prompt ?? ""),
+                // "pdfText"  =&gt; HandlePdfText(req.Id, req.Base64 ?? ""),
+                // "ocr"      =&gt; await HandleOcrAsync(req.Id, req.Base64 ?? ""),
+                // "indexDoc" =&gt; await Task.Run(() =&gt; HandleIndex(req.Id, req.ContentId ?? "", req.Prompt ?? "")), // see 7.5
+                _ =&gt; new BridgeResponse { Id = req.Id, Ok = false, Error = "Unknown request type: " + req.Type },
+            };
+        }
+        catch (Exception ex) { Log("Handler EXCEPTION: " + ex); resp.Ok = false; resp.Error = ex.Message; }
+
+        Web.CoreWebView2.PostWebMessageAsJson(
+            JsonSerializer.Serialize(resp, BridgeJsonContext.Default.BridgeResponse));
+    }
+
+    private async Task&lt;BridgeResponse&gt; HandleEnsureReadyAsync(string id)
+    {
+        var resp = new BridgeResponse { Id = id };
+        var state = LanguageModel.GetReadyState();
+        if (state == AIFeatureReadyState.NotReady)
+        {
+            var ensure = await LanguageModel.EnsureReadyAsync();       // downloads/prepares the model
+            if (ensure.Status != AIFeatureReadyResultState.Success)
+            { resp.Error = "Model setup failed: " + ensure.Status; return resp; }
+            state = LanguageModel.GetReadyState();
+        }
+        resp.State = state.ToString();
+        resp.Ok = state == AIFeatureReadyState.Ready;
+        if (!resp.Ok)
+            resp.Error = state switch
+            {
+                AIFeatureReadyState.DisabledByUser =&gt; "The on-device AI model is disabled. Enable it in Settings &gt; System &gt; AI components.",
+                AIFeatureReadyState.NotSupportedOnCurrentSystem =&gt; "This PC's hardware does not support the on-device language model.",
+                _ =&gt; "Model not ready: " + state,
+            };
+        return resp;
+    }
+
+    private async Task&lt;BridgeResponse&gt; HandleGenerateAsync(string id, string prompt)
+    {
+        var resp = new BridgeResponse { Id = id };
+        if (LanguageModel.GetReadyState() != AIFeatureReadyState.Ready)
+        { var ready = await HandleEnsureReadyAsync(id); if (!ready.Ok) return ready; }
+
+        _model ??= await LanguageModel.CreateAsync();
+        var result = await _model.GenerateResponseAsync(prompt);
+        Log($"generate promptLen={prompt.Length} textLen={result.Text?.Length ?? 0} status={result.Status}");
+
+        // A blocked or oversized prompt comes back as EMPTY TEXT with a status, not as an exception.
+        if (string.IsNullOrEmpty(result.Text))
+        { resp.Error = "Model returned no text (status: " + result.Status + ")"; return resp; }
+
+        resp.Ok = true; resp.Text = result.Text;
+        return resp;
+    }
+}
+
+public sealed class BridgeRequest
+{
+    [JsonPropertyName("id")]       public string Id { get; set; } = "";
+    [JsonPropertyName("type")]     public string Type { get; set; } = "";
+    [JsonPropertyName("prompt")]   public string? Prompt { get; set; }
+    [JsonPropertyName("base64")]   public string? Base64 { get; set; }
+    [JsonPropertyName("contentId")] public string? ContentId { get; set; }
+}
+
+public sealed class BridgeResponse
+{
+    [JsonPropertyName("id")]    public string Id { get; set; } = "";
+    [JsonPropertyName("ok")]    public bool Ok { get; set; }
+    [JsonPropertyName("text")]  public string? Text { get; set; }
+    [JsonPropertyName("state")] public string? State { get; set; }
+    [JsonPropertyName("error")] public string? Error { get; set; }
+}
+
+[JsonSerializable(typeof(BridgeRequest))]
+[JsonSerializable(typeof(BridgeResponse))]
+internal partial class BridgeJsonContext : JsonSerializerContext { }</code></pre></div>
+<p>Rules for the host:</p>
+<ol>
+<li><strong>One handler per op</strong>, each returning a <code>BridgeResponse</code>. The top-level <code>try/catch</code> turns any exception into <code>{ ok:false, error }</code> so the page never waits forever.</li>
+<li><strong>Reuse</strong> <code>LanguageModel</code>, <code>TextRecognizer</code>, <code>ImageDescriptionGenerator</code> instances (creation has a cost).</li>
+<li><strong>Log sizes and statuses only.</strong> Two apps once logged 400 characters of every incoming message to <code>bridge.log</code>; in HybridMind that wrote an API key in plain text (found and fixed). Treat <code>bridge.log</code> as something a user may attach to a bug report.</li>
+<li>Add new fields to <code>BridgeRequest</code> (<code>ContentId</code>, <code>N</code>, …) rather than new message formats.</li>
+<li>Anything slow or thread-sensitive goes through <code>Task.Run</code> (7.5).</li>
+</ol>
+<hr />
+<h2 id="6-the-page-and-the-json-bridge">6. The page and the JSON bridge</h2>
+<p>The page talks to the host through <code>window.chrome.webview</code>. Every app contains this same small object; copy it into <code>www/app.js</code> (or <code>bridge.js</code> in the bigger apps).</p>
+<div class="codeblock"><div class="code-head"><span>Js</span><button type="button" class="copy">Copy</button></div><pre><code>const NativeAI = (() =&gt; {
+  const native = !!(window.chrome &amp;&amp; window.chrome.webview);
+  const pending = new Map();
+  let counter = 0;
+  if (native) {
+    window.chrome.webview.addEventListener('message', (e) =&gt; {
+      const msg = e.data;
+      if (!msg || !msg.id || !pending.has(msg.id)) return;
+      const { resolve, reject } = pending.get(msg.id);
+      pending.delete(msg.id);
+      if (msg.ok) resolve(msg); else reject(new Error(msg.error || 'Native AI error'));
+    });
+  }
+  function call(type, extra) {
+    if (!native) return Promise.reject(new Error('Open the installed desktop app to use on-device AI.'));
+    const id = 't' + (++counter) + '_' + Date.now();
+    return new Promise((resolve, reject) =&gt; {
+      pending.set(id, { resolve, reject });
+      window.chrome.webview.postMessage(Object.assign({ id, type }, extra));
+    });
+  }
+  return {
+    isNative: native,
+    ensureReady: ()        =&gt; call('ensureReady'),
+    generate:    (prompt)  =&gt; call('generate', { prompt }),
+    pdfText:     (base64)  =&gt; call('pdfText', { base64 }),
+    ocr:         (base64)  =&gt; call('ocr', { base64 }),
+  };
+})();</code></pre></div>
+<p>Page rules:</p>
+<ul>
+<li><strong>Reading a file</strong>: use <code>FileReader</code> / <code>arrayBuffer()</code> in the page and send base64 to the host. No file system access from the host is needed for uploads.</li>
+<li><strong>Content-Security-Policy.</strong> The larger apps ship <code>connect-src 'none'</code> so the page cannot call out; only the host may use the network (see <code>LocalMindApp/www/index.html</code>). Do this unless you have a reason not to.</li>
+<li><strong>Work without the host.</strong> <code>NativeAI.isNative === false</code> in a normal browser. Provide a mock (<code>dev/mock.js</code>) so you can iterate on the UI in the browser pane with fake answers. Exclude <code>dev/</code> from the package.</li>
+<li><strong>Show state honestly.</strong> Show "preparing the on-device model" on first run, a visible error when <code>generate</code> fails, and never present a model estimate as a measured fact.</li>
+<li><strong>No build step by default.</strong> Vanilla JS, CSS custom properties, one file per concern once <code>app.js</code> passes ~1,500 lines (<code>util</code>, <code>bridge</code>, <code>ui</code>, <code>chat</code>, …). AI Shelf Auditor is the exception: a React/Vite app whose build output is wrapped by the same host.</li>
+</ul>
+<hr />
+<h2 id="7-windows-ai-recipes">7. Windows AI recipes</h2>
+<p>Pattern for every Windows AI feature: <strong>check <code>GetReadyState()</code> → if <code>NotReady</code>, <code>EnsureReadyAsync()</code> → create once → call → check the status</strong>.</p>
+<h3 id="71-text-generation-phi-silica-languagemodel">7.1 Text generation (Phi Silica, <code>LanguageModel</code>)</h3>
+<p>Code above (section 5). Additional measured behaviour:</p>
+<ul>
+<li><code>GenerateResponseAsync(prompt)</code> can return <strong>empty text with a status</strong> instead of throwing: <code>PromptBlockedByContentModeration</code>, <code>PromptLargerThanContext</code>. Always surface <code>result.Status</code>.</li>
+<li>The context window is small. About 5,900 characters of raw transactions overflowed it; about 6,000 characters of cleaner text did not. Cap what you send and prefer facts over raw text.</li>
+<li><code>GetUsablePromptLength(context, prompt)</code> is a <strong>fit test</strong> (it returns the prompt length when the prompt fits), not a capacity number. A loop that shrinks the prompt until it fits is worth having (<code>LocalMindApp/ChatEngine.cs</code>).</li>
+<li>Prefill is slow: roughly 3,000 characters of excerpts took 5 to 8 seconds before the first token. Keep budgets modest (LocalMind uses a max prompt of about 7,500 characters including the system prompt).</li>
+<li>Default decoding is <strong>deterministic</strong>. "Regenerate" gives the identical answer unless you raise the temperature through the options (LocalMind uses 0.8).</li>
+<li>Streaming: the <code>Progress</code> callback of the async operation delivers <strong>deltas</strong>. Build the UI by appending. <code>op.Cancel()</code> stops generation; keep the partial text.</li>
+<li>A native <code>LanguageModelContext</code> remembers turns, but editing or branching a conversation needs a stateless transcript prompt (system text in <code>CreateContext(system)</code>, then "Conversation so far… User: / Assistant:"). Cut stop sequences like <code>\nUser:</code> from the output.</li>
+<li>Windows also ships ready-made text skills built on the same model: <code>TextSummarizer</code>, <code>TextRewriter</code>, <code>TextToTableConverter</code>.</li>
+<li>Do <strong>not</strong> try to loosen <code>ContentFilterOptions</code> / <code>SeverityLevel</code>. A custom severity returned <code>BlockedByPolicy</code> in about 30 ms. Fix the prompt instead.</li>
+</ul>
+<h3 id="72-ocr-textrecognizer">7.2 OCR (<code>TextRecognizer</code>)</h3>
+<div class="codeblock"><div class="code-head"><span>Csharp</span><button type="button" class="copy">Copy</button></div><pre><code>private TextRecognizer? _ocr;
+
+private async Task&lt;BridgeResponse&gt; HandleOcrAsync(string id, string base64)
+{
+    var resp = new BridgeResponse { Id = id };
+    try
+    {
+        if (TextRecognizer.GetReadyState() == AIFeatureReadyState.NotReady)
+        {
+            var ensure = await TextRecognizer.EnsureReadyAsync();
+            if (ensure.Status != AIFeatureReadyResultState.Success)
+            { resp.Error = "OCR model setup failed: " + ensure.Status; return resp; }
+        }
+
+        var bytes = Convert.FromBase64String(base64);
+        using var stream = new InMemoryRandomAccessStream();
+        using (var writer = new DataWriter(stream))
+        { writer.WriteBytes(bytes); await writer.StoreAsync(); await writer.FlushAsync(); writer.DetachStream(); }
+        stream.Seek(0);
+
+        var decoder = await BitmapDecoder.CreateAsync(stream);
+        using SoftwareBitmap bitmap = await decoder.GetSoftwareBitmapAsync();
+        var buffer = ImageBuffer.CreateForSoftwareBitmap(bitmap);
+
+        _ocr ??= await TextRecognizer.CreateAsync();
+        var recognized = _ocr.RecognizeTextFromImage(buffer);
+        // Lines is NULL (not empty) for an image with no text
+        resp.Text = recognized?.Lines == null ? "" : string.Join("\n", recognized.Lines.Select(l =&gt; l.Text));
+        resp.Ok = true;
+    }
+    catch (Exception ex) { resp.Error = "OCR failed: " + ex.Message; }
+    return resp;
+}</code></pre></div>
+<p>Namespaces: <code>Microsoft.Graphics.Imaging</code>, <code>Microsoft.Windows.AI.Imaging</code>, <code>Windows.Graphics.Imaging</code>, <code>Windows.Storage.Streams</code>.</p>
+<h3 id="73-pdfs">7.3 PDFs</h3>
+<ul>
+<li>PDF <strong>with a text layer</strong>: PdfPig, no AI (<code>PdfDocument.Open(stream)</code>, join <code>page.Text</code>). Deterministic and fast.</li>
+<li><strong>Scanned</strong> PDF (PdfPig finds no text): render with <code>Windows.Data.Pdf</code> (<code>PdfDocument.LoadFromStreamAsync</code>, <code>PdfPage.RenderToStreamAsync</code> at about 1,800 px) and send each page to OCR. Cap the page count and show a visible note when you truncate.</li>
+<li>Pin <code>UglyToad.PdfPig 1.7.0-custom-5</code> unless you verified a newer one.</li>
+</ul>
+<h3 id="74-image-description-imagedescriptiongenerator">7.4 Image description (<code>ImageDescriptionGenerator</code>)</h3>
+<div class="codeblock"><div class="code-head"><span>Csharp</span><button type="button" class="copy">Copy</button></div><pre><code>var describer = await ImageDescriptionGenerator.CreateAsync();
+var result = await describer.DescribeAsync(imageBuffer, ImageDescriptionKind.DetailedDescription, new ContentFilterOptions());
+// result.Description may be empty: read result.Status (ImageHasTooMuchText, ImageBlockedByContentModeration, InternalError...)</code></pre></div>
+<ul>
+<li>Use it for <strong>captions</strong>, not counts. There is no on-device object-counting model: POE Verification lets the language model estimate quantities from captions and labels the result as an estimate.</li>
+<li>Run OCR first; describe only images that contain no text (otherwise you get <code>ImageHasTooMuchText</code> or useless captions). Make the description optional in the UI because it is slow.</li>
+<li>Label generated descriptions in the UI ("generated by on-device AI, may be inaccurate"), and tell the model in the system prompt that the description is what the picture shows, otherwise it answers "I can't view images".</li>
+<li>Other imaging APIs exist in <code>Microsoft.Windows.AI.Imaging</code> (<code>ImageGenerator</code>, <code>ImageScaler</code>, <code>ImageForegroundExtractor</code>, <code>ImageObjectRemover</code>). Each model is provisioned through Windows Update on first use; the generator took 15+ minutes on one PC. Always provide a retry button for <code>EnsureReadyAsync</code> failures.</li>
+</ul>
+<h3 id="75-local-retrieval-appcontentindexer">7.5 Local retrieval (<code>AppContentIndexer</code>)</h3>
+<div class="codeblock"><div class="code-head"><span>Csharp</span><button type="button" class="copy">Copy</button></div><pre><code>private AppContentIndexer? _index;
+
+private AppContentIndexer? GetIndex()
+{
+    if (_index is not null) return _index;
+    var r = AppContentIndexer.GetOrCreateIndex("my-index");
+    if (!r.Succeeded) { Log("GetOrCreateIndex FAILED: " + r.Status); return null; }
+    return _index = r.Indexer;
+}
+
+// ADD: indexer.AddOrUpdate(AppManagedIndexableAppContent.CreateFromString(contentId, text));
+// QUERY: indexer.CreateTextQuery(query).GetNextMatches(5).OfType&lt;AppManagedTextQueryMatch&gt;()
+//        -&gt; .ContentId, .TextOffset, .TextLength</code></pre></div>
+<p>Three rules, each learned the hard way:</p>
+<ol>
+<li><strong>Never call it on the UI thread.</strong> The <code>WebMessageReceived</code> handler runs on the UI thread; calling <code>AddOrUpdate</code> or <code>CreateTextQuery</code> there <strong>deadlocked the whole app</strong> (not responding, no exception, no log line). Always <code>await Task.Run(() =&gt; HandleIndex(...))</code>. The docs carry the warning; read an API's threading note before wiring it.</li>
+<li><strong>Indexing is asynchronous.</strong> A query right after <code>AddOrUpdate</code> can return nothing. Retry once after a delay (about 3 seconds worked; results were complete about 5 seconds after indexing).</li>
+<li><strong>Matching is fuzzy, not exact.</strong> It returns candidates that merely share common words. Keep your own <code>contentId → text</code> map (matches give offsets, not the source text) and confirm each hit client-side (exact fingerprint, or the quoted terms are really present). For better retrieval LocalIQ/LocalMind combine the index with a BM25 ranking in C#.</li>
+</ol>
+<p>The index is documented as not intended for sensitive personal data. Index non-sensitive corpora (policies, manuals, the user's own documents) and say so.</p>
+<h3 id="76-other-host-operations-seen-in-the-family">7.6 Other host operations seen in the family</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Op</th>
+<th>Where</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>fetchUrl</code></td>
+<td>HR Recruiter</td>
+<td>The only outbound request, started by the user.</td>
+</tr>
+<tr>
+<td><code>parseDicom</code></td>
+<td>Reading Room</td>
+<td>fo-dicom tags plus a preview image.</td>
+</tr>
+<tr>
+<td><code>DataProtectionProvider("LOCAL=user")</code></td>
+<td>HybridMind</td>
+<td>Encrypt a saved key; never return it to the page.</td>
+</tr>
+<tr>
+<td><code>CapturePreviewAsync</code></td>
+<td>LocalMind SelfTest</td>
+<td>Screenshot the real WebView2 (section 10).</td>
+</tr>
+<tr>
+<td>Atomic key-value store</td>
+<td>LocalMind <code>Store.cs</code></td>
+<td>JSON files in <code>LocalState\data</code>, write to temp then replace.</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="8-prompt-and-design-rules">8. Prompt and design rules</h2>
+<p>These are the rules every app converged on.</p>
+<ol>
+<li><strong>Code computes, the model words.</strong> Totals, ratios, dates, matrices, risk scores and citations are computed deterministically. The prompt contains those facts and asks the model to explain them. The model never enumerates search results or does arithmetic that matters.</li>
+<li><strong>Split large generations.</strong> One call that returns "JSON with 10 fields" was slow and truncated; two or three small calls were faster and reliable (HR Recruiter went from about 8 minutes to normal).</li>
+<li><strong>Verify what the model writes.</strong> Check every figure in the answer against the computed facts and show a warning, plus the facts, when something does not match. LocalIQ also guards numbers, citations and relevance deterministically and answers "Not found" when retrieval is empty, without calling the model at all.</li>
+<li><strong>Validate model JSON.</strong> Extract the first JSON object loosely, validate fields, fall back to a plain-text rendering when it fails.</li>
+<li><strong>Neutralise sensitive-looking strings before prompting.</strong> Content moderation blocked prompts with masked card numbers (<code>VISA ****4471</code>) next to merchant or person-shaped text. Map raw descriptions to generic categories ("Subscription", "Auto loan payment") for the prompt; the real text stays in the UI.</li>
+<li><strong>Write amounts without signs.</strong> <code>-7800.00</code> was read as smaller than 5000. Send a positive amount with an explicit label (deposit / withdrawal) and tell the model to compare magnitudes.</li>
+<li><strong>Ground and frame.</strong> "Use only the facts below." For anything that implies guilt or a diagnosis, instruct the model to frame findings as "requires investigation" or "draft for review", and keep the human decision in the UI (Fraud, POE, Reading Room: AI findings are one colour, the reviewer's another).</li>
+<li><strong>Small-model quirks.</strong> It may start with a stray label, wrap a short answer in an untagged code fence, invent names, or hallucinate "facts" from a plain question. Clean the stream, forbid inventions in the system prompt, and filter extracted "memories" against the user's actual text.</li>
+<li><strong>Synthetic sample data only.</strong> No real names, accounts, patients or documents in the repository. Generate sample files with a script kept outside the package (<code>sample-data/generate_*.py</code>, excluded from <code>Content</code>).</li>
+<li><strong>Be honest in the UI and README.</strong> Say what runs on the device, what does not, and the limits. Do not claim "offline" for an app that fetches fonts or a CDN; list every network request. Treat "AI estimate" and "AI draft" as labels the user can see.</li>
+</ol>
+<hr />
+<h2 id="9-build-sign-install">9. Build, sign, install</h2>
+<p>Everything is scripted by <a href="https://github.com/medyabi/windows-local-ai-apps/blob/main/scripts/build-app.ps1" rel="noopener"><code>../scripts/build-app.ps1</code></a> (creates or reuses a certificate, builds a temporary copy, writes <code>dist\&lt;App&gt;\*.msix</code> and the public <code>.cer</code>). The manual equivalent:</p>
+<div class="codeblock"><div class="code-head"><span>PowerShell</span><button type="button" class="copy">Copy</button></div><pre><code># 1. certificate (once)
+$cert = New-SelfSignedCertificate -Type Custom -Subject "CN=YourName" -KeyUsage DigitalSignature `
+  -FriendlyName "On-device AI apps (dev)" -CertStoreLocation "Cert:\CurrentUser\My" `
+  -TextExtension @("2.5.29.37={text}1.3.6.1.5.5.7.3.3", "2.5.29.19={text}")
+$cert.Thumbprint                                   # put it in &lt;PackageCertificateThumbprint&gt;
+Export-Certificate -Cert $cert -FilePath .\dev.cer
+
+# 2. trust it (elevated PowerShell, once per PC)
+Import-Certificate -FilePath .\dev.cer -CertStoreLocation Cert:\LocalMachine\TrustedPeople
+
+# 3. build the signed MSIX, no Visual Studio
+cd apps\MyApp
+dotnet build -c Release -p:Platform=x64 -p:GenerateAppxPackageOnBuild=true `
+  -p:AppxPackageDir="AppPackages\" -p:AppxBundle=Never -p:UapAppxPackageBuildMode=SideloadOnly
+
+# 4. install
+Add-AppxPackage -Path .\AppPackages\MyApp_1.0.0.0_x64_Test\MyApp_1.0.0.0_x64.msix</code></pre></div>
+<p>Checks:</p>
+<ul>
+<li><code>Publisher</code> in the manifest <strong>must equal</strong> the certificate subject, or the build or install fails.</li>
+<li>The certificate thumbprint in the repository belongs to the author's PC. Never commit a <code>.pfx</code>.</li>
+<li>Upgrading in place needs a <strong>higher version</strong> and the same identity; it keeps <code>LocalState</code> (settings, saved keys).</li>
+</ul>
+<h3 id="shipping-to-someone-else">Shipping to someone else</h3>
+<p>A zip containing: the <code>.msix</code>, the public <code>.cer</code>, an <code>Install-&lt;App&gt;.ps1</code> that imports the certificate into <code>LocalMachine\TrustedPeople</code> (elevated) and runs <code>Add-AppxPackage</code>, and a short README. Sample files go in a <strong>separate</strong> zip so they are not indexed by the app itself. The recipient needs a Copilot+ PC for the AI features.</p>
+<hr />
+<h2 id="10-the-developer-loop-and-testing">10. The developer loop and testing</h2>
+<h3 id="101-run-it">10.1 Run it</h3>
+<p>A raw unpackaged <code>.exe</code> does not work. Build <strong>Debug</strong>, register it loosely, launch by package family name:</p>
+<div class="codeblock"><div class="code-head"><span>PowerShell</span><button type="button" class="copy">Copy</button></div><pre><code>dotnet build -c Debug -p:Platform=x64
+Add-AppxPackage -Register "&lt;bin&gt;\Debug\net8.0-windows10.0.22621.0\win-x64\AppxManifest.xml" -ForceApplicationShutdown
+Get-AppxPackage *MyApp*                                   # shows PackageFamilyName
+Start-Process "shell:AppsFolder\&lt;PackageFamilyName&gt;!App"</code></pre></div>
+<p><strong>Use a separate dev identity</strong> (for example <code>YourName.MyAppDev</code>) for the Debug registration. Registering the dev build under the real identity shares <code>LocalState</code> with the installed app, and removing the dev package <strong>wipes the real app's data</strong> (it deleted a user's saved cloud key once). HybridMind has a <code>dev/register_dev.ps1</code> doing exactly this.</p>
+<h3 id="102-where-to-look-first">10.2 Where to look first</h3>
+<p><code>%LOCALAPPDATA%\Packages\&lt;PackageFamilyName&gt;\LocalState\bridge.log</code>. If a call "silently returns nothing", the log line with the <code>status=</code> tells you whether it was moderation, context size or an exception.</p>
+<h3 id="103-test-the-real-pipeline-on-the-real-model">10.3 Test the real pipeline on the real model</h3>
+<p>Mocks do not reproduce moderation, context limits or the NPU. Three techniques, from lightest to heaviest:</p>
+<ol>
+<li><strong>Self-test block.</strong> A temporary script (or a Debug-only <code>SelfTest.cs</code> driven by a <code>selftest.json</code> in <code>LocalState</code>) that runs the whole pipeline at start-up and writes results to a file. When a prompt misbehaves, bisect it into variants and log each separately. Remove it before the Release build.</li>
+<li><strong>Real WebView screenshots.</strong> <code>CoreWebView2.CapturePreviewAsync(Png, stream)</code> saves the actual page as a PNG, which works even when screen capture of the window is blank. LocalMind's SelfTest has a <code>shots</code> list that does this.</li>
+<li><strong>Browser-pane preview with a mock bridge.</strong> Copy <code>dev/mock.js</code> temporarily into <code>www</code>, load the page in a browser, and exercise layouts and states (this caught a layout bug below 860 px). Delete it before packaging.</li>
+</ol>
+<p>For apps that talk to a cloud endpoint, test against a <strong>local mock server</strong> that logs every request body (HybridMind's <code>dev/mock_openai.py</code>), and verify on the wire that redacted values never left. Say clearly when something was not tested against the real service.</p>
+<h3 id="104-test-data">10.4 Test data</h3>
+<p>Generate a realistic set: one clean case and one example of each failure pattern you detect. Keep the generator out of the package. Ship the generated files as a separate zip.</p>
+<h3 id="105-dpi-and-layout">10.5 DPI and layout</h3>
+<p>Use DPI-aware window sizing (<code>GetDpiForWindow</code>). At 175% scaling, a 1,400 px window is only about 800 CSS px; set breakpoints accordingly (LocalMind uses 760 px).</p>
+<hr />
+<h2 id="11-traps-symptom-cause-fix">11. Traps: symptom, cause, fix</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Cause</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ApplicationData.Current</code> throws; AI calls flaky</td>
+<td>App run without package identity</td>
+<td>Register a Debug build (10.1); never run the raw <code>.exe</code>.</td>
+</tr>
+<tr>
+<td>Windows AI APIs fail or are absent</td>
+<td>Missing <code>Windows.Desktop</code> or <code>Windows.Universal</code> device family, or no <code>systemAIModels</code></td>
+<td>Add both families and the capability (4.2).</td>
+</tr>
+<tr>
+<td><code>generate</code> returns empty text, no exception</td>
+<td><code>PromptBlockedByContentModeration</code> or <code>PromptLargerThanContext</code></td>
+<td>Log <code>result.Status</code>; shrink the prompt; neutralise card-like strings (rule 5, rule 7.1).</td>
+</tr>
+<tr>
+<td><code>BlockedByPolicy</code> after about 30 ms</td>
+<td>Custom <code>ContentFilterOptions</code> severity</td>
+<td>Remove it; rewrite the prompt.</td>
+</tr>
+<tr>
+<td>Whole app hangs, near-zero CPU, no log line</td>
+<td><code>AppContentIndexer</code> called on the UI thread</td>
+<td><code>await Task.Run(...)</code> (7.5).</td>
+</tr>
+<tr>
+<td>Index query returns nothing right after adding</td>
+<td>Asynchronous indexing</td>
+<td>Retry once after a few seconds.</td>
+</tr>
+<tr>
+<td>Index returns unrelated "matches"</td>
+<td>Fuzzy matching</td>
+<td>Confirm every hit in code.</td>
+</tr>
+<tr>
+<td><code>Select</code> throws "Value cannot be null (source)" in OCR</td>
+<td><code>Lines</code> is null for an image with no text</td>
+<td>Guard <code>recognized?.Lines == null</code>.</td>
+</tr>
+<tr>
+<td>8-minute analysis, JSON cut off</td>
+<td>One giant combined generation</td>
+<td>Split into two or three smaller calls.</td>
+</tr>
+<tr>
+<td>Model says "I can't view images"</td>
+<td>Description not framed as the picture</td>
+<td>System rule plus "Picture:" headers.</td>
+</tr>
+<tr>
+<td>Regenerate gives the identical answer</td>
+<td>Deterministic decoding</td>
+<td>Raise temperature for regenerate.</td>
+</tr>
+<tr>
+<td>Native crash (<code>coreclr.dll</code>, 0xc0000005), process vanishes</td>
+<td>WebView2 DevTools-protocol relay under heavy bridge traffic</td>
+<td>Do not use the DevTools relay for looped tests; use <code>Log()</code>; check <code>Get-WinEvent -FilterHashtable @{LogName='Application';ProviderName='Application Error'}</code>.</td>
+</tr>
+<tr>
+<td>Dev package removal wiped real settings</td>
+<td>Dev and real builds share an identity</td>
+<td>Separate dev identity (10.1).</td>
+</tr>
+<tr>
+<td>Install fails with a publisher or trust error</td>
+<td>Subject mismatch or untrusted certificate</td>
+<td><code>Publisher</code> equals subject; import the <code>.cer</code> into <code>LocalMachine\TrustedPeople</code>.</td>
+</tr>
+<tr>
+<td>First run seems frozen</td>
+<td>Model or image model being provisioned by Windows Update</td>
+<td>Show progress text; offer retry; expect minutes.</td>
+</tr>
+<tr>
+<td>Secret appears in <code>bridge.log</code></td>
+<td>Logging message bodies</td>
+<td>Log type and size only.</td>
+</tr>
+<tr>
+<td>Build error on <code>PdfPig</code> version</td>
+<td>No stable version matched the pin</td>
+<td>Keep the pinned prerelease or check NuGet.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Tooling traps that bit during development (keep them in mind if you script edits):</p>
+<ul>
+<li>A shell can collapse <code>\\</code> to <code>\</code>, turning <code>\n</code> in generated JavaScript or C# regexes into control characters. Write scripts and patches with a file-writing tool, then scan the result for control characters.</li>
+<li>Windows PowerShell 5.1 reads UTF-8 files as ANSI with <code>Get-Content -Raw</code>; use <code>[IO.File]::ReadAllText(path, [Text.Encoding]::UTF8)</code>.</li>
+<li>Multi-line <code>git commit -m</code> with quotes breaks native argument quoting in PowerShell 5.1; use <code>git commit -F message.txt</code>.</li>
+</ul>
+<hr />
+<h2 id="12-growing-the-app">12. Growing the app</h2>
+<p>The eleven apps form a ladder. Climb only as far as the brief needs.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Adds</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Document tool</td>
+<td><code>generate</code> plus <code>pdfText</code> / <code>ocr</code>; deterministic checks in JS</td>
+<td>Finance Copilot, HR Recruiter</td>
+</tr>
+<tr>
+<td>2. Vision</td>
+<td><code>describeImage</code>, photo captions, estimates labelled as estimates</td>
+<td>AI Shelf Auditor, POE Verification, Reading Room Assistant</td>
+</tr>
+<tr>
+<td>3. Retrieval</td>
+<td><code>AppContentIndexer</code> (<code>Task.Run</code>, retry, confirm), BM25, citations, guards</td>
+<td>Fraud Investigator, LocalIQ</td>
+</tr>
+<tr>
+<td>4. Chat engine</td>
+<td>Streaming deltas, prompt fitting, branches, memory, assistants, skills</td>
+<td>LocalMind</td>
+</tr>
+<tr>
+<td>5. Hybrid</td>
+<td>Router: device first; user-supplied cloud only with consent, redaction, key in DPAPI, usage log; optional agent mode with host-enforced policy</td>
+<td>HybridMed, HybridMind</td>
+</tr>
+</tbody>
+</table></div>
+<p>When you reach level 4 or 5, split <code>MainWindow.xaml.cs</code> into engine files (<code>Extraction.cs</code>, <code>Ocr.cs</code>, <code>Engine.cs</code>, <code>ChatEngine.cs</code>, <code>Store.cs</code>, <code>SkillStore.cs</code>) and the page into <code>www/js/*</code>.</p>
+<p>Hybrid rules that held up: the page keeps <code>connect-src 'none'</code>; <strong>only the host</strong> talks to the network; HTTPS only (loopback excepted); no redirects; the saved key is never returned to the page and is deleted if the endpoint host changes; redact secrets, cards, IBANs, e-mail and phone numbers before sending, and restore placeholders in the reply; show the exact payload before the first cloud use. In agent mode the <strong>host</strong> enforces the policy (read roots, deny list, write only to a working folder, no executables, approval token bound to the exact tool and arguments) so the page cannot widen it.</p>
+<hr />
+<h2 id="13-definition-of-done">13. Definition of done</h2>
+<p>Before calling an app finished:</p>
+<ul>
+<li class="task"><input type="checkbox"> Brief written (section 3) and names chosen; <code>Identity</code>, <code>Publisher</code>, display name, virtual host consistent everywhere.</li>
+<li class="task"><input type="checkbox"> Both device families and <code>systemAIModels</code> in the manifest; fresh <code>PhoneProductId</code>; six assets present.</li>
+<li class="task"><input type="checkbox"> Every bridge op has a handler, a top-level <code>catch</code>, and returns a visible error to the page.</li>
+<li class="task"><input type="checkbox"> <code>result.Status</code> surfaced for text, OCR and image calls; empty text is treated as a failure.</li>
+<li class="task"><input type="checkbox"> Anything touching <code>AppContentIndexer</code> runs in <code>Task.Run</code>, retries once, and confirms hits in code.</li>
+<li class="task"><input type="checkbox"> All numbers and checks come from code; the model's figures are verified; prompts are capped and fit-tested.</li>
+<li class="task"><input type="checkbox"> <code>bridge.log</code> contains no prompts, documents or keys.</li>
+<li class="task"><input type="checkbox"> Tested on a real Copilot+ PC with the real model: happy path, a moderation-sensitive input, an oversized input, an empty or unreadable file, first run with the model not ready.</li>
+<li class="task"><input type="checkbox"> Self-test scaffolding, DevTools relay, mock bridge and generator scripts removed from the Release build.</li>
+<li class="task"><input type="checkbox"> Signed Release MSIX installs from a clean state; an in-place upgrade (higher version) keeps data.</li>
+<li class="task"><input type="checkbox"> README states what runs on the device, every network request, the limits, and how to install (use the template in any <code>apps/&lt;App&gt;/README.md</code>).</li>
+<li class="task"><input type="checkbox"> Sample data is synthetic and shipped separately.</li>
+<li class="task"><input type="checkbox"> Nothing machine-specific committed: no <code>.pfx</code>, no real thumbprint expectations, no keys or <code>.env</code> files.</li>
+</ul>
+<hr />
+<h2 id="14-a-brief-to-give-claude-code">14. A brief to give Claude Code</h2>
+<p>Copy, fill the angle brackets, and paste into a new session in this repository.</p>
+<div class="codeblock"><div class="code-head"><span>Text</span><button type="button" class="copy">Copy</button></div><pre><code>Build a new on-device AI app for Windows 11 (Copilot+ PC), following docs/BUILD-YOUR-OWN-APP.md
+exactly. Use apps/FinanceCopilotApp as the code template (apps/LocalMindApp if I need chat/RAG).
+
+App name:            &lt;Name&gt;            Package identity: &lt;YourName.Name&gt;      Virtual host: &lt;name&gt;.local
+Persona and decision: &lt;who uses it, what they decide&gt;
+Inputs:              &lt;typed text | PDF | scanned PDF | photos | CSV | a folder&gt;
+Deterministic work (code, not the model): &lt;totals, matrix, rules, dates, ...&gt;
+What the model writes: &lt;short explanations / drafts / classification ...&gt;
+Retrieval needed:    &lt;yes (what corpus) | no&gt;
+Network:             none  (or: &lt;what, why, user-consented&gt;)
+Sample data:         synthetic; generate it with a script kept outside the package
+
+Process I want you to follow:
+1. Restate the brief and the split "code computes / model words"; if my spec is far larger than one
+   on-device app, propose 2-3 scope options and wait for my choice.
+2. Scaffold from the template; rename identity, host, namespace; new PhoneProductId; generate assets.
+3. Implement only the bridge ops the UI needs; log sizes and statuses, never content;
+   check result.Status; run AppContentIndexer inside Task.Run with a retry and a client-side confirm.
+4. Build the UI in www/ (plain HTML/JS, CSP connect-src 'none'); add a mock bridge for browser testing.
+5. Test on the real on-device model with a temporary self-test, read bridge.log, fix, then remove the
+   scaffolding. Do not use the WebView2 DevTools relay for looped tests.
+6. Build a signed MSIX with scripts/build-app.ps1, test install and in-place upgrade,
+   write apps/&lt;Name&gt;/README.md (flow diagram, file table, 9-step deployment, limits).
+7. Finish with the checklist in section 13 and tell me honestly what was not tested.</code></pre></div>
+<hr />
+<h2 id="15-reference-apps">15. Reference apps</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Need</th>
+<th>Look at</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Smallest complete app (generate, PDF, OCR)</td>
+<td><a href="apps/financecopilotapp.html"><code>FinanceCopilotApp</code></a></td>
+</tr>
+<tr>
+<td>Photo captioning and estimates</td>
+<td><a href="apps/poeverificationapp.html"><code>POEVerificationApp</code></a>, <a href="apps/aishelfauditorapp.html"><code>AIShelfAuditorApp</code></a></td>
+</tr>
+<tr>
+<td><code>AppContentIndexer</code> with <code>Task.Run</code></td>
+<td><a href="apps/fraudinvestigatorapp.html"><code>FraudInvestigatorApp</code></a></td>
+</tr>
+<tr>
+<td>Domain demo with pre-set AI findings vs live drafts</td>
+<td><a href="apps/readingroomassistantapp.html"><code>ReadingRoomAssistantApp</code></a></td>
+</tr>
+<tr>
+<td>Split generations, URL fetch</td>
+<td><a href="apps/hrrecruiterapp.html"><code>HRRecruiterApp</code></a></td>
+</tr>
+<tr>
+<td>Any file type, OCR, BM25 hybrid retrieval, guards</td>
+<td><a href="apps/localiqapp.html"><code>LocalIQApp</code></a></td>
+</tr>
+<tr>
+<td>Streaming chat, prompt fitting, memory, skills, SelfTest, screenshots</td>
+<td><a href="apps/localmindapp.html"><code>LocalMindApp</code></a></td>
+</tr>
+<tr>
+<td>Local-first plus consented cloud, redaction, DPAPI key, agent mode</td>
+<td><a href="apps/hybridmindapp.html"><code>HybridMindApp</code></a>, <a href="apps/hybridmedapp.html"><code>HybridMedApp</code></a></td>
+</tr>
+</tbody>
+</table></div>
+<p>Companion documents: <a href="architecture.html"><code>ARCHITECTURE.md</code></a> (bridge operations table), <a href="windows-ai-lessons.html"><code>WINDOWS-AI-LESSONS.md</code></a> (measured API behaviour), <a href="build.html"><code>BUILD.md</code></a> and <a href="deploy.html"><code>DEPLOYMENT.md</code></a> (build and install), <a href="https://github.com/medyabi/windows-local-ai-apps/blob/main/scripts/build-app.ps1" rel="noopener"><code>../scripts/build-app.ps1</code></a>.</p>
+</article>
+<nav class="pager bottom"><a href="build.html">‹ Building an app</a><a href="use-the-skill.html">Use the windows-ondevice-ai-app skill: step by step ›</a></nav>
+<p class="source"><a href="https://github.com/medyabi/windows-local-ai-apps" rel="noopener">View the source on GitHub</a></p>
+</main>
+<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#contents">Contents</a></li><li><a href="#1-the-recipe-in-one-picture">1. The recipe in one picture</a></li><li><a href="#2-prerequisites">2. Prerequisites</a></li><li><a href="#3-decide-before-you-code">3. Decide before you code</a></li><li><a href="#4-scaffold-the-project">4. Scaffold the project</a></li><li><a href="#5-the-host-mainwindowxamlcs">5. The host: MainWindow.xaml.cs</a></li><li><a href="#6-the-page-and-the-json-bridge">6. The page and the JSON bridge</a></li><li><a href="#7-windows-ai-recipes">7. Windows AI recipes</a></li><li><a href="#8-prompt-and-design-rules">8. Prompt and design rules</a></li><li><a href="#9-build-sign-install">9. Build, sign, install</a></li><li><a href="#10-the-developer-loop-and-testing">10. The developer loop and testing</a></li><li><a href="#11-traps-symptom-cause-fix">11. Traps: symptom, cause, fix</a></li><li><a href="#12-growing-the-app">12. Growing the app</a></li><li><a href="#13-definition-of-done">13. Definition of done</a></li><li><a href="#14-a-brief-to-give-claude-code">14. A brief to give Claude Code</a></li><li><a href="#15-reference-apps">15. Reference apps</a></li></ol></aside>
+</div>
+<footer class="sitefoot">
+  <div class="foot-in">
+    <div><strong>AI Labs</strong><p>Hands-on Copilot labs by Mohamed Dyabi, Microsoft Certified Trainer.</p></div>
+    <ul>
+      <li><a href="../copilot-studio/index.html">Copilot Studio track</a></li>
+      <li><a href="../cowork/index.html">Copilot Cowork track</a></li>
+      <li><a href="index.html">Copilot+ PC local AI track</a></li>
+      <li><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Studio-lab" rel="noopener">Copilot Studio labs on GitHub</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Cowork-lab" rel="noopener">Cowork labs on GitHub</a></li>
+      <li><a href="https://github.com/medyabi/windows-local-ai-apps" rel="noopener">Local AI apps on GitHub</a></li>
+    </ul>
+  </div>
+  <p class="fine">Use a test or demo tenant: these labs create agents, workflows and SharePoint items, and consume Copilot Credits. Preview features and labels change often. An independent site, not affiliated with Microsoft. © 2026 Mohamed Dyabi</p>
+</footer>
+<script>
+(function(){
+  // Table of contents: open on wide screens, collapsible on small ones
+  var toc = document.querySelector('details.toc');
+  if (toc) {
+    var mq = window.matchMedia('(min-width: 1024px)');
+    var sync = function(){ if (mq.matches) toc.open = true; };
+    sync(); if (mq.addEventListener) mq.addEventListener('change', sync);
+    var cur = toc.querySelector('[aria-current="page"]');
+    if (cur && cur.scrollIntoView && mq.matches) cur.scrollIntoView({block: 'center'});
+  }
+  // Filter by title
+  var f = document.getElementById('toc-filter');
+  if (f) f.addEventListener('input', function(){
+    var q = f.value.trim().toLowerCase();
+    document.querySelectorAll('.toc-list li').forEach(function(li){
+      var hit = !q || li.textContent.toLowerCase().indexOf(q) !== -1;
+      li.hidden = !hit;
+    });
+  });
+  // Copy buttons on code blocks
+  document.querySelectorAll('.codeblock').forEach(function(cb){
+    var btn = cb.querySelector('.copy'), code = cb.querySelector('code');
+    if (!btn || !code) return;
+    btn.addEventListener('click', function(){
+      navigator.clipboard.writeText(code.innerText).then(function(){
+        btn.textContent = 'Copied'; setTimeout(function(){ btn.textContent = 'Copy'; }, 1500);
+      }, function(){ btn.textContent = 'Select and copy'; });
+    });
+  });
+  // Highlight the current section in "In this article"
+  var links = document.querySelectorAll('.aside-toc a');
+  if (links.length && 'IntersectionObserver' in window) {
+    var map = {}; links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var obs = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting) {
+        links.forEach(function(a){ a.classList.remove('on'); });
+        var a = map[e.target.id]; if (a) a.classList.add('on');
+      }});
+    }, {rootMargin: '0px 0px -75% 0px'});
+    Object.keys(map).forEach(function(id){ var h = document.getElementById(id); if (h) obs.observe(h); });
+  }
+})();
+</script><script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.esm.min.mjs";const dark = document.documentElement.matches("[data-theme=dark]") || (window.matchMedia("(prefers-color-scheme: dark)").matches && !document.documentElement.matches("[data-theme=light]"));mermaid.initialize({startOnLoad:true, theme: dark ? "dark" : "neutral", securityLevel:"strict"});</script><script>
+(function(){
+  var key = 'progress:' + location.pathname;
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('li.task input'));
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(key) || '{}'); } catch (e) {}
+  boxes.forEach(function(b, i){
+    b.id = 'task-' + i;
+    if (saved[i]) b.checked = true;
+    b.addEventListener('change', function(){
+      saved[i] = b.checked;
+      try { localStorage.setItem(key, JSON.stringify(saved)); } catch (e) {}
+    });
+  });
+})();
+</script>
+</body>
+</html>

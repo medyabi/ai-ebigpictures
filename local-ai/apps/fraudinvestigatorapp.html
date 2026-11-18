@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Local Fraud Investigator · AI Labs</title>
+<meta name="description" content="Hands-on labs for Microsoft Copilot Studio, Agent Builder and Microsoft 365 Copilot Cowork: from a simple agent to autonomous agents.">
+<link rel="stylesheet" href="../../assets/site.css">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../../assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
+</head>
+<body class="t-localai">
+<a class="skip" href="#content">Skip to main content</a>
+<header class="masthead">
+  <a class="brand" href="../../index.html"><img src="../../assets/favicon.svg" alt="" width="24" height="24"><span>AI Labs</span></a>
+  <span class="divider" aria-hidden="true"></span>
+  <nav class="mainnav" aria-label="Main"><a href="../../copilot-studio/index.html">Copilot Studio</a><a href="../../cowork/index.html">Copilot Cowork</a><a href="../index.html" aria-current="true">Copilot+ PC</a><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></nav>
+  <a class="gh" href="https://github.com/medyabi" rel="noopener">GitHub</a>
+</header>
+<div class="doc has-toc">
+<details class="toc"><summary>Table of contents</summary><nav aria-label="On-device AI apps for Copilot+ PC"><p class="toc-title">On-device AI apps for Copilot+ PC</p><input id="toc-filter" class="toc-filter" type="search" placeholder="Filter by title" aria-label="Filter by title"><ol class="toc-list"><li><a href="../index.html">Overview</a></li><li><a href="../deploy.html">Deployment guide: from git clone to a running app</a></li><li><a href="../architecture.html">Architecture shared by all apps</a></li><li><a href="../build.html">Building an app</a></li><li><a href="../build-your-own-app.html">Build your own on-device AI app for Windows 11 (Copilot+ PC)</a></li><li><a href="../use-the-skill.html">Use the windows-ondevice-ai-app skill: step by step</a></li><li><a href="../windows-ai-lessons.html">Lessons from building on the Windows AI APIs</a></li><li class="group"><details open><summary>The apps</summary><ol><li><a href="aishelfauditorapp.html">AI Shelf Auditor</a></li><li><a href="financecopilotapp.html">Finance Copilot</a></li><li><a href="fraudinvestigatorapp.html" aria-current="page">Local Fraud Investigator</a></li><li><a href="hrrecruiterapp.html">HR Recruiter Agent</a></li><li><a href="hybridmedapp.html">HybridMed</a></li><li><a href="hybridmindapp.html">HybridMind</a></li><li><a href="localiqapp.html">LocalIQ</a></li><li><a href="localmindapp.html">LocalMind</a></li><li><a href="poephotoprocessorapp.html">POE Photo Processor</a></li><li><a href="poeverificationapp.html">POE Verification Analyst</a></li><li><a href="readingroomassistantapp.html">Reading Room Assistant (prototype)</a></li></ol></details></li></ol></nav></details>
+<main id="content" class="article">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../../index.html">AI Labs</a></li><li><a href="../index.html">Copilot+ PC track</a></li></ol></nav>
+<article class="prose">
+<h1 id="local-fraud-investigator">Local Fraud Investigator</h1><p class="meta"><span>App</span><span>3 min read</span></p>
+<p>An on-device fraud / AML investigation assistant. Load transactions and customer profiles, see risk scores and a transaction graph, open a case, and ask questions against your <strong>policy documents</strong>. The language model and the policy index run on the PC.</p>
+<h2 id="how-it-works">How it works</h2>
+<pre class="mermaid">flowchart LR
+  CSV[transactions + profiles CSV] --&gt; A[analyzeAll&lt;br/&gt;z-scores, new receivers/countries, gaps]
+  A --&gt; D[Dashboard + risk list]
+  D --&gt; CU[openCustomer → runCustomerAssessment]
+  POL[policy PDFs] --&gt;|pdfText| CH[chunkText]
+  CH --&gt;|indexPolicy op| IDX[(AppContentIndexer)]
+  CU --&gt; Q[retrievePolicyContext]
+  IDX --&gt;|queryPolicy op| Q
+  Q --&gt; M[generate op Phi Silica]
+  M --&gt; R[assessment, case report, copilot answers]</pre>
+<ul>
+<li><strong>Deterministic analysis</strong> in <code>app.js</code>: statistics (<code>avg</code>, <code>stddev</code>, <code>z</code>), first-time receivers/countries (<code>knownReceiversBefore</code>, <code>knownCountriesBefore</code>), time gaps, categories, a relationship graph (<code>renderGraph</code>).</li>
+<li><strong>Policy RAG:</strong> policy documents are chunked and added to a local semantic index; the retrieved passages are put in the prompt so the answer cites the policy.</li>
+<li><strong>Natural-language query</strong> (<code>runNLQuery</code> → <code>executeStructuredQuery</code>): the model turns a question into a structured filter that the code executes on the data.</li>
+<li><strong>Cases:</strong> <code>createCase</code>, <code>generateReport</code>.</li>
+</ul>
+<h2 id="source-files">Source files</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>File</th>
+<th>What it contains</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>MainWindow.xaml.cs</code></td>
+<td>Bridge ops <code>ensureReady</code>, <code>generate</code>, <code>pdfText</code>, <code>ocr</code>, <code>indexPolicy</code>, <code>queryPolicy</code>. <code>GetPolicyIndex</code> creates the <code>AppContentIndexer</code>; index calls run in <code>Task.Run</code>.</td>
+</tr>
+<tr>
+<td><code>www/index.html</code></td>
+<td>UI shell with three views: Dashboard, Cases, Policy Library.</td>
+</tr>
+<tr>
+<td><code>www/app.js</code></td>
+<td>All logic (≈50 KB): CSV parsing, analysis, graph, cases, policy indexing/retrieval, copilot chat.</td>
+</tr>
+<tr>
+<td><code>www/sample-transactions.csv</code>, <code>www/customer-profiles.csv</code>, <code>www/policies/*.pdf</code></td>
+<td>Synthetic data loaded by <code>loadDemoDataset</code> / <code>loadDemoPolicies</code> (AML, KYC, transaction-monitoring and investigation-handbook policies).</td>
+</tr>
+<tr>
+<td><code>sample-data/</code></td>
+<td>The same kind of data as standalone files.</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="step-by-step-deployment">Step-by-step deployment</h2>
+<p>Everything below is copy-paste PowerShell on a Windows 11 PC. Replace nothing: the repository owner is <code>medyabi</code>.</p>
+<p><strong>1. Check the PC and install the tools (once)</strong></p>
+<ul>
+<li>Windows 11 build 22621 or later, x64 (<code>winver</code>). For the AI features you need a Copilot+ PC (NPU); otherwise the app starts but reports the model as unavailable.</li>
+</ul>
+<div class="codeblock"><div class="code-head"><span>PowerShell</span><button type="button" class="copy">Copy</button></div><pre><code>winget install --id Microsoft.DotNet.SDK.8
+winget install --id Git.Git
+winget install --id GitHub.cli</code></pre></div>
+<p><strong>2. Sign in to GitHub and clone</strong> (the repository is private, so the account must have access)</p>
+<div class="codeblock"><div class="code-head"><span>PowerShell</span><button type="button" class="copy">Copy</button></div><pre><code>gh auth login
+git clone https://github.com/medyabi/windows-local-ai-apps.git
+cd windows-local-ai-apps</code></pre></div>
+<p><strong>3. Build the signed package</strong> (about 30 s to 2 min; the first build also downloads NuGet packages and needs internet)</p>
+<div class="codeblock"><div class="code-head"><span>PowerShell</span><button type="button" class="copy">Copy</button></div><pre><code>.\scripts\build-app.ps1 -App FraudInvestigatorApp</code></pre></div>
+<p>It creates a self-signed certificate if needed and writes two files: <code>dist\FraudInvestigatorApp\FraudInvestigatorApp_1.0.0.0_x64.msix</code> and <code>dist\FraudInvestigatorApp\FraudInvestigatorApp.cer</code>. A warning about <code>mspdbcmf.exe</code> is harmless.</p>
+<p><strong>4. Trust the certificate</strong> (PowerShell <strong>as administrator</strong>, once per PC)</p>
+<div class="codeblock"><div class="code-head"><span>PowerShell</span><button type="button" class="copy">Copy</button></div><pre><code>Import-Certificate -FilePath .\dist\FraudInvestigatorApp\FraudInvestigatorApp.cer -CertStoreLocation Cert:\LocalMachine\TrustedPeople</code></pre></div>
+<p><strong>5. Install</strong></p>
+<div class="codeblock"><div class="code-head"><span>PowerShell</span><button type="button" class="copy">Copy</button></div><pre><code>Add-AppxPackage -Path .\dist\FraudInvestigatorApp\FraudInvestigatorApp_1.0.0.0_x64.msix</code></pre></div>
+<p><strong>6. Launch</strong> it from the Start menu (<strong>Local Fraud Investigator</strong>) or:</p>
+<div class="codeblock"><div class="code-head"><span>PowerShell</span><button type="button" class="copy">Copy</button></div><pre><code>$p = Get-AppxPackage *FraudInvestigator*
+Start-Process "shell:AppsFolder\$($p.PackageFamilyName)!App"</code></pre></div>
+<p><strong>7. First launch</strong></p>
+<ul>
+<li>The status pill shows the on-device model state. The first time, Windows may need to prepare the model (a few minutes, may need Windows Update).</li>
+<li>Dashboard: load the demo dataset. Policy Library: load the demo policies, then wait a few seconds for the asynchronous index before asking policy questions.</li>
+</ul>
+<p><strong>8. If something fails</strong></p>
+<div class="codeblock"><div class="code-head"><span>PowerShell</span><button type="button" class="copy">Copy</button></div><pre><code>$p = Get-AppxPackage *FraudInvestigator*
+notepad "$env:LOCALAPPDATA\Packages\$($p.PackageFamilyName)\LocalState\bridge.log"</code></pre></div>
+<p>Common errors and fixes are in <a href="../deploy.html#troubleshooting"><code>docs/DEPLOYMENT.md</code></a>.</p>
+<p><strong>9. Uninstall</strong> (also removes the app's data)</p>
+<div class="codeblock"><div class="code-head"><span>PowerShell</span><button type="button" class="copy">Copy</button></div><pre><code>Get-AppxPackage *FraudInvestigator* | Remove-AppxPackage</code></pre></div>
+<h2 id="try-it">Try it</h2>
+<ol>
+<li>Dashboard → load the demo dataset; open a high-risk customer and run the assessment.</li>
+<li>Policy Library → load the demo policies (wait a few seconds: the index is asynchronous), then ask the copilot a policy question.</li>
+<li>Create a case and generate its report.</li>
+</ol>
+<h2 id="limits">Limits</h2>
+<p>The local index is asynchronous and fuzzy; calling it directly from the UI thread deadlocks (see <a href="../windows-ai-lessons.html"><code>docs/WINDOWS-AI-LESSONS.md</code></a>). Synthetic data and demo policies only: not for real investigations. The page loads a Google Fonts stylesheet (cosmetic); transaction data is not sent anywhere.</p>
+</article>
+
+<p class="source"><a href="https://github.com/medyabi/windows-local-ai-apps" rel="noopener">View the source on GitHub</a></p>
+</main>
+<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#how-it-works">How it works</a></li><li><a href="#source-files">Source files</a></li><li><a href="#step-by-step-deployment">Step-by-step deployment</a></li><li><a href="#try-it">Try it</a></li><li><a href="#limits">Limits</a></li></ol></aside>
+</div>
+<footer class="sitefoot">
+  <div class="foot-in">
+    <div><strong>AI Labs</strong><p>Hands-on Copilot labs by Mohamed Dyabi, Microsoft Certified Trainer.</p></div>
+    <ul>
+      <li><a href="../../copilot-studio/index.html">Copilot Studio track</a></li>
+      <li><a href="../../cowork/index.html">Copilot Cowork track</a></li>
+      <li><a href="../index.html">Copilot+ PC local AI track</a></li>
+      <li><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Studio-lab" rel="noopener">Copilot Studio labs on GitHub</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Cowork-lab" rel="noopener">Cowork labs on GitHub</a></li>
+      <li><a href="https://github.com/medyabi/windows-local-ai-apps" rel="noopener">Local AI apps on GitHub</a></li>
+    </ul>
+  </div>
+  <p class="fine">Use a test or demo tenant: these labs create agents, workflows and SharePoint items, and consume Copilot Credits. Preview features and labels change often. An independent site, not affiliated with Microsoft. © 2026 Mohamed Dyabi</p>
+</footer>
+<script>
+(function(){
+  // Table of contents: open on wide screens, collapsible on small ones
+  var toc = document.querySelector('details.toc');
+  if (toc) {
+    var mq = window.matchMedia('(min-width: 1024px)');
+    var sync = function(){ if (mq.matches) toc.open = true; };
+    sync(); if (mq.addEventListener) mq.addEventListener('change', sync);
+    var cur = toc.querySelector('[aria-current="page"]');
+    if (cur && cur.scrollIntoView && mq.matches) cur.scrollIntoView({block: 'center'});
+  }
+  // Filter by title
+  var f = document.getElementById('toc-filter');
+  if (f) f.addEventListener('input', function(){
+    var q = f.value.trim().toLowerCase();
+    document.querySelectorAll('.toc-list li').forEach(function(li){
+      var hit = !q || li.textContent.toLowerCase().indexOf(q) !== -1;
+      li.hidden = !hit;
+    });
+  });
+  // Copy buttons on code blocks
+  document.querySelectorAll('.codeblock').forEach(function(cb){
+    var btn = cb.querySelector('.copy'), code = cb.querySelector('code');
+    if (!btn || !code) return;
+    btn.addEventListener('click', function(){
+      navigator.clipboard.writeText(code.innerText).then(function(){
+        btn.textContent = 'Copied'; setTimeout(function(){ btn.textContent = 'Copy'; }, 1500);
+      }, function(){ btn.textContent = 'Select and copy'; });
+    });
+  });
+  // Highlight the current section in "In this article"
+  var links = document.querySelectorAll('.aside-toc a');
+  if (links.length && 'IntersectionObserver' in window) {
+    var map = {}; links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var obs = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting) {
+        links.forEach(function(a){ a.classList.remove('on'); });
+        var a = map[e.target.id]; if (a) a.classList.add('on');
+      }});
+    }, {rootMargin: '0px 0px -75% 0px'});
+    Object.keys(map).forEach(function(id){ var h = document.getElementById(id); if (h) obs.observe(h); });
+  }
+})();
+</script><script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.esm.min.mjs";const dark = document.documentElement.matches("[data-theme=dark]") || (window.matchMedia("(prefers-color-scheme: dark)").matches && !document.documentElement.matches("[data-theme=light]"));mermaid.initialize({startOnLoad:true, theme: dark ? "dark" : "neutral", securityLevel:"strict"});</script>
+</body>
+</html>

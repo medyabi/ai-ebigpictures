@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Use the windows-ondevice-ai-app skill: step by step · AI Labs</title>
+<meta name="description" content="Hands-on labs for Microsoft Copilot Studio, Agent Builder and Microsoft 365 Copilot Cowork: from a simple agent to autonomous agents.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+</head>
+<body class="t-localai">
+<a class="skip" href="#content">Skip to main content</a>
+<header class="masthead">
+  <a class="brand" href="../index.html"><img src="../assets/favicon.svg" alt="" width="24" height="24"><span>AI Labs</span></a>
+  <span class="divider" aria-hidden="true"></span>
+  <nav class="mainnav" aria-label="Main"><a href="../copilot-studio/index.html">Copilot Studio</a><a href="../cowork/index.html">Copilot Cowork</a><a href="index.html" aria-current="true">Copilot+ PC</a><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></nav>
+  <a class="gh" href="https://github.com/medyabi" rel="noopener">GitHub</a>
+</header>
+<div class="doc has-toc">
+<details class="toc"><summary>Table of contents</summary><nav aria-label="On-device AI apps for Copilot+ PC"><p class="toc-title">On-device AI apps for Copilot+ PC</p><input id="toc-filter" class="toc-filter" type="search" placeholder="Filter by title" aria-label="Filter by title"><ol class="toc-list"><li><a href="index.html">Overview</a></li><li><a href="deploy.html">Deployment guide: from git clone to a running app</a></li><li><a href="architecture.html">Architecture shared by all apps</a></li><li><a href="build.html">Building an app</a></li><li><a href="build-your-own-app.html">Build your own on-device AI app for Windows 11 (Copilot+ PC)</a></li><li><a href="use-the-skill.html" aria-current="page">Use the windows-ondevice-ai-app skill: step by step</a></li><li><a href="windows-ai-lessons.html">Lessons from building on the Windows AI APIs</a></li><li class="group"><details><summary>The apps</summary><ol><li><a href="apps/aishelfauditorapp.html">AI Shelf Auditor</a></li><li><a href="apps/financecopilotapp.html">Finance Copilot</a></li><li><a href="apps/fraudinvestigatorapp.html">Local Fraud Investigator</a></li><li><a href="apps/hrrecruiterapp.html">HR Recruiter Agent</a></li><li><a href="apps/hybridmedapp.html">HybridMed</a></li><li><a href="apps/hybridmindapp.html">HybridMind</a></li><li><a href="apps/localiqapp.html">LocalIQ</a></li><li><a href="apps/localmindapp.html">LocalMind</a></li><li><a href="apps/poephotoprocessorapp.html">POE Photo Processor</a></li><li><a href="apps/poeverificationapp.html">POE Verification Analyst</a></li><li><a href="apps/readingroomassistantapp.html">Reading Room Assistant (prototype)</a></li></ol></details></li></ol></nav></details>
+<main id="content" class="article">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">AI Labs</a></li><li><a href="index.html">Copilot+ PC track</a></li></ol></nav>
+<article class="prose">
+<h1 id="use-the-windows-ondevice-ai-app-skill-step-by-step">Use the <code>windows-ondevice-ai-app</code> skill: step by step</h1><p class="meta"><span>Guide</span><span>5 min read</span></p>
+<p>The skill lets Claude Code build a complete <strong>on-device AI app for a Windows 11 Copilot+ PC</strong> from an app idea. It carries its own working template, scripts and reference, and wires in the Windows AI components the idea needs (Phi Silica, OCR, image description, local search, summarize/rewrite/table, image generation).</p>
+<p>Skill source: <a href="https://github.com/medyabi/windows-local-ai-apps/blob/main/.claude/skills/windows-ondevice-ai-app" rel="noopener"><code>.claude/skills/windows-ondevice-ai-app/</code></a>.</p>
+<h2 id="0-what-you-need">0. What you need</h2>
+<div class="table-wrap"><table>
+
+<tbody>
+<tr>
+<td>PC</td>
+<td>Windows 11 24H2 or newer, x64. A <strong>Copilot+ PC</strong> to run the AI features (building works on any Windows 11 PC)</td>
+</tr>
+<tr>
+<td>Tools</td>
+<td><a href="https://claude.com/claude-code" rel="noopener">Claude Code</a> and the <strong>.NET 8 SDK or newer</strong> (<code>dotnet --version</code>). No Visual Studio</td>
+</tr>
+<tr>
+<td>Network</td>
+<td>Internet on first use: NuGet restore, and Windows downloads the on-device models once (a few minutes; image models can take much longer)</td>
+</tr>
+<tr>
+<td>Access</td>
+<td>This repository is <strong>private</strong>: your GitHub account must be added as a collaborator, or use the zip your colleague sends you</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="1-install-the-skill-once-per-pc">1. Install the skill (once per PC)</h2>
+<p>Pick <strong>one</strong> of the two ways.</p>
+<p><strong>A. Personal install: available in every Claude Code session on your PC</strong></p>
+<div class="codeblock"><div class="code-head"><span>PowerShell</span><button type="button" class="copy">Copy</button></div><pre><code>git clone https://github.com/medyabi/windows-local-ai-apps.git
+New-Item -ItemType Directory -Force "$env:USERPROFILE\.claude\skills" | Out-Null
+Copy-Item .\windows-local-ai-apps\.claude\skills\windows-ondevice-ai-app "$env:USERPROFILE\.claude\skills\" -Recurse -Force</code></pre></div>
+<p><strong>B. From a zip</strong> (if you cannot access the repo): unzip <code>windows-ondevice-ai-app-skill.zip</code> so that the folder <code>windows-ondevice-ai-app</code> lands in <code>%USERPROFILE%\.claude\skills\</code>.</p>
+<p><strong>C. Project-level:</strong> work inside a clone of this repository; Claude Code picks the skill up from <code>.claude\skills\</code> automatically.</p>
+<p>Check: the file <code>%USERPROFILE%\.claude\skills\windows-ondevice-ai-app\SKILL.md</code> exists. Then <strong>start a new Claude Code session</strong> (skills are read at start-up).</p>
+<h2 id="2-start-claude-code-in-your-working-folder">2. Start Claude Code in your working folder</h2>
+<div class="codeblock"><div class="code-head"><span>PowerShell</span><button type="button" class="copy">Copy</button></div><pre><code>mkdir C:\src ; cd C:\src
+claude</code></pre></div>
+<p>Optional check: ask <code>Which skills do you have?</code> and look for <code>windows-ondevice-ai-app</code>.</p>
+<h2 id="3-describe-your-app-idea">3. Describe your app idea</h2>
+<p>Write what the app is for, who uses it, what goes in, what must come out, and what may leave the PC. Claude uses the skill automatically when the request is about an on-device Windows AI app. Examples:</p>
+<div class="alert note"><p class="alert-title">Note</p><p>Create a Windows on-device AI app that checks supplier invoices (PDF or photo) against purchase orders and explains the differences. Nothing may leave the PC.</p>
+<p>Build an "ask my files" app for our product manuals: pick a folder, ask questions, answers must cite the source passage.</p>
+<p>Make a small tool that turns a photo of a whiteboard into clean meeting minutes.</p></div>
+<p>To force the skill, start the request with: <code>Use the windows-ondevice-ai-app skill to ...</code>.</p>
+<h2 id="4-what-claude-does-and-where-you-step-in">4. What Claude does (and where you step in)</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Claude</th>
+<th>You</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Restates the idea as a short brief; asks only what it cannot decide</td>
+<td>Confirm or correct the brief</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Chooses the components (language, textskills, ocr, vision, pdf, index, images)</td>
+<td>Say if you want more or fewer</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Scaffolds the project with <code>new-app.ps1</code> (only the chosen modules are kept)</td>
+<td>-</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Replaces the playground UI with the app's own screens and logic; code computes the facts, the model words them</td>
+<td>Review the screens, ask for changes</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Registers a dev copy, runs the headless self-test on the real NPU, tests with realistic synthetic data</td>
+<td>Try the app (it opens by itself)</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Builds the signed installer: <code>dist\&lt;App&gt;-x64-install.zip</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Reports what was tested and what was not</td>
+<td>Read it before sharing the app</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="5-try-the-app-yourself">5. Try the app yourself</h2>
+<p>Claude starts it for you. To start it again from the project folder:</p>
+<div class="codeblock"><div class="code-head"><span>PowerShell</span><button type="button" class="copy">Copy</button></div><pre><code>cd C:\src\&lt;YourApp&gt;
+.\scripts\dev-register.ps1        # builds, registers a "&lt;YourApp&gt;Dev" package, starts it</code></pre></div>
+<p>The first launch downloads the on-device models: wait for the status line to say the model is ready. If something returns nothing, open <code>bridge.log</code> in the app's <code>LocalState</code> folder (<code>%LOCALAPPDATA%\Packages\&lt;PackageFamilyName&gt;\LocalState</code>): it records operation names, sizes and Windows statuses, never content.</p>
+<h2 id="6-ask-for-changes">6. Ask for changes</h2>
+<p>Stay in the same Claude Code session and say what to change ("add a page that exports the findings to a Word file", "also read scanned PDFs", "shorter explanations"). To add a component later: <code>Add local search over a folder of PDFs</code>. Claude adds the module (or writes a new one) and re-runs the self-test.</p>
+<h2 id="7-package-and-install-on-another-pc">7. Package and install on another PC</h2>
+<div class="codeblock"><div class="code-head"><span>PowerShell</span><button type="button" class="copy">Copy</button></div><pre><code>cd C:\src\&lt;YourApp&gt;
+.\scripts\build-app.ps1           # -&gt; dist\&lt;YourApp&gt;-x64-install.zip</code></pre></div>
+<p>On the <strong>target Copilot+ PC</strong>: unzip, then right-click <code>Install-&lt;YourApp&gt;.ps1</code> -&gt; <em>Run with PowerShell as administrator</em> (it trusts the app's self-signed certificate once, then installs the MSIX). Start the app from the Start menu. To ship an update, raise <code>Version</code> in <code>Package.appxmanifest</code> and rebuild: the app upgrades in place and keeps its data.</p>
+<h2 id="8-without-claude-manual-use-of-the-scripts">8. Without Claude (manual use of the scripts)</h2>
+<div class="codeblock"><div class="code-head"><span>PowerShell</span><button type="button" class="copy">Copy</button></div><pre><code>$SK = "$env:USERPROFILE\.claude\skills\windows-ondevice-ai-app"
+&amp; "$SK\scripts\new-app.ps1" -Name InvoiceChecker -Display "Invoice Checker" -Components language,pdf,ocr -Publisher "CN=MyTeam" -Destination C:\src
+cd C:\src\InvoiceChecker
+.\scripts\dev-register.ps1
+.\scripts\build-app.ps1</code></pre></div>
+<p><code>-Components</code> takes any of <code>language, textskills, ocr, vision, pdf, index, images</code>, or <code>all</code>.</p>
+<h2 id="9-if-something-goes-wrong">9. If something goes wrong</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Cause / fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Claude does not use the skill</td>
+<td>Folder not at <code>...\.claude\skills\windows-ondevice-ai-app\SKILL.md</code>, or the session was not restarted. Name the skill in the request</td>
+</tr>
+<tr>
+<td><code>NotSupportedOnCurrentSystem</code></td>
+<td>The PC is not a Copilot+ PC (or Windows is older than 24H2)</td>
+</tr>
+<tr>
+<td>Model not ready / long first run</td>
+<td>Models download through Windows Update on first use; image models can take 15+ minutes. Retry</td>
+</tr>
+<tr>
+<td>Empty model answer</td>
+<td>Content moderation or prompt too large; read the status in the error text and <code>bridge.log</code></td>
+</tr>
+<tr>
+<td>Build errors after changing SDK versions</td>
+<td>The Windows AI APIs are experimental; the template is pinned to <code>Microsoft.WindowsAppSDK 2.2.2-experimental9</code>. Ask Claude to fix the affected module</td>
+</tr>
+<tr>
+<td>Installer refuses the package</td>
+<td>Run <code>Install-&lt;App&gt;.ps1</code> as administrator so the certificate gets trusted first</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="10-what-has-and-has-not-been-verified">10. What has and has not been verified</h2>
+<p>Verified on one Copilot+ PC: the template compiles with all components and with a subset, the built-in self-test passes 16 of 16 checks on the NPU, and <code>build-app.ps1</code> produces the MSIX and install zip. <strong>Not verified:</strong> installation on a clean second PC, the playground's visual layout on screen, ARM64, other SDK versions. Details and the component limits are in the skill's <a href="https://github.com/medyabi/windows-local-ai-apps/blob/main/.claude/skills/windows-ondevice-ai-app/README.md" rel="noopener"><code>README.md</code></a> and <a href="https://github.com/medyabi/windows-local-ai-apps/blob/main/.claude/skills/windows-ondevice-ai-app/reference/components.md" rel="noopener"><code>reference/components.md</code></a>.</p>
+</article>
+<nav class="pager bottom"><a href="build-your-own-app.html">‹ Build your own on-device AI app for Windows 11 (Copilot+ PC)</a><a href="windows-ai-lessons.html">Lessons from building on the Windows AI APIs ›</a></nav>
+<p class="source"><a href="https://github.com/medyabi/windows-local-ai-apps" rel="noopener">View the source on GitHub</a></p>
+</main>
+<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#0-what-you-need">0. What you need</a></li><li><a href="#1-install-the-skill-once-per-pc">1. Install the skill (once per PC)</a></li><li><a href="#2-start-claude-code-in-your-working-folder">2. Start Claude Code in your working folder</a></li><li><a href="#3-describe-your-app-idea">3. Describe your app idea</a></li><li><a href="#4-what-claude-does-and-where-you-step-in">4. What Claude does (and where you step in)</a></li><li><a href="#5-try-the-app-yourself">5. Try the app yourself</a></li><li><a href="#6-ask-for-changes">6. Ask for changes</a></li><li><a href="#7-package-and-install-on-another-pc">7. Package and install on another PC</a></li><li><a href="#8-without-claude-manual-use-of-the-scripts">8. Without Claude (manual use of the scripts)</a></li><li><a href="#9-if-something-goes-wrong">9. If something goes wrong</a></li><li><a href="#10-what-has-and-has-not-been-verified">10. What has and has not been verified</a></li></ol></aside>
+</div>
+<footer class="sitefoot">
+  <div class="foot-in">
+    <div><strong>AI Labs</strong><p>Hands-on Copilot labs by Mohamed Dyabi, Microsoft Certified Trainer.</p></div>
+    <ul>
+      <li><a href="../copilot-studio/index.html">Copilot Studio track</a></li>
+      <li><a href="../cowork/index.html">Copilot Cowork track</a></li>
+      <li><a href="index.html">Copilot+ PC local AI track</a></li>
+      <li><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Studio-lab" rel="noopener">Copilot Studio labs on GitHub</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Cowork-lab" rel="noopener">Cowork labs on GitHub</a></li>
+      <li><a href="https://github.com/medyabi/windows-local-ai-apps" rel="noopener">Local AI apps on GitHub</a></li>
+    </ul>
+  </div>
+  <p class="fine">Use a test or demo tenant: these labs create agents, workflows and SharePoint items, and consume Copilot Credits. Preview features and labels change often. An independent site, not affiliated with Microsoft. © 2026 Mohamed Dyabi</p>
+</footer>
+<script>
+(function(){
+  // Table of contents: open on wide screens, collapsible on small ones
+  var toc = document.querySelector('details.toc');
+  if (toc) {
+    var mq = window.matchMedia('(min-width: 1024px)');
+    var sync = function(){ if (mq.matches) toc.open = true; };
+    sync(); if (mq.addEventListener) mq.addEventListener('change', sync);
+    var cur = toc.querySelector('[aria-current="page"]');
+    if (cur && cur.scrollIntoView && mq.matches) cur.scrollIntoView({block: 'center'});
+  }
+  // Filter by title
+  var f = document.getElementById('toc-filter');
+  if (f) f.addEventListener('input', function(){
+    var q = f.value.trim().toLowerCase();
+    document.querySelectorAll('.toc-list li').forEach(function(li){
+      var hit = !q || li.textContent.toLowerCase().indexOf(q) !== -1;
+      li.hidden = !hit;
+    });
+  });
+  // Copy buttons on code blocks
+  document.querySelectorAll('.codeblock').forEach(function(cb){
+    var btn = cb.querySelector('.copy'), code = cb.querySelector('code');
+    if (!btn || !code) return;
+    btn.addEventListener('click', function(){
+      navigator.clipboard.writeText(code.innerText).then(function(){
+        btn.textContent = 'Copied'; setTimeout(function(){ btn.textContent = 'Copy'; }, 1500);
+      }, function(){ btn.textContent = 'Select and copy'; });
+    });
+  });
+  // Highlight the current section in "In this article"
+  var links = document.querySelectorAll('.aside-toc a');
+  if (links.length && 'IntersectionObserver' in window) {
+    var map = {}; links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var obs = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting) {
+        links.forEach(function(a){ a.classList.remove('on'); });
+        var a = map[e.target.id]; if (a) a.classList.add('on');
+      }});
+    }, {rootMargin: '0px 0px -75% 0px'});
+    Object.keys(map).forEach(function(id){ var h = document.getElementById(id); if (h) obs.observe(h); });
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lessons from building on the Windows AI APIs · AI Labs</title>
+<meta name="description" content="Hands-on labs for Microsoft Copilot Studio, Agent Builder and Microsoft 365 Copilot Cowork: from a simple agent to autonomous agents.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+</head>
+<body class="t-localai">
+<a class="skip" href="#content">Skip to main content</a>
+<header class="masthead">
+  <a class="brand" href="../index.html"><img src="../assets/favicon.svg" alt="" width="24" height="24"><span>AI Labs</span></a>
+  <span class="divider" aria-hidden="true"></span>
+  <nav class="mainnav" aria-label="Main"><a href="../copilot-studio/index.html">Copilot Studio</a><a href="../cowork/index.html">Copilot Cowork</a><a href="index.html" aria-current="true">Copilot+ PC</a><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></nav>
+  <a class="gh" href="https://github.com/medyabi" rel="noopener">GitHub</a>
+</header>
+<div class="doc has-toc">
+<details class="toc"><summary>Table of contents</summary><nav aria-label="On-device AI apps for Copilot+ PC"><p class="toc-title">On-device AI apps for Copilot+ PC</p><input id="toc-filter" class="toc-filter" type="search" placeholder="Filter by title" aria-label="Filter by title"><ol class="toc-list"><li><a href="index.html">Overview</a></li><li><a href="deploy.html">Deployment guide: from git clone to a running app</a></li><li><a href="architecture.html">Architecture shared by all apps</a></li><li><a href="build.html">Building an app</a></li><li><a href="build-your-own-app.html">Build your own on-device AI app for Windows 11 (Copilot+ PC)</a></li><li><a href="use-the-skill.html">Use the windows-ondevice-ai-app skill: step by step</a></li><li><a href="windows-ai-lessons.html" aria-current="page">Lessons from building on the Windows AI APIs</a></li><li class="group"><details><summary>The apps</summary><ol><li><a href="apps/aishelfauditorapp.html">AI Shelf Auditor</a></li><li><a href="apps/financecopilotapp.html">Finance Copilot</a></li><li><a href="apps/fraudinvestigatorapp.html">Local Fraud Investigator</a></li><li><a href="apps/hrrecruiterapp.html">HR Recruiter Agent</a></li><li><a href="apps/hybridmedapp.html">HybridMed</a></li><li><a href="apps/hybridmindapp.html">HybridMind</a></li><li><a href="apps/localiqapp.html">LocalIQ</a></li><li><a href="apps/localmindapp.html">LocalMind</a></li><li><a href="apps/poephotoprocessorapp.html">POE Photo Processor</a></li><li><a href="apps/poeverificationapp.html">POE Verification Analyst</a></li><li><a href="apps/readingroomassistantapp.html">Reading Room Assistant (prototype)</a></li></ol></details></li></ol></nav></details>
+<main id="content" class="article">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">AI Labs</a></li><li><a href="index.html">Copilot+ PC track</a></li></ol></nav>
+<article class="prose">
+<h1 id="lessons-from-building-on-the-windows-ai-apis">Lessons from building on the Windows AI APIs</h1><p class="meta"><span>Guide</span><span>4 min read</span></p>
+<p>Things that were measured while building these apps (Phi Silica through <code>Microsoft.Windows.AI.Text.LanguageModel</code>, on-device OCR, <code>AppContentIndexer</code>). They reflect the SDK version used here (<code>2.2.2-experimental9</code>) and may change.</p>
+<h2 id="the-model">The model</h2>
+<ol>
+<li><strong>Always check <code>LanguageModelResponseResult.Status</code>, not only <code>.Text</code>.</strong> <code>PromptBlockedByContentModeration</code> comes back with an empty text and no exception, so a blocked call looks like a successful empty answer.</li>
+<li><strong>What triggered the moderation block</strong> was not the obviously sensitive words. It was raw transaction descriptions containing a masked card number pattern (<code>VISA ****4471</code>) together with merchant / person-shaped text. A prompt made of pure numeric facts passed. Fix: never send raw merchant or account-like strings; map them to generic categories (« Subscription », « Auto loan payment ») before they reach a prompt. The real text stays in the UI.</li>
+<li><strong>Do not try to loosen <code>ContentFilterOptions</code> / <code>SeverityLevel</code>.</strong> Passing a custom severity returned <code>BlockedByPolicy</code> in about 30 ms, i.e. blocked before inference: overriding the filter appears to be gated behind a Limited Access Feature. Fix the prompt instead.</li>
+<li><strong>The context window is small.</strong> About 5,900 characters of transactions returned <code>PromptLargerThanContext</code> with an empty text. Cap what is sent: always the flagged items, plus a limited number of the most recent ones, with small recurring items summarised as aggregates. A "fit test" that shrinks the prompt until it passes is worth building.</li>
+<li><strong>Signed numbers confuse comparisons.</strong> « -7800.00 » was read as smaller than 5000. Show a positive amount with an explicit label (deposit / withdrawal) and tell the system prompt to compare magnitudes.</li>
+<li><strong>Decoding is close to deterministic and streaming sends deltas</strong> (LocalMind). Build the streaming UI on deltas, and do not rely on temperature to get a different answer on retry.</li>
+<li><strong>One big JSON-producing call is fragile.</strong> Splitting a combined analysis into two smaller calls fixed both an 8-minute latency and truncated JSON (HR Recruiter).</li>
+<li><strong>Verify every figure the model writes</strong> against the facts computed by code, and show a warning (and the facts) when one does not match. Most of the apps do this.</li>
+</ol>
+<h2 id="ocr-and-documents">OCR and documents</h2>
+<ul>
+<li>On-device OCR pattern that works: base64 → <code>InMemoryRandomAccessStream</code> (via <code>DataWriter</code>) → <code>BitmapDecoder.CreateAsync</code> → <code>GetSoftwareBitmapAsync()</code> → <code>ImageBuffer.CreateForSoftwareBitmap</code> → <code>TextRecognizer.CreateAsync()</code> → <code>RecognizeTextFromImage(...).Lines</code>.</li>
+<li>PDFs with a text layer are read with PdfPig; scanned PDFs are rendered with <code>Windows.Data.Pdf</code> and sent to OCR.</li>
+</ul>
+<h2 id="the-local-index-appcontentindexer">The local index (<code>AppContentIndexer</code>)</h2>
+<ul>
+<li>Indexing is <strong>asynchronous</strong>: query right after adding content and you get nothing. Poll or retry with a delay.</li>
+<li>Matching is <strong>fuzzy</strong>, not exact: confirm hits on the client side (e.g. by checking the text really contains the quoted terms).</li>
+<li>Calling it directly from a WebView2 message handler can <strong>deadlock the UI thread</strong>: run it with <code>Task.Run</code>.</li>
+<li><strong>Passage retrieval cannot list table rows.</strong> A price list or SKU table is hundreds of near-identical rows. The word the user types ("SKU") is often only in the table <em>header</em>, the rows that answer "list the Datacenter SKUs" are spread over many passages, and the model's small context holds only a handful of passages, so it gets prose and the wrong pages and refuses. When the question asks for codes, scan the rows in code instead (every row that mentions all the words the user named, with the words found in nearly every row used only to rank) and give the model that one compact list; see <code>apps/LocalMindApp/RowLookup.cs</code>. Say how many rows were not shown rather than implying the list is complete.</li>
+<li>Price lists abbreviate ("DataCtr", "STD or DC"): a word that is missing from your matches may be printed differently in the rows. Check the raw extracted text, not only the PDF.</li>
+</ul>
+<h2 id="debugging-this-stack">Debugging this stack</h2>
+<ul>
+<li>Add a temporary <strong>self-test block</strong> that runs the whole pipeline at startup and logs to a file; when an AI call "silently returns nothing", bisect the prompt into variants logged separately.</li>
+<li>WebView2 screenshots can be taken headlessly with <code>CapturePreviewAsync</code> (useful when screen capture of the app is blank).</li>
+<li>Using the WebView2 DevTools relay from the host crashed one app (HR Recruiter) regardless of load: avoid it.</li>
+<li>Packaged apps need package identity: register a Debug build rather than running the raw <code>.exe</code> (see <code>BUILD.md</code>).</li>
+</ul>
+</article>
+<nav class="pager bottom"><a href="use-the-skill.html">‹ Use the windows-ondevice-ai-app skill: step by step</a><span></span></nav>
+<p class="source"><a href="https://github.com/medyabi/windows-local-ai-apps" rel="noopener">View the source on GitHub</a></p>
+</main>
+<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#the-model">The model</a></li><li><a href="#ocr-and-documents">OCR and documents</a></li><li><a href="#the-local-index-appcontentindexer">The local index (AppContentIndexer)</a></li><li><a href="#debugging-this-stack">Debugging this stack</a></li></ol></aside>
+</div>
+<footer class="sitefoot">
+  <div class="foot-in">
+    <div><strong>AI Labs</strong><p>Hands-on Copilot labs by Mohamed Dyabi, Microsoft Certified Trainer.</p></div>
+    <ul>
+      <li><a href="../copilot-studio/index.html">Copilot Studio track</a></li>
+      <li><a href="../cowork/index.html">Copilot Cowork track</a></li>
+      <li><a href="index.html">Copilot+ PC local AI track</a></li>
+      <li><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Studio-lab" rel="noopener">Copilot Studio labs on GitHub</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Cowork-lab" rel="noopener">Cowork labs on GitHub</a></li>
+      <li><a href="https://github.com/medyabi/windows-local-ai-apps" rel="noopener">Local AI apps on GitHub</a></li>
+    </ul>
+  </div>
+  <p class="fine">Use a test or demo tenant: these labs create agents, workflows and SharePoint items, and consume Copilot Credits. Preview features and labels change often. An independent site, not affiliated with Microsoft. © 2026 Mohamed Dyabi</p>
+</footer>
+<script>
+(function(){
+  // Table of contents: open on wide screens, collapsible on small ones
+  var toc = document.querySelector('details.toc');
+  if (toc) {
+    var mq = window.matchMedia('(min-width: 1024px)');
+    var sync = function(){ if (mq.matches) toc.open = true; };
+    sync(); if (mq.addEventListener) mq.addEventListener('change', sync);
+    var cur = toc.querySelector('[aria-current="page"]');
+    if (cur && cur.scrollIntoView && mq.matches) cur.scrollIntoView({block: 'center'});
+  }
+  // Filter by title
+  var f = document.getElementById('toc-filter');
+  if (f) f.addEventListener('input', function(){
+    var q = f.value.trim().toLowerCase();
+    document.querySelectorAll('.toc-list li').forEach(function(li){
+      var hit = !q || li.textContent.toLowerCase().indexOf(q) !== -1;
+      li.hidden = !hit;
+    });
+  });
+  // Copy buttons on code blocks
+  document.querySelectorAll('.codeblock').forEach(function(cb){
+    var btn = cb.querySelector('.copy'), code = cb.querySelector('code');
+    if (!btn || !code) return;
+    btn.addEventListener('click', function(){
+      navigator.clipboard.writeText(code.innerText).then(function(){
+        btn.textContent = 'Copied'; setTimeout(function(){ btn.textContent = 'Copy'; }, 1500);
+      }, function(){ btn.textContent = 'Select and copy'; });
+    });
+  });
+  // Highlight the current section in "In this article"
+  var links = document.querySelectorAll('.aside-toc a');
+  if (links.length && 'IntersectionObserver' in window) {
+    var map = {}; links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var obs = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting) {
+        links.forEach(function(a){ a.classList.remove('on'); });
+        var a = map[e.target.id]; if (a) a.classList.add('on');
+      }});
+    }, {rootMargin: '0px 0px -75% 0px'});
+    Object.keys(map).forEach(function(id){ var h = document.getElementById(id); if (h) obs.observe(h); });
+  }
+})();
+</script>
+</body>
+</html>

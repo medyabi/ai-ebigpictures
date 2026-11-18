@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Builds ai.ebigpictures.com from the two Copilot lab repositories.
+"""Builds ai.ebigpictures.com from the lab repositories.
 
-Usage: python3 build.py <copilot-studio-lab-repo> <copilot-cowork-lab-repo> <output-dir>
+Usage: python3 build.py <copilot-studio-lab-repo> <copilot-cowork-lab-repo> <windows-local-ai-apps-repo> <output-dir>
 """
 import html
 import os
@@ -13,12 +13,13 @@ import sys
 
 import markdown
 
-STU, COW, OUT = (os.path.abspath(p) for p in sys.argv[1:4])
+STU, COW, LAI, OUT = (os.path.abspath(p) for p in sys.argv[1:5])
 REPO_URL = {"stu": "https://github.com/medyabi/Copilot-Studio-lab",
-            "cow": "https://github.com/medyabi/Copilot-Cowork-lab"}
+            "cow": "https://github.com/medyabi/Copilot-Cowork-lab",
+            "lai": "https://github.com/medyabi/windows-local-ai-apps"}
 GH = {k: v + "/blob/main/" for k, v in REPO_URL.items()}
-ROOTS = {"stu": STU, "cow": COW}
-TRACK = {"stu": "studio", "cow": "cowork"}
+ROOTS = {"stu": STU, "cow": COW, "lai": LAI}
+TRACK = {"stu": "studio", "cow": "cowork", "lai": "localai"}
 
 # --------------------------------------------------------------------------
 # 1. Which source files become which pages
@@ -55,6 +56,16 @@ for f in sorted(os.listdir(os.path.join(COW, "Instructions/Trainer"))):
     if f.endswith(".md"):
         add("cow", f"Instructions/Trainer/{f}", "cowork/trainer-guide.html", "Trainer guide")
 
+add("lai", "README.md", "local-ai/index.html", "Overview")
+for f, out in (("DEPLOYMENT.md", "deploy"), ("ARCHITECTURE.md", "architecture"), ("BUILD.md", "build"),
+               ("BUILD-YOUR-OWN-APP.md", "build-your-own-app"), ("USE-THE-SKILL.md", "use-the-skill"),
+               ("WINDOWS-AI-LESSONS.md", "windows-ai-lessons")):
+    if os.path.isfile(os.path.join(LAI, "docs", f)):
+        add("lai", f"docs/{f}", f"local-ai/{out}.html", "Guide")
+for d in sorted(os.listdir(os.path.join(LAI, "apps"))):
+    if os.path.isfile(os.path.join(LAI, "apps", d, "README.md")):
+        add("lai", f"apps/{d}/README.md", f"local-ai/apps/{slug(d + '.md')}.html", "App")
+
 
 def first_h1(path):
     with open(path, encoding="utf-8") as fh:
@@ -64,27 +75,32 @@ def first_h1(path):
     return os.path.basename(path)
 
 
-titles = {k: first_h1(os.path.join(ROOTS[k[0]], k[1])) for k in pages}
+titles = {k: first_h1(os.path.join(ROOTS[k[0]], k[1])).replace("`", "") for k in pages}
 TRACK_NAME = {"studio": "From simple agents to autonomous agents",
-              "cowork": "AI automation with Copilot Cowork"}
-TRACK_SHORT = {"studio": "Copilot Studio track", "cowork": "Cowork track"}
+              "cowork": "AI automation with Copilot Cowork",
+              "localai": "On-device AI apps for Copilot+ PC"}
+TRACK_SHORT = {"studio": "Copilot Studio track", "cowork": "Cowork track", "localai": "Copilot+ PC track"}
+GROUP_LABEL = {"studio": "Teaching editions", "cowork": "Teaching editions", "localai": "The apps"}
 
 
 def short(t):
+    t = t.replace("`", "")
     t = re.sub(r"\s*\(Teaching edition\)$", "", t)
     return re.sub(r"^Lab (\d+)\s*[-:]\s*", r"\1 · ", t)
 
 
 def nav_for(repo):
     items = [("Overview", pages[(repo, "README.md")])]
-    labs = sorted((o, s) for (r, s), o in pages.items() if r == repo and kinds[(r, s)] == "Lab")
+    labs = [(o, s) for (r, s), o in pages.items() if r == repo and kinds[(r, s)] in ("Lab", "Guide")]
+    if repo != "lai":
+        labs.sort()
     items += [(short(titles[(repo, s)]), o) for o, s in labs]
-    teach = sorted((o, s) for (r, s), o in pages.items() if r == repo and kinds[(r, s)] == "Teaching edition")
+    teach = sorted((o, s) for (r, s), o in pages.items() if r == repo and kinds[(r, s)] in ("Teaching edition", "App"))
     trainer = [(o, s) for (r, s), o in pages.items() if r == repo and kinds[(r, s)] == "Trainer guide"]
     return items, [(short(titles[(repo, s)]), o) for o, s in teach], [("Trainer guide", o) for o, s in trainer]
 
 
-NAV = {"studio": nav_for("stu"), "cowork": nav_for("cow")}
+NAV = {"studio": nav_for("stu"), "cowork": nav_for("cow"), "localai": nav_for("lai")}
 
 # --------------------------------------------------------------------------
 # 3. Rendering helpers
@@ -120,6 +136,8 @@ def rewrite_url(url, repo, src_rel, out_rel, is_img=False):
             return rel(out_rel, copy_asset(repo, target))
         return url
     key = (repo, target)
+    if key not in pages and (repo, target.rstrip("/") + "/README.md") in pages:
+        key = (repo, target.rstrip("/") + "/README.md")
     if key in pages:
         new = rel(out_rel, pages[key])
     else:
@@ -295,6 +313,7 @@ def meta_line(body, kind):
 ICONS = {
     "studio": '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-8l-5 4v-4H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Zm8 2.5c-.4 2.3-1.2 3.1-3.5 3.5 2.3.4 3.1 1.2 3.5 3.5.4-2.3 1.2-3.1 3.5-3.5-2.3-.4-3.1-1.2-3.5-3.5Z" fill="currentColor"/></svg>',
     "cowork": '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h7v7H4zm9 0h7v7h-7zM4 14h7v5H4zm9 0h7v5h-7z" fill="currentColor"/></svg>',
+    "localai": '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Zm6 3v4h6V8Zm-7 11h20v2H2Z" fill="currentColor"/></svg>',
     "trainer": '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 1 8l11 5 9-4.1V15h2V8Zm-6 9.2V16c0 1.7 2.7 3 6 3s6-1.3 6-3v-3.8l-6 2.7Z" fill="currentColor"/></svg>',
 }
 
@@ -309,7 +328,7 @@ def sidebar(track, out_rel):
     if teach:
         sub = "".join(f"<li>{link(l, t)}</li>" for l, t in teach)
         open_ = " open" if any(t == out_rel for _, t in teach) else ""
-        parts.append(f'<li class="group"><details{open_}><summary>Teaching editions</summary><ol>{sub}</ol></details></li>')
+        parts.append(f'<li class="group"><details{open_}><summary>{GROUP_LABEL[track]}</summary><ol>{sub}</ol></details></li>')
     parts += [f"<li>{link(l, t)}</li>" for l, t in trainer]
     name = TRACK_NAME[track]
     return (f'<details class="toc"><summary>Table of contents</summary>'
@@ -339,7 +358,7 @@ def pager(track, out_rel):
 def shell(out_rel, title, body, track=None, extra="", kind="Article", repo=None):
     css = rel(out_rel, "assets/site.css")
     home = rel(out_rel, "index.html")
-    nav = [("Copilot Studio", "copilot-studio/index.html", "studio"), ("Copilot Cowork", "cowork/index.html", "cowork"),
+    nav = [("Copilot Studio", "copilot-studio/index.html", "studio"), ("Copilot Cowork", "cowork/index.html", "cowork"), ("Copilot+ PC", "local-ai/index.html", "localai"),
            ("Windows Server Labs", "https://learn.ebigpictures.com/", "ws")]
     cur = ' aria-current="true"'
     nav_html = "".join(f'<a href="{t if t.startswith("http") else rel(out_rel, t)}"{cur if track == k else ""}>{l}</a>' for l, t, k in nav)
@@ -398,9 +417,11 @@ def shell(out_rel, title, body, track=None, extra="", kind="Article", repo=None)
     <ul>
       <li><a href="{rel(out_rel, 'copilot-studio/index.html')}">Copilot Studio track</a></li>
       <li><a href="{rel(out_rel, 'cowork/index.html')}">Copilot Cowork track</a></li>
+      <li><a href="{rel(out_rel, 'local-ai/index.html')}">Copilot+ PC local AI track</a></li>
       <li><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></li>
       <li><a href="{REPO_URL['stu']}" rel="noopener">Copilot Studio labs on GitHub</a></li>
       <li><a href="{REPO_URL['cow']}" rel="noopener">Cowork labs on GitHub</a></li>
+      <li><a href="{REPO_URL['lai']}" rel="noopener">Local AI apps on GitHub</a></li>
     </ul>
   </div>
   <p class="fine">Use a test or demo tenant: these labs create agents, workflows and SharePoint items, and consume Copilot Credits. Preview features and labels change often. An independent site, not affiliated with Microsoft. © 2026 Mohamed Dyabi</p>
@@ -423,9 +444,9 @@ def home_page():
     body = f"""
 <section class="hero">
   <div class="wrap">
-    <p class="kicker">Microsoft 365 Copilot · Copilot Studio · Copilot Cowork</p>
+    <p class="kicker">Copilot Studio · Copilot Cowork · Copilot+ PC</p>
     <h1>Build AI agents by doing it, one lab at a time</h1>
-    <p class="lede">Two hands-on tracks. In the first, you grow one agent from a few lines of instructions into a team of agents that act, ask for approval and start on their own. In the second, you hand real multi-step work to Copilot Cowork and package it as your own skills and plugins.</p>
+    <p class="lede">Three hands-on tracks. Grow one agent from a few lines of instructions into a team of agents that act, ask for approval and start on their own. Hand real multi-step work to Copilot Cowork. And run AI on the PC itself, on the NPU of a Copilot+ PC, where the data never leaves the device.</p>
     <p class="cta"><a class="btn primary" href="{first_stu}">Start the Copilot Studio track</a><a class="btn" href="{first_cow}">Start the Cowork track</a></p>
   </div>
 </section>
@@ -447,6 +468,13 @@ def home_page():
     <ol class="mini">{lab_list('cowork')}</ol>
     <p class="card-foot"><a href="cowork/index.html">Start the Cowork track ›</a></p>
   </article>
+  <article class="card">
+    <div class="card-head"><span class="ico c-green">{ICONS['localai']}</span><div><p class="card-kicker">Hands-on · {len(NAV['localai'][1])} apps · Copilot+ PC</p>
+    <h3><a href="local-ai/index.html">On-device AI apps for Copilot+ PC</a></h3></div></div>
+    <p>AI that runs on the PC, on the NPU, through the Windows AI APIs: Phi Silica, on-device OCR, image description and a local semantic index. Build and install real desktop apps for finance, fraud, HR, retail and personal knowledge, where the data never leaves the device. Then build your own.</p>
+    <ol class="mini">{"".join(f'<li><a href="{t}">{html.escape(l)}</a></li>' for l, t in NAV['localai'][0][1:])}</ol>
+    <p class="card-foot"><a href="local-ai/index.html">Start the Copilot+ PC track ›</a></p>
+  </article>
 </div>
 
 <h2 class="section-title">How every lab works</h2>
@@ -459,9 +487,10 @@ def home_page():
 </ol>
 
 <h2 class="section-title">What you need</h2>
-<div class="cards two">
+<div class="cards">
   <div class="card plain"><h3>Copilot Studio track</h3><p>A test Microsoft 365 tenant, a Microsoft 365 Copilot license, Copilot Studio access with Copilot Credits, and a Power Platform environment with Dataverse.</p></div>
   <div class="card plain"><h3>Cowork track</h3><p>A Microsoft 365 account with Copilot and access to Copilot Cowork. Sample files are provided in the repository.</p></div>
+  <div class="card plain"><h3>Copilot+ PC track</h3><p>A Copilot+ PC with Windows 11 24H2 or newer to run the AI features, plus Git and the .NET 8 SDK. No Visual Studio, no cloud subscription.</p></div>
 </div>
 
 <section class="band">

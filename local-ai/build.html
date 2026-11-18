@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Building an app · AI Labs</title>
+<meta name="description" content="Hands-on labs for Microsoft Copilot Studio, Agent Builder and Microsoft 365 Copilot Cowork: from a simple agent to autonomous agents.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+</head>
+<body class="t-localai">
+<a class="skip" href="#content">Skip to main content</a>
+<header class="masthead">
+  <a class="brand" href="../index.html"><img src="../assets/favicon.svg" alt="" width="24" height="24"><span>AI Labs</span></a>
+  <span class="divider" aria-hidden="true"></span>
+  <nav class="mainnav" aria-label="Main"><a href="../copilot-studio/index.html">Copilot Studio</a><a href="../cowork/index.html">Copilot Cowork</a><a href="index.html" aria-current="true">Copilot+ PC</a><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></nav>
+  <a class="gh" href="https://github.com/medyabi" rel="noopener">GitHub</a>
+</header>
+<div class="doc has-toc">
+<details class="toc"><summary>Table of contents</summary><nav aria-label="On-device AI apps for Copilot+ PC"><p class="toc-title">On-device AI apps for Copilot+ PC</p><input id="toc-filter" class="toc-filter" type="search" placeholder="Filter by title" aria-label="Filter by title"><ol class="toc-list"><li><a href="index.html">Overview</a></li><li><a href="deploy.html">Deployment guide: from git clone to a running app</a></li><li><a href="architecture.html">Architecture shared by all apps</a></li><li><a href="build.html" aria-current="page">Building an app</a></li><li><a href="build-your-own-app.html">Build your own on-device AI app for Windows 11 (Copilot+ PC)</a></li><li><a href="use-the-skill.html">Use the windows-ondevice-ai-app skill: step by step</a></li><li><a href="windows-ai-lessons.html">Lessons from building on the Windows AI APIs</a></li><li class="group"><details><summary>The apps</summary><ol><li><a href="apps/aishelfauditorapp.html">AI Shelf Auditor</a></li><li><a href="apps/financecopilotapp.html">Finance Copilot</a></li><li><a href="apps/fraudinvestigatorapp.html">Local Fraud Investigator</a></li><li><a href="apps/hrrecruiterapp.html">HR Recruiter Agent</a></li><li><a href="apps/hybridmedapp.html">HybridMed</a></li><li><a href="apps/hybridmindapp.html">HybridMind</a></li><li><a href="apps/localiqapp.html">LocalIQ</a></li><li><a href="apps/localmindapp.html">LocalMind</a></li><li><a href="apps/poephotoprocessorapp.html">POE Photo Processor</a></li><li><a href="apps/poeverificationapp.html">POE Verification Analyst</a></li><li><a href="apps/readingroomassistantapp.html">Reading Room Assistant (prototype)</a></li></ol></details></li></ol></nav></details>
+<main id="content" class="article">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">AI Labs</a></li><li><a href="index.html">Copilot+ PC track</a></li></ol></nav>
+<article class="prose">
+<h1 id="building-an-app">Building an app</h1><p class="meta"><span>Guide</span><span>2 min read</span></p>
+<p>Every app in <code>apps/</code> is a <strong>packaged WinUI 3 + WebView2</strong> desktop app. It needs <em>package identity</em> (for <code>ApplicationData</code>, and for the <code>Microsoft.Windows.AI.*</code> APIs to work at all), so it is built as an <strong>MSIX</strong> signed with a certificate you create yourself. No binaries are published in this repository.</p>
+<h2 id="1-prerequisites">1. Prerequisites</h2>
+<ul>
+<li>Windows 11, x64; for the AI features a PC supporting the Windows AI APIs (Phi Silica: Copilot+ PC)</li>
+<li>.NET 8 SDK</li>
+<li>Windows SDK / Build Tools 10.0.26100 (the projects pin <code>Microsoft.Windows.SDK.BuildTools 10.0.26100.4654</code>)</li>
+<li>Windows App SDK <code>2.2.2-experimental9</code> (restored by NuGet)</li>
+</ul>
+<h2 id="2-create-and-trust-your-own-signing-certificate-once">2. Create and trust your own signing certificate (once)</h2>
+<div class="codeblock"><div class="code-head"><span>PowerShell</span><button type="button" class="copy">Copy</button></div><pre><code>$cert = New-SelfSignedCertificate -Type Custom -Subject "CN=YourName" -KeyUsage DigitalSignature `
+  -FriendlyName "On-device AI apps (dev)" -CertStoreLocation "Cert:\CurrentUser\My" `
+  -TextExtension @("2.5.29.37={text}1.3.6.1.5.5.7.3.3", "2.5.29.19={text}")
+$cert.Thumbprint                                  # keep this value
+Export-Certificate -Cert $cert -FilePath .\dev.cer
+
+# in an elevated PowerShell: trust it so that the MSIX can be installed
+Import-Certificate -FilePath .\dev.cer -CertStoreLocation Cert:\LocalMachine\TrustedPeople</code></pre></div>
+<h2 id="3-point-the-app-at-your-certificate">3. Point the app at your certificate</h2>
+<p>In the app folder:</p>
+<ul>
+<li><code>*.csproj</code>: set <code>&lt;PackageCertificateThumbprint&gt;</code> to your thumbprint (the value in the repository belongs to the author's machine and will not work for you). <code>AppxPackageSigningEnabled</code> stays <code>true</code>.</li>
+<li><code>Package.appxmanifest</code>: set <code>Publisher="CN=YourName"</code> (it must equal the certificate subject) and, if you want, the package <code>Name</code>.</li>
+</ul>
+<h2 id="4-build-the-msix-command-line-no-visual-studio-needed">4. Build the MSIX (command line, no Visual Studio needed)</h2>
+<div class="codeblock"><div class="code-head"><span>PowerShell</span><button type="button" class="copy">Copy</button></div><pre><code>cd apps\LocalMindApp
+dotnet build -c Release -p:Platform=x64 -p:GenerateAppxPackageOnBuild=true -p:AppxPackageDir="AppPackages\" -p:AppxBundle=Never -p:UapAppxPackageBuildMode=SideloadOnly</code></pre></div>
+<p>The package is written to <code>AppPackages\&lt;Name&gt;_&lt;version&gt;_x64_Test\&lt;Name&gt;_&lt;version&gt;_x64.msix</code>. Install it with:</p>
+<div class="codeblock"><div class="code-head"><span>PowerShell</span><button type="button" class="copy">Copy</button></div><pre><code>Add-AppxPackage -Path .\AppPackages\&lt;Name&gt;_&lt;version&gt;_x64_Test\&lt;Name&gt;_&lt;version&gt;_x64.msix</code></pre></div>
+<h2 id="5-developer-loop">5. Developer loop</h2>
+<p>Running the raw unpackaged <code>.exe</code> does <strong>not</strong> work: <code>ApplicationData.Current</code> throws without package identity and the AI APIs are unreliable. Build a Debug configuration and register it loosely instead:</p>
+<div class="codeblock"><div class="code-head"><span>PowerShell</span><button type="button" class="copy">Copy</button></div><pre><code>dotnet build -c Debug -p:Platform=x64
+Add-AppxPackage -Register "&lt;bin&gt;\Debug\net8.0-windows10.0.22621.0\win-x64\AppxManifest.xml" -ForceApplicationShutdown
+Start-Process "shell:AppsFolder\&lt;PackageFamilyName&gt;!App"</code></pre></div>
+<p><code>Get-AppxPackage *&lt;AppName&gt;*</code> shows the package family name. Each app writes <code>bridge.log</code> in its package's <code>LocalState</code> folder (<code>%LOCALAPPDATA%\Packages\&lt;PackageFamilyName&gt;\LocalState</code>): start there when something does not work.</p>
+<h2 id="notes">Notes</h2>
+<ul>
+<li><code>UglyToad.PdfPig</code> is pinned to a prerelease in the apps that read PDFs (at the time of building, no stable version matched); check NuGet for a newer stable one.</li>
+<li>The web UI is plain HTML/JS in each app's <code>www/</code> folder, loaded by the WebView2 shell; most UI changes do not touch the C# code.</li>
+<li>Only HybridMed and HybridMind have a cloud stage, and both need an endpoint (and key) that <strong>you</strong> provide. Some other apps also make small network requests (fonts, a CDN, geocoding, a job-posting URL): see the network table in the main README.</li>
+<li><a href="https://github.com/medyabi/windows-local-ai-apps/blob/main/scripts/build-app.ps1" rel="noopener"><code>../scripts/build-app.ps1</code></a> automates steps 2–4 (certificate, patching a temporary copy, build); the step-by-step guide is <a href="deploy.html"><code>DEPLOYMENT.md</code></a>.</li>
+</ul>
+</article>
+<nav class="pager bottom"><a href="architecture.html">‹ Architecture shared by all apps</a><a href="build-your-own-app.html">Build your own on-device AI app for Windows 11 (Copilot+ PC) ›</a></nav>
+<p class="source"><a href="https://github.com/medyabi/windows-local-ai-apps" rel="noopener">View the source on GitHub</a></p>
+</main>
+<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#1-prerequisites">1. Prerequisites</a></li><li><a href="#2-create-and-trust-your-own-signing-certificate-once">2. Create and trust your own signing certificate (once)</a></li><li><a href="#3-point-the-app-at-your-certificate">3. Point the app at your certificate</a></li><li><a href="#4-build-the-msix-command-line-no-visual-studio-needed">4. Build the MSIX (command line, no Visual Studio needed)</a></li><li><a href="#5-developer-loop">5. Developer loop</a></li><li><a href="#notes">Notes</a></li></ol></aside>
+</div>
+<footer class="sitefoot">
+  <div class="foot-in">
+    <div><strong>AI Labs</strong><p>Hands-on Copilot labs by Mohamed Dyabi, Microsoft Certified Trainer.</p></div>
+    <ul>
+      <li><a href="../copilot-studio/index.html">Copilot Studio track</a></li>
+      <li><a href="../cowork/index.html">Copilot Cowork track</a></li>
+      <li><a href="index.html">Copilot+ PC local AI track</a></li>
+      <li><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Studio-lab" rel="noopener">Copilot Studio labs on GitHub</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Cowork-lab" rel="noopener">Cowork labs on GitHub</a></li>
+      <li><a href="https://github.com/medyabi/windows-local-ai-apps" rel="noopener">Local AI apps on GitHub</a></li>
+    </ul>
+  </div>
+  <p class="fine">Use a test or demo tenant: these labs create agents, workflows and SharePoint items, and consume Copilot Credits. Preview features and labels change often. An independent site, not affiliated with Microsoft. © 2026 Mohamed Dyabi</p>
+</footer>
+<script>
+(function(){
+  // Table of contents: open on wide screens, collapsible on small ones
+  var toc = document.querySelector('details.toc');
+  if (toc) {
+    var mq = window.matchMedia('(min-width: 1024px)');
+    var sync = function(){ if (mq.matches) toc.open = true; };
+    sync(); if (mq.addEventListener) mq.addEventListener('change', sync);
+    var cur = toc.querySelector('[aria-current="page"]');
+    if (cur && cur.scrollIntoView && mq.matches) cur.scrollIntoView({block: 'center'});
+  }
+  // Filter by title
+  var f = document.getElementById('toc-filter');
+  if (f) f.addEventListener('input', function(){
+    var q = f.value.trim().toLowerCase();
+    document.querySelectorAll('.toc-list li').forEach(function(li){
+      var hit = !q || li.textContent.toLowerCase().indexOf(q) !== -1;
+      li.hidden = !hit;
+    });
+  });
+  // Copy buttons on code blocks
+  document.querySelectorAll('.codeblock').forEach(function(cb){
+    var btn = cb.querySelector('.copy'), code = cb.querySelector('code');
+    if (!btn || !code) return;
+    btn.addEventListener('click', function(){
+      navigator.clipboard.writeText(code.innerText).then(function(){
+        btn.textContent = 'Copied'; setTimeout(function(){ btn.textContent = 'Copy'; }, 1500);
+      }, function(){ btn.textContent = 'Select and copy'; });
+    });
+  });
+  // Highlight the current section in "In this article"
+  var links = document.querySelectorAll('.aside-toc a');
+  if (links.length && 'IntersectionObserver' in window) {
+    var map = {}; links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var obs = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting) {
+        links.forEach(function(a){ a.classList.remove('on'); });
+        var a = map[e.target.id]; if (a) a.classList.add('on');
+      }});
+    }, {rootMargin: '0px 0px -75% 0px'});
+    Object.keys(map).forEach(function(id){ var h = document.getElementById(id); if (h) obs.observe(h); });
+  }
+})();
+</script>
+</body>
+</html>

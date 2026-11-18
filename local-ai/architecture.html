@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Architecture shared by all apps · AI Labs</title>
+<meta name="description" content="Hands-on labs for Microsoft Copilot Studio, Agent Builder and Microsoft 365 Copilot Cowork: from a simple agent to autonomous agents.">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+</head>
+<body class="t-localai">
+<a class="skip" href="#content">Skip to main content</a>
+<header class="masthead">
+  <a class="brand" href="../index.html"><img src="../assets/favicon.svg" alt="" width="24" height="24"><span>AI Labs</span></a>
+  <span class="divider" aria-hidden="true"></span>
+  <nav class="mainnav" aria-label="Main"><a href="../copilot-studio/index.html">Copilot Studio</a><a href="../cowork/index.html">Copilot Cowork</a><a href="index.html" aria-current="true">Copilot+ PC</a><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></nav>
+  <a class="gh" href="https://github.com/medyabi" rel="noopener">GitHub</a>
+</header>
+<div class="doc has-toc">
+<details class="toc"><summary>Table of contents</summary><nav aria-label="On-device AI apps for Copilot+ PC"><p class="toc-title">On-device AI apps for Copilot+ PC</p><input id="toc-filter" class="toc-filter" type="search" placeholder="Filter by title" aria-label="Filter by title"><ol class="toc-list"><li><a href="index.html">Overview</a></li><li><a href="deploy.html">Deployment guide: from git clone to a running app</a></li><li><a href="architecture.html" aria-current="page">Architecture shared by all apps</a></li><li><a href="build.html">Building an app</a></li><li><a href="build-your-own-app.html">Build your own on-device AI app for Windows 11 (Copilot+ PC)</a></li><li><a href="use-the-skill.html">Use the windows-ondevice-ai-app skill: step by step</a></li><li><a href="windows-ai-lessons.html">Lessons from building on the Windows AI APIs</a></li><li class="group"><details><summary>The apps</summary><ol><li><a href="apps/aishelfauditorapp.html">AI Shelf Auditor</a></li><li><a href="apps/financecopilotapp.html">Finance Copilot</a></li><li><a href="apps/fraudinvestigatorapp.html">Local Fraud Investigator</a></li><li><a href="apps/hrrecruiterapp.html">HR Recruiter Agent</a></li><li><a href="apps/hybridmedapp.html">HybridMed</a></li><li><a href="apps/hybridmindapp.html">HybridMind</a></li><li><a href="apps/localiqapp.html">LocalIQ</a></li><li><a href="apps/localmindapp.html">LocalMind</a></li><li><a href="apps/poephotoprocessorapp.html">POE Photo Processor</a></li><li><a href="apps/poeverificationapp.html">POE Verification Analyst</a></li><li><a href="apps/readingroomassistantapp.html">Reading Room Assistant (prototype)</a></li></ol></details></li></ol></nav></details>
+<main id="content" class="article">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">AI Labs</a></li><li><a href="index.html">Copilot+ PC track</a></li></ol></nav>
+<article class="prose">
+<h1 id="architecture-shared-by-all-apps">Architecture shared by all apps</h1><p class="meta"><span>Guide</span><span>3 min read</span></p>
+<p>All eleven apps are the same kind of program: a <strong>packaged WinUI 3 window that does nothing but host a WebView2 browser</strong>, plus a C# "host" that exposes the Windows AI APIs to the web page through a tiny JSON bridge.</p>
+<pre class="mermaid">flowchart LR
+  subgraph UI["WebView2 page (www/)"]
+    H[index.html + app.js] --&gt;|"call('generate', {prompt})"| B[bridge]
+  end
+  B --&gt;|"window.chrome.webview.postMessage"| W
+  subgraph HOST["WinUI 3 host (C#)"]
+    W[MainWindow.xaml.cs&lt;br/&gt;OnWebMessageReceived] --&gt; OPS{op}
+    OPS --&gt;|generate| LM[LanguageModel&lt;br/&gt;Phi Silica]
+    OPS --&gt;|ocr| OCR[TextRecognizer]
+    OPS --&gt;|describeImage| IDG[ImageDescriptionGenerator]
+    OPS --&gt;|pdfText| PDF[PdfPig]
+    OPS --&gt;|index* / query*| IDX[AppContentIndexer&lt;br/&gt;local semantic index]
+  end
+  LM &amp; OCR &amp; IDG &amp; PDF &amp; IDX --&gt;|"BridgeResponse {id, ok, text}"| B
+  subgraph WIN["Windows 11 (Copilot+ PC)"]
+    LM --- NPU[(NPU)]
+    OCR --- NPU
+  end</pre>
+<h2 id="the-five-things-every-app-folder-contains">The five things every app folder contains</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>File</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&lt;App&gt;.csproj</code></td>
+<td>Project: <code>net8.0-windows10.0.22621.0</code>, WinUI 3, <code>WindowsPackageType=MSIX</code>, self-contained Windows App SDK, <code>www\**</code> copied next to the exe, signing thumbprint.</td>
+</tr>
+<tr>
+<td><code>Package.appxmanifest</code></td>
+<td><strong>Package identity</strong> (name, publisher, version), the <code>runFullTrust</code> and <code>systemAIModels</code> capabilities, and the two target device families (<code>Windows.Universal</code> + <code>Windows.Desktop</code>) that the Windows AI APIs need.</td>
+</tr>
+<tr>
+<td><code>app.manifest</code></td>
+<td>Win32 manifest (DPI awareness, OS compatibility).</td>
+</tr>
+<tr>
+<td><code>App.xaml</code> / <code>App.xaml.cs</code></td>
+<td>Application start-up: creates and activates <code>MainWindow</code>.</td>
+</tr>
+<tr>
+<td><code>MainWindow.xaml</code> / <code>MainWindow.xaml.cs</code></td>
+<td>One empty window containing a <code>WebView2</code>. <strong>All native logic is in <code>MainWindow.xaml.cs</code></strong> (the bigger apps split it into engine files, see their READMEs).</td>
+</tr>
+<tr>
+<td><code>www/</code></td>
+<td>The UI: plain HTML/CSS/JavaScript (or a built web bundle for AI Shelf Auditor). Served to the WebView2 from a virtual host name (<code>https://&lt;app&gt;.local/index.html</code>) mapped to the <code>www</code> folder, so there is no file:// and no local web server.</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="the-json-bridge">The JSON bridge</h2>
+<p>Every app defines a small <code>NativeAI</code> object in JavaScript (in <code>app.js</code> or inline in <code>index.html</code>) with a <code>call(op, payload)</code> helper. The page posts <code>{ id, op, prompt, ... }</code>; the host handles it in <code>OnWebMessageReceived</code>, runs the Windows API and posts back <code>{ id, ok, text | error }</code>. The <code>id</code> pairs the answer with the waiting promise.</p>
+<p>Operations used by the eight smaller apps (<code>case "..."</code> in <code>MainWindow.xaml.cs</code>):</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>op</th>
+<th>What the host does</th>
+<th>Used by</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ensureReady</code></td>
+<td>Checks <code>LanguageModel.GetReadyState()</code> and, if needed, asks Windows to prepare the model; creates the <code>LanguageModel</code>.</td>
+<td>all</td>
+</tr>
+<tr>
+<td><code>generate</code></td>
+<td><code>LanguageModel.GenerateResponseAsync(prompt)</code> and returns the text. Windows' content moderation can return an empty answer without an exception: see <a href="windows-ai-lessons.html"><code>WINDOWS-AI-LESSONS.md</code></a>.</td>
+<td>all</td>
+</tr>
+<tr>
+<td><code>pdfText</code></td>
+<td>Extracts text from a PDF (base64 in) with PdfPig.</td>
+<td>Finance, Fraud, POE Verification, HR</td>
+</tr>
+<tr>
+<td><code>ocr</code></td>
+<td>On-device OCR (<code>TextRecognizer</code>) of an image.</td>
+<td>Finance, Fraud, POE Verification</td>
+</tr>
+<tr>
+<td><code>describeImage</code></td>
+<td><code>ImageDescriptionGenerator</code> caption/description of a photo.</td>
+<td>AI Shelf Auditor, POE Verification, Reading Room</td>
+</tr>
+<tr>
+<td><code>indexPolicy</code> / <code>queryPolicy</code>, <code>indexPoe</code> / <code>queryPoe</code>, <code>indexResume</code> / <code>queryResume</code></td>
+<td>Add text to, and search, a local semantic index (<code>AppContentIndexer</code>). Always run through <code>Task.Run</code> (calling it on the UI thread deadlocks).</td>
+<td>Fraud, POE Verification, HR</td>
+</tr>
+<tr>
+<td><code>parseDicom</code></td>
+<td>Reads DICOM tags (fo-dicom) and renders a preview image.</td>
+<td>Reading Room</td>
+</tr>
+<tr>
+<td><code>fetchUrl</code></td>
+<td>Downloads a web page's HTML (the only outbound request of that app, started by the user).</td>
+<td>HR Recruiter</td>
+</tr>
+</tbody>
+</table></div>
+<p>LocalIQ, LocalMind and HybridMind have a much larger bridge (library, chat streaming, key-value store, skills, files, export/import). Their READMEs list the files.</p>
+<h2 id="design-rules-that-recur">Design rules that recur</h2>
+<ol>
+<li><strong>Code computes, the model words.</strong> Totals, ratios, dates, matrices and citations come from deterministic JavaScript/C#; the prompt gives the model these facts and asks it to explain them.</li>
+<li><strong>Split large generations.</strong> One big "return JSON with 10 fields" call is slow and gets truncated by the small context window; several small calls are faster and more reliable (HR Recruiter went from ~8 min to normal by doing this).</li>
+<li><strong>Validate model JSON</strong> (<code>extractJsonLoose</code>, <code>validate*</code> in the web apps) and fall back gracefully when the model returns nothing.</li>
+<li><strong>Never log content.</strong> <code>bridge.log</code> in <code>LocalState</code> records operation names and sizes, not prompts (the bigger apps are strict about this).</li>
+<li><strong>Synthetic sample data only.</strong></li>
+</ol>
+<h2 id="where-data-lives-on-disk">Where data lives on disk</h2>
+<p>Each installed app has <code>%LOCALAPPDATA%\Packages\&lt;PackageFamilyName&gt;\LocalState</code>, containing its stored data and <code>bridge.log</code>. Uninstalling the package removes it.</p>
+</article>
+<nav class="pager bottom"><a href="deploy.html">‹ Deployment guide: from git clone to a running app</a><a href="build.html">Building an app ›</a></nav>
+<p class="source"><a href="https://github.com/medyabi/windows-local-ai-apps" rel="noopener">View the source on GitHub</a></p>
+</main>
+<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#the-five-things-every-app-folder-contains">The five things every app folder contains</a></li><li><a href="#the-json-bridge">The JSON bridge</a></li><li><a href="#design-rules-that-recur">Design rules that recur</a></li><li><a href="#where-data-lives-on-disk">Where data lives on disk</a></li></ol></aside>
+</div>
+<footer class="sitefoot">
+  <div class="foot-in">
+    <div><strong>AI Labs</strong><p>Hands-on Copilot labs by Mohamed Dyabi, Microsoft Certified Trainer.</p></div>
+    <ul>
+      <li><a href="../copilot-studio/index.html">Copilot Studio track</a></li>
+      <li><a href="../cowork/index.html">Copilot Cowork track</a></li>
+      <li><a href="index.html">Copilot+ PC local AI track</a></li>
+      <li><a href="https://learn.ebigpictures.com/">Windows Server Labs</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Studio-lab" rel="noopener">Copilot Studio labs on GitHub</a></li>
+      <li><a href="https://github.com/medyabi/Copilot-Cowork-lab" rel="noopener">Cowork labs on GitHub</a></li>
+      <li><a href="https://github.com/medyabi/windows-local-ai-apps" rel="noopener">Local AI apps on GitHub</a></li>
+    </ul>
+  </div>
+  <p class="fine">Use a test or demo tenant: these labs create agents, workflows and SharePoint items, and consume Copilot Credits. Preview features and labels change often. An independent site, not affiliated with Microsoft. © 2026 Mohamed Dyabi</p>
+</footer>
+<script>
+(function(){
+  // Table of contents: open on wide screens, collapsible on small ones
+  var toc = document.querySelector('details.toc');
+  if (toc) {
+    var mq = window.matchMedia('(min-width: 1024px)');
+    var sync = function(){ if (mq.matches) toc.open = true; };
+    sync(); if (mq.addEventListener) mq.addEventListener('change', sync);
+    var cur = toc.querySelector('[aria-current="page"]');
+    if (cur && cur.scrollIntoView && mq.matches) cur.scrollIntoView({block: 'center'});
+  }
+  // Filter by title
+  var f = document.getElementById('toc-filter');
+  if (f) f.addEventListener('input', function(){
+    var q = f.value.trim().toLowerCase();
+    document.querySelectorAll('.toc-list li').forEach(function(li){
+      var hit = !q || li.textContent.toLowerCase().indexOf(q) !== -1;
+      li.hidden = !hit;
+    });
+  });
+  // Copy buttons on code blocks
+  document.querySelectorAll('.codeblock').forEach(function(cb){
+    var btn = cb.querySelector('.copy'), code = cb.querySelector('code');
+    if (!btn || !code) return;
+    btn.addEventListener('click', function(){
+      navigator.clipboard.writeText(code.innerText).then(function(){
+        btn.textContent = 'Copied'; setTimeout(function(){ btn.textContent = 'Copy'; }, 1500);
+      }, function(){ btn.textContent = 'Select and copy'; });
+    });
+  });
+  // Highlight the current section in "In this article"
+  var links = document.querySelectorAll('.aside-toc a');
+  if (links.length && 'IntersectionObserver' in window) {
+    var map = {}; links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var obs = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting) {
+        links.forEach(function(a){ a.classList.remove('on'); });
+        var a = map[e.target.id]; if (a) a.classList.add('on');
+      }});
+    }, {rootMargin: '0px 0px -75% 0px'});
+    Object.keys(map).forEach(function(id){ var h = document.getElementById(id); if (h) obs.observe(h); });
+  }
+})();
+</script><script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.esm.min.mjs";const dark = document.documentElement.matches("[data-theme=dark]") || (window.matchMedia("(prefers-color-scheme: dark)").matches && !document.documentElement.matches("[data-theme=light]"));mermaid.initialize({startOnLoad:true, theme: dark ? "dark" : "neutral", securityLevel:"strict"});</script>
+</body>
+</html>
