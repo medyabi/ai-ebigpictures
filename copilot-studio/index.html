@@ -23,7 +23,7 @@
 <main id="content" class="article">
 <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">AI Labs</a></li></ol></nav>
 <article class="prose">
-<h1 id="from-simple-agents-to-autonomous-agents">From Simple Agents to Autonomous Agents</h1><p class="meta"><span>Overview</span><span>4 min read</span></p>
+<h1 id="from-simple-agents-to-autonomous-agents">From Simple Agents to Autonomous Agents</h1><p class="meta"><span>Overview</span><span>5 min read</span></p>
 <h3 id="hands-on-labs-for-microsoft-365-copilot-agent-builder-and-microsoft-copilot-studio">Hands-on labs for Microsoft 365 Copilot Agent Builder and Microsoft Copilot Studio</h3>
 <p>Ten progressive labs. One storyline. You build the <strong>Contoso IT Service Desk</strong> step by step:</p>
 <ul>
@@ -261,14 +261,87 @@
 </table></div>
 <div class="alert note"><p class="alert-title">Note</p><p><strong>Heads-up about the UI.</strong> These labs were written in <strong>November 2026</strong>. Copilot Studio now builds new agents on the <strong>Microsoft Copilot harness</strong> by default (Build / Preview / Evaluate tabs). Several features used here (triggers, memory, skills, evaluation) are marked <strong>preview</strong>. Labels can move. When a button isn't where the lab says, look for the same word in the <strong>Build</strong> tab components panel or in <strong>Agent settings</strong>.</p></div>
 <hr />
+<h2 id="lab-files">Lab files</h2>
+<p><strong>Download everything at once:</strong> <a href="https://github.com/medyabi/Copilot-Studio-lab/archive/refs/heads/main.zip" rel="noopener">Copilot-Studio-lab-main.zip</a>. Extract it, then open the <code>Allfiles/Labs</code> folder.</p>
+<p>Or download only the file you need:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Lab</th>
+<th>File</th>
+<th>What it's for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>00</td>
+<td><a href="https://github.com/medyabi/Copilot-Studio-lab/raw/main/Allfiles/Labs/00/Contoso-Laptop-and-Device-Policy.docx" rel="noopener">Contoso-Laptop-and-Device-Policy.docx</a></td>
+<td>Policy uploaded to the SharePoint <strong>Documents</strong> library</td>
+</tr>
+<tr>
+<td>00</td>
+<td><a href="https://github.com/medyabi/Copilot-Studio-lab/raw/main/Allfiles/Labs/00/Contoso-Software-Request-Policy.docx" rel="noopener">Contoso-Software-Request-Policy.docx</a></td>
+<td>Policy: software categories A to D (used again in Lab 06)</td>
+</tr>
+<tr>
+<td>00</td>
+<td><a href="https://github.com/medyabi/Copilot-Studio-lab/raw/main/Allfiles/Labs/00/Contoso-Remote-Access-and-VPN-Guide.docx" rel="noopener">Contoso-Remote-Access-and-VPN-Guide.docx</a></td>
+<td>Policy uploaded to the SharePoint <strong>Documents</strong> library</td>
+</tr>
+<tr>
+<td>00</td>
+<td><a href="https://github.com/medyabi/Copilot-Studio-lab/raw/main/Allfiles/Labs/00/Contoso-Password-and-MFA-Policy.docx" rel="noopener">Contoso-Password-and-MFA-Policy.docx</a></td>
+<td>Policy uploaded to the SharePoint <strong>Documents</strong> library</td>
+</tr>
+<tr>
+<td>03</td>
+<td><a href="https://github.com/medyabi/Copilot-Studio-lab/raw/main/Allfiles/Labs/03/Contoso-IT-Tickets-Q3-2026.csv" rel="noopener">Contoso-IT-Tickets-Q3-2026.csv</a></td>
+<td>240 tickets to analyze with the code interpreter</td>
+</tr>
+<tr>
+<td>03, 07, 08</td>
+<td><a href="https://github.com/medyabi/Copilot-Studio-lab/raw/main/Allfiles/Labs/03/it-ticket-triage.zip" rel="noopener">it-ticket-triage.zip</a></td>
+<td>The triage <strong>skill</strong> package (upload the <code>.zip</code>). <a href="https://github.com/medyabi/Copilot-Studio-lab/blob/main/Allfiles/Labs/03/it-ticket-triage/SKILL.md" rel="noopener">View SKILL.md</a></td>
+</tr>
+<tr>
+<td>07</td>
+<td><a href="https://github.com/medyabi/Copilot-Studio-lab/raw/main/Allfiles/Labs/07/Contoso-License-Catalog.docx" rel="noopener">Contoso-License-Catalog.docx</a></td>
+<td>Knowledge for the <strong>Contoso License Advisor</strong></td>
+</tr>
+<tr>
+<td>09</td>
+<td><a href="https://github.com/medyabi/Copilot-Studio-lab/raw/main/Allfiles/Labs/09/Contoso-ServiceDesk-TestSet.csv" rel="noopener">Contoso-ServiceDesk-TestSet.csv</a></td>
+<td>Test set for <strong>Evaluate</strong></td>
+</tr>
+</tbody>
+</table></div>
 <h2 id="repository-layout">Repository layout</h2>
-<div class="codeblock"><div class="code-head"><span></span><button type="button" class="copy">Copy</button></div><pre><code>Instructions/Labs/      the lab guides (one Markdown file per lab)
-Instructions/Labs/media screenshots (add yours here - see the 📸 markers in each lab)
-Allfiles/Labs/00        Contoso policy documents to upload to SharePoint
-Allfiles/Labs/03        ticket export (CSV) for the code interpreter exercise
-Allfiles/Labs/07        license catalog + the "it-ticket-triage" skill package
-Allfiles/Labs/09        evaluation test set (CSV)
-Instructions/Trainer    trainer notes, timings and troubleshooting</code></pre></div>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Folder</th>
+<th>What's inside</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/medyabi/Copilot-Studio-lab/tree/main/Instructions/Labs" rel="noopener"><code>Instructions/Labs</code></a></td>
+<td>The lab guides, one Markdown file per lab</td>
+</tr>
+<tr>
+<td><a href="https://github.com/medyabi/Copilot-Studio-lab/tree/main/Instructions/Labs/media" rel="noopener"><code>Instructions/Labs/media</code></a></td>
+<td>The screenshots used in the labs</td>
+</tr>
+<tr>
+<td><a href="https://github.com/medyabi/Copilot-Studio-lab/tree/main/Instructions/Trainer" rel="noopener"><code>Instructions/Trainer</code></a></td>
+<td>Trainer notes: agendas, team setup, troubleshooting</td>
+</tr>
+<tr>
+<td><a href="https://github.com/medyabi/Copilot-Studio-lab/tree/main/Allfiles/Labs" rel="noopener"><code>Allfiles/Labs</code></a></td>
+<td>The lab files listed above, one folder per lab</td>
+</tr>
+</tbody>
+</table></div>
 <h2 id="publish-as-a-lab-website">Publish as a lab website</h2>
 <p>This repo uses the same layout as the Microsoft Learning lab sites (for example AZ-104). Turn on <strong>GitHub Pages</strong> (Settings &gt; Pages &gt; Deploy from branch &gt; <code>main</code> / root) and the <code>index.md</code> page lists every lab automatically from the <code>lab:</code> front matter.</p>
 <hr />
@@ -277,7 +350,7 @@ Instructions/Trainer    trainer notes, timings and troubleshooting</code></pre><
 <nav class="pager bottom"><span></span><a href="lab-00-prepare-the-lab-environment.html">00 · Prepare the lab environment ›</a></nav>
 <p class="source"><a href="https://github.com/medyabi/Copilot-Studio-lab" rel="noopener">View the source on GitHub</a></p>
 </main>
-<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#the-learning-path">The learning path</a></li><li><a href="#how-the-agent-grows-think-of-it-as-a-robot">How the agent grows: think of it as a robot</a></li><li><a href="#prerequisites">Prerequisites</a></li><li><a href="#repository-layout">Repository layout</a></li><li><a href="#publish-as-a-lab-website">Publish as a lab website</a></li></ol></aside>
+<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#the-learning-path">The learning path</a></li><li><a href="#how-the-agent-grows-think-of-it-as-a-robot">How the agent grows: think of it as a robot</a></li><li><a href="#prerequisites">Prerequisites</a></li><li><a href="#lab-files">Lab files</a></li><li><a href="#repository-layout">Repository layout</a></li><li><a href="#publish-as-a-lab-website">Publish as a lab website</a></li></ol></aside>
 </div>
 <footer class="sitefoot">
   <div class="foot-in">
