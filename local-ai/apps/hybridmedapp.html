@@ -23,9 +23,19 @@
 <main id="content" class="article">
 <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../../index.html">AI Labs</a></li><li><a href="../index.html">Copilot+ PC track</a></li></ol></nav>
 <article class="prose">
-<h1 id="hybridmed">HybridMed</h1><p class="meta"><span>App</span><span>3 min read</span></p>
+<h1 id="hybridmed">HybridMed</h1><p class="meta"><span>App</span><span>4 min read</span></p>
 <p>A <strong>hybrid pipeline</strong> demo for lab-result triage: a local stage on the device, then a cloud stage <strong>only if you configure one</strong>.</p>
 <p><img alt="HybridMed: the app on a Copilot+ PC" src="../../assets/lai/docs-screenshots-HybridMedApp.png" /></p>
+<h2 id="what-it-does">What it does</h2>
+<p><strong>Who it's for:</strong> anyone who wants to see a <strong>hybrid AI pattern</strong> in a sensitive field, here lab-result triage.</p>
+<p><strong>The problem:</strong> a cloud model can apply richer logic, but raw patient data (names, dates of birth, identifiers) must not leave the device.</p>
+<p><strong>With the app:</strong>
+1. Drop a <strong>patient file</strong> (lab report, discharge summary, notes) or click <strong>Load demo patient</strong>, and describe the symptoms.
+2. <strong>On the device</strong>, Phi Silica reads the raw text and turns it into <strong>structured JSON</strong>.
+3. A <strong>privacy gate</strong> keeps the identifiers on the PC. Only the sanitised JSON may cross.
+4. <strong>Optionally</strong>, your own <strong>Azure AI Foundry</strong> model receives that JSON and returns triage guidance.</p>
+<p>The right-hand panel shows each stage as it runs, so you can see exactly what stayed local and what went to the cloud.</p>
+<p><strong>Without cloud settings</strong>, only the local stage runs. This is a <strong>demo, not a medical device</strong>.</p>
 <h2 id="how-it-works">How it works</h2>
 <pre class="mermaid">flowchart LR
   F[lab result file / demo] --&gt; PF[parseFile + renderPatientCard]
@@ -111,7 +121,7 @@ notepad "$env:LOCALAPPDATA\Packages\$($p.PackageFamilyName)\LocalState\bridge.lo
 
 <p class="source"><a href="https://github.com/medyabi/windows-local-ai-apps" rel="noopener">View the source on GitHub</a></p>
 </main>
-<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#how-it-works">How it works</a></li><li><a href="#source-files">Source files</a></li><li><a href="#step-by-step-deployment">Step-by-step deployment</a></li><li><a href="#try-it">Try it</a></li><li><a href="#limits">Limits</a></li></ol></aside>
+<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#what-it-does">What it does</a></li><li><a href="#how-it-works">How it works</a></li><li><a href="#source-files">Source files</a></li><li><a href="#step-by-step-deployment">Step-by-step deployment</a></li><li><a href="#try-it">Try it</a></li><li><a href="#limits">Limits</a></li></ol></aside>
 </div>
 <footer class="sitefoot">
   <div class="foot-in">

@@ -23,9 +23,18 @@
 <main id="content" class="article">
 <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../../index.html">AI Labs</a></li><li><a href="../index.html">Copilot+ PC track</a></li></ol></nav>
 <article class="prose">
-<h1 id="ai-shelf-auditor">AI Shelf Auditor</h1><p class="meta"><span>App</span><span>2 min read</span></p>
+<h1 id="ai-shelf-auditor">AI Shelf Auditor</h1><p class="meta"><span>App</span><span>3 min read</span></p>
 <p>An on-device retail <strong>shelf-execution</strong> assistant. The UI is a React web app; the native shell gives it on-device image description and text generation.</p>
 <p><img alt="AI Shelf Auditor: the app on a Copilot+ PC" src="../../assets/lai/docs-screenshots-AIShelfAuditorApp.png" /></p>
+<h2 id="what-it-does">What it does</h2>
+<p><strong>Who it's for:</strong> retail field teams and store managers who check that shelves look the way the brand agreed: right products, right place, nothing missing.</p>
+<p><strong>The problem:</strong> a shelf audit means photos, notes and a report for every aisle in every store. It's slow, and shelf photos often can't leave the company.</p>
+<p><strong>With the app:</strong>
+- Start a <strong>New Shelf Audit</strong> and add a photo of the shelf. The on-device model <strong>describes what it sees</strong>.
+- Each audit gets a <strong>score</strong> and a list of <strong>issues</strong>, flagged as <em>Good</em>, <em>Needs attention</em> or <em>Needs review</em>.
+- The <strong>dashboard</strong> shows today's audits, the issues found, high-priority items and the average shelf score, across all your stores.
+- <strong>Store tasks</strong> and <strong>analytics</strong> turn the findings into follow-up work.</p>
+<p><strong>On the device:</strong> image description and text generation run on the PC's NPU. Shelf photos aren't sent to a cloud service.</p>
 <h2 id="how-it-works">How it works</h2>
 <pre class="mermaid">flowchart LR
   UI["React bundle (www/assets)"] --&gt;|describeImage| D[ImageDescriptionGenerator&lt;br/&gt;DetailedDescription]
@@ -99,7 +108,7 @@ notepad "$env:LOCALAPPDATA\Packages\$($p.PackageFamilyName)\LocalState\bridge.lo
 
 <p class="source"><a href="https://github.com/medyabi/windows-local-ai-apps" rel="noopener">View the source on GitHub</a></p>
 </main>
-<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#how-it-works">How it works</a></li><li><a href="#source-files">Source files</a></li><li><a href="#step-by-step-deployment">Step-by-step deployment</a></li><li><a href="#limits">Limits</a></li></ol></aside>
+<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#what-it-does">What it does</a></li><li><a href="#how-it-works">How it works</a></li><li><a href="#source-files">Source files</a></li><li><a href="#step-by-step-deployment">Step-by-step deployment</a></li><li><a href="#limits">Limits</a></li></ol></aside>
 </div>
 <footer class="sitefoot">
   <div class="foot-in">

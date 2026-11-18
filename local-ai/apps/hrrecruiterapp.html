@@ -23,9 +23,19 @@
 <main id="content" class="article">
 <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../../index.html">AI Labs</a></li><li><a href="../index.html">Copilot+ PC track</a></li></ol></nav>
 <article class="prose">
-<h1 id="hr-recruiter-agent">HR Recruiter Agent</h1><p class="meta"><span>App</span><span>3 min read</span></p>
+<h1 id="hr-recruiter-agent">HR Recruiter Agent</h1><p class="meta"><span>App</span><span>4 min read</span></p>
 <p>An on-device recruiting copilot: create a role from a job description, drop résumés, and get an <strong>evidence-backed fit assessment</strong> per candidate.</p>
 <p><img alt="HR Recruiter Agent: the app on a Copilot+ PC" src="../../assets/lai/docs-screenshots-HRRecruiterApp.png" /></p>
+<h2 id="what-it-does">What it does</h2>
+<p><strong>Who it's for:</strong> recruiters and hiring managers.</p>
+<p><strong>The problem:</strong> screening résumés against a job description is repetitive, and résumés are personal data you shouldn't paste into a public chatbot.</p>
+<p><strong>With the app:</strong>
+- Create a <strong>role</strong> from a job description (PDF).
+- Drop the <strong>résumés</strong>. Each candidate gets a <strong>fit assessment</strong> with <strong>evidence quotes</strong> from the résumé, so you see <em>why</em>, not only a score.
+- Get suggested <strong>interview questions</strong> and spot <strong>duplicate</strong> applications.
+- Ask the <strong>Recruiting Copilot</strong>: <em>"Why is this candidate ranked lower?"</em>
+- A <strong>Responsible AI</strong> page explains what the AI does and doesn't decide.</p>
+<p><strong>On the device:</strong> analysis and chat run on the PC. The only network feature is the optional <em>fetch a job posting from a URL</em>.</p>
 <h2 id="how-it-works">How it works</h2>
 <pre class="mermaid">flowchart LR
   JD[job description&lt;br/&gt;PDF / paste / URL] --&gt; RA[analyzeRole&lt;br/&gt;1 model call]
@@ -121,7 +131,7 @@ notepad "$env:LOCALAPPDATA\Packages\$($p.PackageFamilyName)\LocalState\bridge.lo
 
 <p class="source"><a href="https://github.com/medyabi/windows-local-ai-apps" rel="noopener">View the source on GitHub</a></p>
 </main>
-<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#how-it-works">How it works</a></li><li><a href="#source-files">Source files</a></li><li><a href="#step-by-step-deployment">Step-by-step deployment</a></li><li><a href="#try-it">Try it</a></li><li><a href="#limits">Limits</a></li></ol></aside>
+<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#what-it-does">What it does</a></li><li><a href="#how-it-works">How it works</a></li><li><a href="#source-files">Source files</a></li><li><a href="#step-by-step-deployment">Step-by-step deployment</a></li><li><a href="#try-it">Try it</a></li><li><a href="#limits">Limits</a></li></ol></aside>
 </div>
 <footer class="sitefoot">
   <div class="foot-in">

@@ -23,9 +23,19 @@
 <main id="content" class="article">
 <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../../index.html">AI Labs</a></li><li><a href="../index.html">Copilot+ PC track</a></li></ol></nav>
 <article class="prose">
-<h1 id="poe-verification-analyst">POE Verification Analyst</h1><p class="meta"><span>App</span><span>3 min read</span></p>
+<h1 id="poe-verification-analyst">POE Verification Analyst</h1><p class="meta"><span>App</span><span>4 min read</span></p>
 <p>On-device <strong>proof-of-execution</strong> verification: for each case it cross-checks the invoice against the purchase order and the delivery / execution evidence, flags exposure, and detects evidence reused across claims.</p>
 <p><img alt="POE Verification Analyst: the app on a Copilot+ PC" src="../../assets/lai/docs-screenshots-POEVerificationApp.png" /></p>
+<h2 id="what-it-does">What it does</h2>
+<p><strong>Who it's for:</strong> finance, procurement and audit teams who pay suppliers for work that must be proven.</p>
+<p><strong>The problem:</strong> a supplier sends a purchase order, an invoice and "proof" that the work was done. Checking that the three agree, and that the same photo isn't reused for several claims, is slow and easy to get wrong.</p>
+<p><strong>With the app:</strong>
+- Open a <strong>New Case</strong>, name the supplier and drop the <strong>PO</strong>, the <strong>invoice</strong> and the <strong>proof of execution</strong> (PDFs).
+- <strong>Extract &amp; Verify</strong> builds a <strong>verification matrix</strong>: quantities and amounts across the three documents, with every mismatch flagged.
+- The dashboard shows the <strong>potential exposure</strong> (in €) and the cases that need review.
+- <strong>Search for reused evidence</strong> finds the same proof used in other claims. <strong>Analyze photos</strong> estimates quantities from delivery photos.
+- Ask the <strong>Investigation Copilot</strong> about the case.</p>
+<p><strong>On the device:</strong> extraction, checks and the copilot run on the PC: <em>0 external calls, 0 bytes uploaded</em>.</p>
 <h2 id="how-it-works">How it works</h2>
 <pre class="mermaid">flowchart LR
   DOCS[PO, invoice, delivery note PDFs] --&gt;|pdfText / ocr| EX[extractDocumentFields&lt;br/&gt;model → JSON, validated]
@@ -114,7 +124,7 @@ notepad "$env:LOCALAPPDATA\Packages\$($p.PackageFamilyName)\LocalState\bridge.lo
 
 <p class="source"><a href="https://github.com/medyabi/windows-local-ai-apps" rel="noopener">View the source on GitHub</a></p>
 </main>
-<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#how-it-works">How it works</a></li><li><a href="#source-files">Source files</a></li><li><a href="#step-by-step-deployment">Step-by-step deployment</a></li><li><a href="#try-it">Try it</a></li><li><a href="#limits">Limits</a></li></ol></aside>
+<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#what-it-does">What it does</a></li><li><a href="#how-it-works">How it works</a></li><li><a href="#source-files">Source files</a></li><li><a href="#step-by-step-deployment">Step-by-step deployment</a></li><li><a href="#try-it">Try it</a></li><li><a href="#limits">Limits</a></li></ol></aside>
 </div>
 <footer class="sitefoot">
   <div class="foot-in">

@@ -23,10 +23,21 @@
 <main id="content" class="article">
 <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../../index.html">AI Labs</a></li><li><a href="../index.html">Copilot+ PC track</a></li></ol></nav>
 <article class="prose">
-<h1 id="hybridmind">HybridMind</h1><p class="meta"><span>App</span><span>4 min read</span></p>
+<h1 id="hybridmind">HybridMind</h1><p class="meta"><span>App</span><span>5 min read</span></p>
 <p><a href="localmindapp.html">LocalMind</a> plus a <strong>router</strong> and an <strong>agent mode</strong>: the on-device Windows AI model (Phi Silica) answers first, and <strong>your own cloud model</strong> (Azure OpenAI or any OpenAI-compatible endpoint) is used only when the task needs it, always visibly and with a way to say no.</p>
 <p><img alt="HybridMind: the app on a Copilot+ PC" src="../../assets/lai/docs-screenshots-HybridMindApp.png" /></p>
 <div class="alert important"><p class="alert-title">Important</p><p><strong>Tested against a mock server only</strong>, never against a real cloud service. Treat the cloud routing and the cloud agent as unproven until you try them with your own endpoint.</p></div>
+<h2 id="what-it-does">What it does</h2>
+<p><strong>Who it's for:</strong> people who want a private assistant by default, with the power of a cloud model <strong>only when they choose it</strong>.</p>
+<p><strong>The problem:</strong> an on-device model is private and free, but smaller. A cloud model is stronger, but your data leaves the PC.</p>
+<p><strong>With the app:</strong>
+- Everything <strong>LocalMind</strong> does: chat, assistants, projects, memory, files, skills, images.
+- A <strong>router</strong> with three modes: <strong>Auto</strong> (on-device first, cloud only when needed), <strong>On-device</strong> and <strong>Cloud</strong>.
+- The cloud is <strong>your own</strong> endpoint (Azure OpenAI or any OpenAI-compatible service), shown in the footer, for example <em>gpt-5.4</em>.
+- Before anything goes to the cloud, you get a <strong>consent dialog</strong>, and personal details such as e-mail addresses are <strong>redacted</strong>.
+- An <strong>agent mode</strong> can carry out multi-step tasks.
+- <strong>Cloud usage</strong> in Settings shows what was sent.</p>
+<p><strong>Without cloud settings</strong> it behaves exactly like LocalMind.</p>
 <h2 id="how-it-works">How it works</h2>
 <pre class="mermaid">flowchart LR
   UI[chat.js] --&gt; R{router.js&lt;br/&gt;can the local model do it?}
@@ -127,7 +138,7 @@ notepad "$env:LOCALAPPDATA\Packages\$($p.PackageFamilyName)\LocalState\bridge.lo
 
 <p class="source"><a href="https://github.com/medyabi/windows-local-ai-apps" rel="noopener">View the source on GitHub</a></p>
 </main>
-<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#how-it-works">How it works</a></li><li><a href="#source-files">Source files</a></li><li><a href="#step-by-step-deployment">Step-by-step deployment</a></li><li><a href="#try-it">Try it</a></li></ol></aside>
+<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#what-it-does">What it does</a></li><li><a href="#how-it-works">How it works</a></li><li><a href="#source-files">Source files</a></li><li><a href="#step-by-step-deployment">Step-by-step deployment</a></li><li><a href="#try-it">Try it</a></li></ol></aside>
 </div>
 <footer class="sitefoot">
   <div class="foot-in">

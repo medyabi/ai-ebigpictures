@@ -23,9 +23,18 @@
 <main id="content" class="article">
 <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../../index.html">AI Labs</a></li><li><a href="../index.html">Copilot+ PC track</a></li></ol></nav>
 <article class="prose">
-<h1 id="localmind">LocalMind</h1><p class="meta"><span>App</span><span>5 min read</span></p>
+<h1 id="localmind">LocalMind</h1><p class="meta"><span>App</span><span>6 min read</span></p>
 <p>A private <strong>ChatGPT-style assistant that runs entirely on the PC</strong>: streaming chat, conversation branches, memory, files (RAG), assistants and projects, built-in tools, skills, and on-device image features. Powered by Phi Silica; works offline.</p>
 <p><img alt="LocalMind: the app on a Copilot+ PC" src="../../assets/lai/docs-screenshots-LocalMindApp.png" /></p>
+<h2 id="what-it-does">What it does</h2>
+<p><strong>Who it's for:</strong> anyone who wants a ChatGPT-style assistant that's <strong>private by design</strong>.</p>
+<p><strong>The problem:</strong> public chatbots are useful, but everything you type leaves your PC.</p>
+<p><strong>With the app:</strong>
+- <strong>Chat</strong> with streaming answers, edit a message to create a <strong>branch</strong>, and search past chats.
+- Ready-made <strong>assistants</strong>: Writer, Coder, Tutor, Translator, Document analyst. <strong>Projects</strong> group chats with shared instructions and files.
+- <strong>Memory</strong> remembers what you ask it to. <strong>Files</strong> let you chat with your documents (RAG).
+- <strong>Skills</strong>, <strong>/ commands</strong> and built-in tools, plus on-device <strong>image</strong> features.</p>
+<p><strong>On the device:</strong> everything runs on Phi Silica on the PC. It works <strong>offline</strong>, and nothing is sent to the cloud.</p>
 <h2 id="how-it-works">How it works</h2>
 <pre class="mermaid">flowchart LR
   UI[chat.js / ui.js] --&gt;|chat request:&lt;br/&gt;system text, memories, snippets| CE[ChatEngine]
@@ -154,7 +163,7 @@ notepad "$env:LOCALAPPDATA\Packages\$($p.PackageFamilyName)\LocalState\bridge.lo
 
 <p class="source"><a href="https://github.com/medyabi/windows-local-ai-apps" rel="noopener">View the source on GitHub</a></p>
 </main>
-<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#how-it-works">How it works</a></li><li><a href="#whats-new-in-121-asking-for-skus-and-part-numbers">What's new in 1.2.1: asking for SKUs and part numbers</a></li><li><a href="#source-files">Source files</a></li><li><a href="#step-by-step-deployment">Step-by-step deployment</a></li><li><a href="#try-it">Try it</a></li><li><a href="#limits">Limits</a></li></ol></aside>
+<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#what-it-does">What it does</a></li><li><a href="#how-it-works">How it works</a></li><li><a href="#whats-new-in-121-asking-for-skus-and-part-numbers">What's new in 1.2.1: asking for SKUs and part numbers</a></li><li><a href="#source-files">Source files</a></li><li><a href="#step-by-step-deployment">Step-by-step deployment</a></li><li><a href="#try-it">Try it</a></li><li><a href="#limits">Limits</a></li></ol></aside>
 </div>
 <footer class="sitefoot">
   <div class="foot-in">

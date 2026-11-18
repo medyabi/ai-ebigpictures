@@ -27,6 +27,15 @@
 <p>A human-in-the-loop <strong>radiology reading-room prototype</strong>: prioritised worklist, imaging viewer with AI and radiologist annotation layers, prior-study comparison, AI-drafted impression and a sign-off step.</p>
 <div class="alert important"><p class="alert-title">Important</p><p><strong>Not a medical device. Never use for diagnosis.</strong>
 The AI findings (regions, bounding boxes, confidence) are <strong>pre-authored demo data</strong> in <code>www/data.js</code>, standing in for a detection model that does not exist on the device. What is genuinely generated on the PC is the narrative: the image description and the <strong>draft impression</strong> (Phi Silica), grounded in that structured data.</p></div>
+<h2 id="what-it-does">What it does</h2>
+<p><strong>Who it's for:</strong> radiology teams and partners exploring what a <strong>human-in-the-loop</strong> reading room could look like with on-device AI.</p>
+<p><strong>The problem:</strong> radiologists juggle a worklist, images, prior studies and a written report, under time pressure, and patient images are highly sensitive.</p>
+<p><strong>With the app:</strong>
+- A <strong>prioritised worklist</strong> of studies.
+- An <strong>image viewer</strong> with two layers: the AI's findings and the radiologist's annotations. Compare with a <strong>prior study</strong>.
+- An <strong>AI-drafted impression</strong> that the radiologist <strong>edits and signs</strong>. The human always decides.
+- <strong>Import</strong> a DICOM study.</p>
+<p><strong>Important:</strong> this is a <strong>prototype, not a medical device</strong>. The AI findings are pre-authored demo data. What really runs on the PC is the narrative: the image description and the draft impression (Phi Silica).</p>
 <h2 id="how-it-works">How it works</h2>
 <pre class="mermaid">flowchart LR
   D[seedStudies&lt;br/&gt;data.js] --&gt; W[worklist&lt;br/&gt;computePriorityFromFindings]
@@ -116,7 +125,7 @@ notepad "$env:LOCALAPPDATA\Packages\$($p.PackageFamilyName)\LocalState\bridge.lo
 
 <p class="source"><a href="https://github.com/medyabi/windows-local-ai-apps" rel="noopener">View the source on GitHub</a></p>
 </main>
-<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#how-it-works">How it works</a></li><li><a href="#source-files">Source files</a></li><li><a href="#step-by-step-deployment">Step-by-step deployment</a></li><li><a href="#try-it">Try it</a></li></ol></aside>
+<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#what-it-does">What it does</a></li><li><a href="#how-it-works">How it works</a></li><li><a href="#source-files">Source files</a></li><li><a href="#step-by-step-deployment">Step-by-step deployment</a></li><li><a href="#try-it">Try it</a></li></ol></aside>
 </div>
 <footer class="sitefoot">
   <div class="foot-in">

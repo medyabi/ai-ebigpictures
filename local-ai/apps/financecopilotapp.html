@@ -23,9 +23,19 @@
 <main id="content" class="article">
 <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../../index.html">AI Labs</a></li><li><a href="../index.html">Copilot+ PC track</a></li></ol></nav>
 <article class="prose">
-<h1 id="finance-copilot">Finance Copilot</h1><p class="meta"><span>App</span><span>3 min read</span></p>
+<h1 id="finance-copilot">Finance Copilot</h1><p class="meta"><span>App</span><span>4 min read</span></p>
 <p>Drop a customer's <strong>bank statement (CSV)</strong>, a <strong>payslip / credit report (PDF)</strong> and an <strong>ID scan (image)</strong>. The app builds a financial profile (income, expenses, savings, debt-to-income, anomalies) and lets you ask questions about it. The language model runs on the PC.</p>
 <p><img alt="Finance Copilot: the app on a Copilot+ PC" src="../../assets/lai/docs-screenshots-FinanceCopilotApp.png" /></p>
+<h2 id="what-it-does">What it does</h2>
+<p><strong>Who it's for:</strong> credit analysts and bank advisors who review a customer file before a loan or a credit decision.</p>
+<p><strong>The problem:</strong> a customer file mixes a bank statement, a payslip and an ID scan. Reading them, adding up income and expenses and spotting what looks wrong takes time, and these documents are among the most sensitive a bank holds.</p>
+<p><strong>With the app:</strong>
+- Drop the <strong>bank statement (CSV)</strong>, the <strong>payslip or credit report (PDF)</strong> and the <strong>ID scan (image)</strong>, or click <strong>Load demo customer</strong>.
+- The app builds a <strong>financial profile</strong>: income, expenses, savings, debt-to-income ratio and <strong>anomalies</strong>.
+- The on-device model writes a <strong>narrative</strong>, the questions an analyst should ask, and the next steps.
+- Then you <strong>chat</strong> with the file: <em>"Why is the debt-to-income ratio high?"</em></p>
+<p><strong>Why you can trust the numbers:</strong> every figure is <strong>computed by code</strong>, not by the AI. The model only puts them into words.</p>
+<p><strong>On the device:</strong> parsing, OCR and the language model all run on the PC. The documents never leave it.</p>
 <h2 id="how-it-works">How it works</h2>
 <pre class="mermaid">flowchart LR
   F[CSV / PDF / image] --&gt; C{classifyAndStore}
@@ -116,7 +126,7 @@ notepad "$env:LOCALAPPDATA\Packages\$($p.PackageFamilyName)\LocalState\bridge.lo
 
 <p class="source"><a href="https://github.com/medyabi/windows-local-ai-apps" rel="noopener">View the source on GitHub</a></p>
 </main>
-<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#how-it-works">How it works</a></li><li><a href="#source-files">Source files</a></li><li><a href="#step-by-step-deployment">Step-by-step deployment</a></li><li><a href="#try-it">Try it</a></li><li><a href="#limits">Limits</a></li></ol></aside>
+<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#what-it-does">What it does</a></li><li><a href="#how-it-works">How it works</a></li><li><a href="#source-files">Source files</a></li><li><a href="#step-by-step-deployment">Step-by-step deployment</a></li><li><a href="#try-it">Try it</a></li><li><a href="#limits">Limits</a></li></ol></aside>
 </div>
 <footer class="sitefoot">
   <div class="foot-in">

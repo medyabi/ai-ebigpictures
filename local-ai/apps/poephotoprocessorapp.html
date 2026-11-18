@@ -23,9 +23,19 @@
 <main id="content" class="article">
 <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../../index.html">AI Labs</a></li><li><a href="../index.html">Copilot+ PC track</a></li></ol></nav>
 <article class="prose">
-<h1 id="poe-photo-processor">POE Photo Processor</h1><p class="meta"><span>App</span><span>3 min read</span></p>
+<h1 id="poe-photo-processor">POE Photo Processor</h1><p class="meta"><span>App</span><span>4 min read</span></p>
 <p>Processes event photos for proof-of-execution packs: <strong>blurs the faces of other people</strong> (not yours, via a reference selfie), <strong>overlays EXIF date/time and location</strong>, adds an <strong>AI caption</strong>, and exports a ZIP. It is a native rewrite of an earlier demo that talked to Foundry Local.</p>
 <p><img alt="POE Photo Processor: the app on a Copilot+ PC" src="../../assets/lai/docs-screenshots-POEPhotoProcessorApp.png" /></p>
+<h2 id="what-it-does">What it does</h2>
+<p><strong>Who it's for:</strong> marketing and field teams who must prove an event happened: proof of execution (POE) for a brand, a sponsor or an auditor.</p>
+<p><strong>The problem:</strong> event photos show attendees who never agreed to appear in a report, and auditors want to see <strong>when</strong> and <strong>where</strong> each photo was taken.</p>
+<p><strong>With the app:</strong>
+1. Upload <strong>your selfie</strong>, so your own face is never blurred.
+2. Drop the <strong>event photos</strong> (JPG, PNG, HEIC).
+3. Click <strong>Process All</strong>: other people's faces are <strong>blurred or pixelated</strong>, and the <strong>date, time and GPS location</strong> from the photo's EXIF data are stamped on it.
+4. Each photo gets an <strong>AI caption</strong>, with a before/after preview.
+5. Download one photo or <strong>the whole set as a ZIP</strong>.</p>
+<p><strong>Network:</strong> captions run on the device, but this app loads some libraries from a CDN and uses OpenStreetMap to turn GPS coordinates into place names.</p>
 <h2 id="how-it-works">How it works</h2>
 <pre class="mermaid">flowchart LR
   P[photos] --&gt; EX[readExif&lt;br/&gt;exifr]
@@ -114,7 +124,7 @@ notepad "$env:LOCALAPPDATA\Packages\$($p.PackageFamilyName)\LocalState\bridge.lo
 
 <p class="source"><a href="https://github.com/medyabi/windows-local-ai-apps" rel="noopener">View the source on GitHub</a></p>
 </main>
-<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#how-it-works">How it works</a></li><li><a href="#network-use-read-this">Network use: read this</a></li><li><a href="#source-files">Source files</a></li><li><a href="#step-by-step-deployment">Step-by-step deployment</a></li><li><a href="#try-it">Try it</a></li></ol></aside>
+<aside class="aside-toc" aria-label="In this article"><p>In this article</p><ol><li><a href="#what-it-does">What it does</a></li><li><a href="#how-it-works">How it works</a></li><li><a href="#network-use-read-this">Network use: read this</a></li><li><a href="#source-files">Source files</a></li><li><a href="#step-by-step-deployment">Step-by-step deployment</a></li><li><a href="#try-it">Try it</a></li></ol></aside>
 </div>
 <footer class="sitefoot">
   <div class="foot-in">
